@@ -49,9 +49,6 @@ class to cover the most prominent calls. The following calls are available from 
 
 ```javascript    
 
-    // The currency used in Tyme 
-    tyme.currencyCode()
-
     /* 
         start & end: Date, mandatory
         taskIDs: [string], can be null
