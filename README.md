@@ -141,8 +141,8 @@ A form is a JSON file with the following structure:
         "persist": true,
         "value": "initial value",
         "values": [ // only dropdown
-            {"key1": "value1"},
-            {"key1": "value1"}
+            {"key1": "label or localization key"},
+            {"key1": "label or localization key"}
         ],
         "valueFunction": "getClients()" // only dropdown
     },
@@ -155,6 +155,9 @@ Values of all form elements are available in your script in the global variable 
 // access a form value
 formValue.someUniqueID;
  ```
+
+Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
+You can use **persist=true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
 
 The property **valueFunction** is a special property. Tyme will call the method defined by the value function and
 expects an array with name-value pairs in return. Use this to dynamically fill a dropdown.
