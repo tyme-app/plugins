@@ -48,7 +48,6 @@ class to cover the most prominent calls. The following calls are available from 
 ### Tyme Specific Calls
 
 ```javascript    
-
     /* 
         start & end: Date, mandatory
         taskIDs: [string], can be null
@@ -73,17 +72,17 @@ class to cover the most prominent calls. The following calls are available from 
     
     // The currently used currency symbol
     tyme.currencySymbol()
+    
+    // Opens an URL
+    tyme.openURL(url)
+    
+    // Opens a dialog and asks the user where to save the content to file.
+    tyme.openSaveDialog(fileName, content)
 ```
 
 ### General Calls
 
 ```javascript
-
-// Opens an URL
-utils.openURL(url)
-
-// Opens a dialog and asks the user where to save the content to file.
-utils.openSaveDialog(fileName, content)
 
 // Removes a file. File access is restricted to the plugin folder
 utils.removeFile(fileName)
