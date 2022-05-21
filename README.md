@@ -85,7 +85,7 @@ formValue.someUniqueID;
  ```
 
 Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
-You can use **persist=true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
+For example you can use **persist=true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
 
 The property **valueFunction** is a special property. Tyme will call the method defined by the value function and
 expects an array with name-value pairs in return. Use this to dynamically fill a dropdown.
@@ -94,7 +94,10 @@ expects an array with name-value pairs in return. Use this to dynamically fill a
 getClients()
 {
     return [
-        {"name1": "value1"}
+        {
+            "name": "Name",
+            "value": "some_value"
+        }
     ];
 }
  ```
