@@ -28,7 +28,7 @@ A plugin consists of at least these components:
 
 This file defines the type, version, compatibility and entry point for the plugin:
 
-```javascript
+```json
 {
   "id": "unique_id_of_your_plugin",
   "tymeMinVersion": "2022.9", // the minimum compatible version of Tyme for this plugin
@@ -59,7 +59,7 @@ If your plugin needs options the user can choose from. This is the place to defi
 Forms can be used to let the user configure the export data before actually exporting it.
 A form is a JSON file with the following structure:
 
-```javascript
+```json
 [
     {
         "id": "someUniqueID",
@@ -120,7 +120,6 @@ Optional translation file. Current supported languages are German and English.
     …
   }
 }
-
 ```
 
 ## Scripting with JavaScript
@@ -130,37 +129,37 @@ class to cover the most prominent calls. The following calls are available from 
 
 ### Tyme Specific Calls
 
-```javascript    
-    /* 
-        start & end: Date, mandatory
-        taskIDs: [string], can be null
-        limit: int, can be null
-        billingState unbilled = 0, billed = 1, paid = 2
-        billable: boolean, can be null
-        userID: string, can be null
-    */
-    tyme.timeEntries(start, end, taskIDs, limit, billingState, billable, userID)
+```javascript
+/* 
+    start & end: Date, mandatory
+    taskIDs: [string], can be null
+    limit: int, can be null
+    billingState unbilled = 0, billed = 1, paid = 2
+    billable: boolean, can be null
+    userID: string, can be null
+*/
+tyme.timeEntries(start, end, taskIDs, limit, billingState, billable, userID)
 
-    /* 
-        timeEntryIDs uniqueIDs of the time entries to be modified
-        billingState unbilled = 0, billed = 1, paid = 2
-    */
-    tyme.setBillingState(timeEntryIDs, billingState)
-    
-    // Shows an alert
-    tyme.showAlert(title, message)
-    
-    // The currently used currency code
-    tyme.currencyCode()
-    
-    // The currently used currency symbol
-    tyme.currencySymbol()
-    
-    // Opens an URL
-    tyme.openURL(url)
-    
-    // Opens a dialog and asks the user where to save the content to file.
-    tyme.openSaveDialog(fileName, content)
+/* 
+    timeEntryIDs uniqueIDs of the time entries to be modified
+    billingState unbilled = 0, billed = 1, paid = 2
+*/
+tyme.setBillingState(timeEntryIDs, billingState)
+
+// Shows an alert
+tyme.showAlert(title, message)
+
+// The currently used currency code
+tyme.currencyCode()
+
+// The currently used currency symbol
+tyme.currencySymbol()
+
+// Opens an URL
+tyme.openURL(url)
+
+// Opens a dialog and asks the user where to save the content to file.
+tyme.openSaveDialog(fileName, content)
 ```
 
 ### General Calls
@@ -205,5 +204,4 @@ utils.markdownToHTML(markdown)
     These can be overidden using the headers parameter
 */
 utils.request(url, method, headers, parameters)
-
 ```
