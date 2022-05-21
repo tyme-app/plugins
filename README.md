@@ -28,7 +28,7 @@ A plugin consists of at least these components:
 
 This file defines the type, version, compatibility and entry point for the plugin:
 
-```json
+```javascript
 {
   "id": "unique_id_of_your_plugin",
   "tymeMinVersion": "2022.9", // the minimum compatible version of Tyme for this plugin
@@ -59,7 +59,7 @@ If your plugin needs options the user can choose from. This is the place to defi
 Forms can be used to let the user configure the export data before actually exporting it.
 A form is a JSON file with the following structure:
 
-```json
+```javascript
 [
     {
         "id": "someUniqueID",
@@ -107,7 +107,7 @@ getClients()
 
 Optional translation file. Current supported languages are German and English.
 
-```json
+```javascript
 {
   "en": {
     "input.key": "Secret Key",
