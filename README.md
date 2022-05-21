@@ -26,19 +26,99 @@ A plugin consists of at least these components:
 
 ### plugin.json
 
-This file defines the type, version, compatibility and entry point for the plugin
+This file defines the type, version, compatibility and entry point for the plugin:
+
+```javascript
+{
+  "id": "unique_id_of_your_plugin",
+  "tymeMinVersion": "2022.9", // the minimum compatible version of Tyme for this plugin
+  "version": "1.0",
+  "type": "export", // for now, export only
+  "name": "My Fancy Export Plugin",
+  "summary": "A description of what the plugin does.",
+  "author": "John Doe",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "doc.text.magnifyingglass",
+  "scriptName": "script.js",
+  "scriptMain": "createInvoice()", // the method to call when exporting
+  "scriptPreview": "generatePreview()", // the method to call when generating a preview
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}
+```
 
 ### Plugin JavaScript File
 
-This is were your logic resides in.
+This is were your logic resides in. Note that you can not use browser specific calls.
+See **Scripting with JavaScript** below for more details.
 
 ### Plugin Form
 
-If your plugin needs options the user can choose from. This is the place to define them
+If your plugin needs options the user can choose from. This is the place to define them.
+
+Forms can be used to let the user configure the export data before actually exporting it.
+A form is a JSON file with the following structure:
+
+```javascript
+[
+    {
+        "id": "someUniqueID",
+        "type": "[securetext|text|separator|date|teammembers|tasks|checkbox|dropdown]",
+        "name": "label or localization key",
+        "placeholder": "label or localization key", // only text
+        "persist": true,
+        "value": "initial value",
+        "values": [ // only dropdown
+            {"key1": "label or localization key"},
+            {"key1": "label or localization key"}
+        ],
+        "valueFunction": "getClients()" // only dropdown
+    },
+]
+ ```
+
+Values of all form elements are available in your script in the global variable **formValue**.
+
+```javascript
+// access a form value
+formValue.someUniqueID;
+ ```
+
+Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
+You can use **persist=true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
+
+The property **valueFunction** is a special property. Tyme will call the method defined by the value function and
+expects an array with name-value pairs in return. Use this to dynamically fill a dropdown.
+
+```javascript
+getClients()
+{
+    return [
+        {"name1": "value1"}
+    ];
+}
+ ```
+
 
 ### Localization File
 
 Optional translation file. Current supported languages are German and English.
+
+```json
+{
+  "en": {
+    "input.key": "Secret Key",
+    "input.key.placeholder": "Please enter your personal key",
+    …
+  },
+  "de": {
+    "input.key": "Geheimer Schlüssel",
+    "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
+    …
+  }
+}
+
+```
 
 ## Scripting with JavaScript
 
@@ -124,48 +204,3 @@ utils.markdownToHTML(markdown)
 utils.request(url, method, headers, parameters)
 
 ```
-
-## Forms
-
-Forms can be used to let the user configure the export data before actually exporting it.
-A form is a JSON file with the following structure:
-
-```javascript
-[
-    {
-        "id": "someUniqueID",
-        "type": "[securetext|text|separator|date|teammembers|tasks|checkbox|dropdown]",
-        "name": "label or localization key",
-        "placeholder": "label or localization key", // only text
-        "persist": true,
-        "value": "initial value",
-        "values": [ // only dropdown
-            {"key1": "label or localization key"},
-            {"key1": "label or localization key"}
-        ],
-        "valueFunction": "getClients()" // only dropdown
-    },
-]
- ```
-
-Values of all form elements are available in your script in the global variable **formValue**.
-
-```javascript
-// access a form value
-formValue.someUniqueID;
- ```
-
-Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
-You can use **persist=true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
-
-The property **valueFunction** is a special property. Tyme will call the method defined by the value function and
-expects an array with name-value pairs in return. Use this to dynamically fill a dropdown.
-
-```javascript
-getClients()
-{
-    return [
-        {"name1": "value1"}
-    ];
-}
- ```
