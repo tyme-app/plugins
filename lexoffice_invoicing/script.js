@@ -96,7 +96,7 @@ class TimeEntriesConverter {
         }, 0.0);
 
         var str = '';
-        str += '![](plugins/lexoffice/lexoffice_logo.png)\n';
+        str += '![](plugins/lexoffice_invoicing/lexoffice_logo.png)\n';
         str += '## ' + utils.localize('invoice.header') + '\n';
 
         str += '|' + utils.localize('invoice.position');
