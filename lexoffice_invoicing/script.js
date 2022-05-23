@@ -200,7 +200,7 @@ class LexOfficeResolver {
                 const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
                 tyme.setBillingState(timeEntryIDs, 1);
             }
-            utils.openURL('https://app.lexoffice.de/voucher/#/' + invoiceID);
+            tyme.openURL('https://app.lexoffice.de/voucher/#/' + invoiceID);
         } else {
             tyme.showAlert('Error', utils.localize('export.error'));
         }
