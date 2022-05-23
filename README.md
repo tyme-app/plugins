@@ -41,7 +41,7 @@ This file defines the type, version, compatibility and entry point for the plugi
   "icon": "doc.text.magnifyingglass",
   "scriptName": "script.js",
   "scriptMain": "createInvoice()", // the method to call when exporting
-  "scriptPreview": "generatePreview()", // the method to call when generating a preview
+  "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return)
   "formName": "form.json",
   "localizationName": "localization.json"
 }
@@ -187,9 +187,9 @@ utils.base64Decode(string)
 // Returns the localized string for a given identifier
 utils.localize(string)
 
-// Logs a value to the Tyme debug log
+// Logs a value to a debug log
 // (Enable it in Tyme > Preferences > Developer > Debug Log)
-utils.log(value)
+utils.log(string)
 
 // Converts a markdown string to HTML
 utils.markdownToHTML(markdown)
