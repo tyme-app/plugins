@@ -4,7 +4,7 @@
   "version": "1.0",
   "type": "export",
   "name": "Lexoffice Invoice Plugin",
-  "summary": "This plugin lets you export your recorded times to Lexoffice as a draft invoice. Access it via: Tyme > Export > Lexoffice",
+  "summary": "Export your recorded times and notes to Lexoffice as a draft invoice. Access it via: Tyme > Export > Lexoffice",
   "author": "Lars Gerckens",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "doc.text.magnifyingglass",

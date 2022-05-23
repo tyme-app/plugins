@@ -1,0 +1,17 @@
+{
+  "id": "grandtotal",
+  "tymeMinVersion": "2022.1",
+  "version": "2.0",
+  "type": "export",
+  "name": "GrandTotal Invoice Plugin",
+  "summary": "Sync your recorded times to GrandTotal. Additionally you can automatically create projects & tasks from a draft invoice in GrandTotal.",
+  "author": "Lars Gerckens",
+  "authorUrl": "https://www.tyme-app.com/en/grandtotal-plugin",
+  "icon": "doc.text.magnifyingglass",
+  "scriptName": "",
+  "scriptMain": "",
+  "scriptPreview": "",
+  "formName": "",
+  "localizationName": "",
+  "isBuiltIn": true
+}
