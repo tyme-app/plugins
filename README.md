@@ -1,24 +1,22 @@
 # Tyme Plugins
 
-**BETA**
-
-If you have an idea for a plugin or want to develop our own using a beta version, let us know: [Contact](https://www.tyme-app.com/en/contact/). 
-
-**Note that this is a work in progress document. Plugins are still beta and for now, there are only export plugins.
-Import plugins will also be available.**
+**Currently in Closed Beta**
+If you have an idea for a plugin or want to develop our own using a beta version, let us know: [Contact](https://www.tyme-app.com/en/contact/).
 
 ## Overview
 
-Tyme offers plugins to customize the export of your data.
-Using JavaScript, you can transform and save or send logged time entries to anywhere you need.
+Tyme on your Mac and iPhone offers a JavaScript plugin interface, which lets you customize the export of your logged time entries.
+Using a plugin you can transform logged time entries into any format you need or send it to any webservice.
 
-You can install plugins directly in Tyme via: **Tyme > Preferences > Plugins**
+Plugins that are already available can be downloaded directly in Tyme via: **Tyme > Preferences > Plugins**
 
-While developing a new plugin, you can put and edit the files right in:
+If you want to create you own plug in, you can just create a new folder in Tyme's plugin folder and start developing:
 
 ```javascript
 ~/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/plugins/[YOUR_PLUGIN_FOLDER]/
  ```
+
+Please [let us know](https://www.tyme-app.com/en/contact/) of your plugin, so we can add it to the official list of plugins.
 
 ## Structure of a Plugin
 
@@ -49,7 +47,7 @@ This file defines the type, version, compatibility and entry point for the plugi
 
 ### Plugin JavaScript File
 
-This is were your logic resides in. Note that you can not use browser specific calls.
+This is where your logic resides in. Note that you can not use browser specific calls.
 See **Scripting with JavaScript** below for more details.
 
 ### Plugin Form
@@ -85,7 +83,7 @@ formValue.someUniqueID;
  ```
 
 Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
-For example you can use **persist=true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
+For example you can use **persist: true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
 
 The property **valueFunction** is a special property. Tyme will call the method defined by the value function and
 expects an array with name-value pairs in return. Use this to dynamically fill a dropdown.
@@ -140,7 +138,8 @@ class to cover the most prominent calls. The following calls are available from 
 */
 tyme.timeEntries(start, end, taskIDs, limit, billingState, billable, userID)
 
-/* 
+/*
+    Sets the billing state of given time entries by their ID 
     timeEntryIDs: uniqueIDs of the time entries to be modified
     billingState: unbilled = 0, billed = 1, paid = 2
 */
