@@ -141,8 +141,8 @@ class to cover the most prominent calls. The following calls are available from 
 tyme.timeEntries(start, end, taskIDs, limit, billingState, billable, userID)
 
 /* 
-    timeEntryIDs uniqueIDs of the time entries to be modified
-    billingState unbilled = 0, billed = 1, paid = 2
+    timeEntryIDs: uniqueIDs of the time entries to be modified
+    billingState: unbilled = 0, billed = 1, paid = 2
 */
 tyme.setBillingState(timeEntryIDs, billingState)
 
@@ -160,6 +160,14 @@ tyme.openURL(url)
 
 // Opens a dialog and asks the user where to save the content to file.
 tyme.openSaveDialog(fileName, content)
+ 
+/*
+    Lets the user select a file from disk. 
+    title: The title of the dialog
+    fileTypes: array. Allowed file extensions, can be empty
+    resultFunction: function (fileContents) { … });
+*/
+tyme.selectFile(title, fileTypes, resultFunction)
 ```
 
 ### General Calls
