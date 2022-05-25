@@ -135,6 +135,38 @@ class to cover the most prominent calls. The following calls are available from 
     billingState unbilled = 0, billed = 1, paid = 2
     billable: boolean, can be null
     userID: string, can be null
+    
+    returns: A list of time entries with the following properties:
+        [
+            {
+              "billing" : "UNBILLED",
+              "category" : "Category Name",
+              "category_id" : "78DDDB63",
+              "distance" : 0,
+              "distance_unit" : "km",
+              "duration" : 1,
+              "duration_unit" : "h",
+              "end" : "2022-05-02T13:40:00+02:00",
+              "id" : "F3C4DF06",
+              "note" : "",
+              "project" : "Project Name",
+              "project_id" : "6C2EE2B1",
+              "quantity" : 0,
+              "rate" : 0,
+              "rate_unit" : "EUR",
+              "rounding_method" : "NEAREST",
+              "rounding_minutes" : 1,
+              "start" : "2022-05-02T13:39:00+02:00",
+              "subtask" : "",
+              "subtask_id" : "",
+              "sum" : 0,
+              "sum_unit" : "EUR",
+              "task" : "Task Name",
+              "task_id" : "F8F95C9D",
+              "type" : "timed",
+              "user" : ""
+            }
+        ]
 */
 tyme.timeEntries(start, end, taskIDs, limit, billingState, billable, userID)
 
