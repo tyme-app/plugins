@@ -201,11 +201,7 @@ class LexOfficeResolver {
                 tyme.setBillingState(timeEntryIDs, 1);
             }
             tyme.openURL('https://app.lexoffice.de/voucher/#/' + invoiceID);
-        } else {
-            tyme.showAlert('Error', utils.localize('export.error'));
         }
-
-        return 'lexoffice invoice created';
     }
 
     makeCreateInvoiceCall() {
@@ -263,7 +259,7 @@ class LexOfficeResolver {
             const parsedData = JSON.parse(result);
             return parsedData['id'];
         } else {
-            utils.log(response);
+            tyme.showAlert('Lexoffice API Error', JSON.stringify(response));
             return null;
         }
     }
