@@ -4,16 +4,21 @@ To import data into Tyme, you can first use the built-in calls to either fetch t
 
 Then you can use the following classes in a plugin script to create the entire project structure, tasks, time entries, rides and expenses. 
 
+> Note that every object in Tyme needs to have its own **unique ID**. 
+> Duplicated IDs can lead to **unpredictable behavior**!
+> 
+> The **unique ID** is an alphanumeric value. Please add a prefix to avoid possible ID clashes.
+
 This example checks, if a category exists, creates one on demand, creates a new project and connects it to the category:
 
 ```javascript
-let category = Category.fromID("uuid1");
+let category = Category.fromID("prefix_id1");
 if (category === null) {
-    category = Category.create("uuid1");
+    category = Category.create("prefix_id1");
     category.name = "My Category";
 }
 
-let project = Project.create("uuid2");
+let project = Project.create("prefix_id2");
 project.name = "My Project";
 project.category = category;
 ```
