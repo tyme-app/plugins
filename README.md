@@ -3,6 +3,8 @@
 **Currently in Closed Beta**
 If you have an idea for a plugin or want to develop our own using a beta version, let us know: [Contact](https://www.tyme-app.com/en/contact/).
 
+![macOS Plugins](/images/plugins_macos.png)
+
 ## Overview
 
 Tyme on your Mac and iPhone offers a JavaScript plugin interface, which lets you customize the export of your logged time entries.
@@ -16,7 +18,7 @@ If you want to create you own plug in, you can just create a new folder in Tyme'
 ~/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/plugins/[YOUR_PLUGIN_FOLDER]/
  ```
 
-Please [let us know](https://www.tyme-app.com/en/contact/) of your plugin, so we can add it to the official list of plugins.
+Please [let us know](https://www.tyme-app.com/en/contact/) of your plugin or file a PR, so we can add it to the official list of plugins.
 
 ## Structure of a Plugin
 
