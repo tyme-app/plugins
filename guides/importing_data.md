@@ -7,7 +7,7 @@ Then you can use the following classes in a plugin script to create the entire p
 > Note that every object in Tyme needs to have its own **unique ID**. 
 > Duplicated IDs can lead to **unpredictable behavior**!
 > 
-> The **unique ID** is an alphanumeric value. Please add a prefix to avoid possible ID clashes. If you do not provide an ID, Tyme will generate one. So it's safe to call **Category.fromID()**.
+> The **unique ID** is an alphanumeric value. Please add a prefix to avoid possible ID clashes. If you do not provide an ID, Tyme will generate one. So it's safe to call **Category.create()**.
 
 This example checks, if a category exists, creates one on demand, creates a new project and connects it to the category:
 
