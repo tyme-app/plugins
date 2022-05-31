@@ -72,7 +72,8 @@ A form is a JSON file with the following structure:
             {"key1": "label or localization key"},
             {"key1": "label or localization key"}
         ],
-        "valueFunction": "getClients()" // only dropdown
+        "valueFunction": "getClients()", // only dropdown
+        "valueFunctionReloadable": true // shows a button to reload the dropdown
     },
 ]
  ```
