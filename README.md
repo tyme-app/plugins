@@ -3,11 +3,11 @@
 **Currently in Closed Beta**
 If you have an idea for a plugin or want to develop our own using a beta version, let us know: [Contact](https://www.tyme-app.com/en/contact/).
 
-![macOS Plugins](/images/plugins_macos.png)
+![macOS Plugins](/guides/plugins_macos.png)
 
 ## Overview
 
-Tyme on your Mac and iPhone offers a JavaScript plugin interface, which lets you customize the export of your logged time entries.
+Tyme on your Mac and iPhone offers a JavaScript plugin interface, which lets you customize the export of your logged time entries or lets your import any data.
 Using a plugin you can transform logged time entries into any format you need or send it to any webservice.
 
 Plugins that are already available can be downloaded directly in Tyme via: **Tyme > Preferences > Plugins**
@@ -16,7 +16,7 @@ If you want to create you own plug in, you can just create a new folder in Tyme'
 
 ```javascript
 ~/Library/Containers/com.tyme-app.Tyme3-macOS/Data/Library/Application Support/plugins/[YOUR_PLUGIN_FOLDER]/
- ```
+```
 
 Please [let us know](https://www.tyme-app.com/en/contact/) of your plugin or file a PR, so we can add it to the official list of plugins.
 
@@ -33,7 +33,7 @@ This file defines the type, version, compatibility and entry point for the plugi
   "id": "unique_id_of_your_plugin",
   "tymeMinVersion": "2022.9", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
-  "type": "export", // for now, export only
+  "type": "[export|import]",
   "name": "My Fancy Export Plugin",
   "summary": "A description of what the plugin does.",
   "author": "John Doe",
@@ -124,125 +124,13 @@ Optional translation file. Current supported languages are German and English.
 
 ## Scripting with JavaScript
 
-Since the JavaScript runtime your script is running in does not have any browser specific calls, we created a utility
-class to cover the most prominent calls. The following calls are available from your script:
+Since the JavaScript runtime your script is running in does not have any browser specific calls, we created utility
+classes to cover the most prominent calls.
 
-### Tyme Specific Calls
+Please refer to the [Scripting Calls](/guides/scripting_helpers.md) page for details.
 
-```javascript
-/* 
-    start & end: Date, mandatory
-    taskIDs: [string], can be null
-    limit: int, can be null
-    billingState unbilled = 0, billed = 1, paid = 2
-    billable: boolean, can be null
-    userID: string, can be null
-    
-    returns: A list of time entries with the following properties:
-        [
-            {
-              "billing" : "UNBILLED",
-              "category" : "Category Name",
-              "category_id" : "78DDDB63",
-              "distance" : 0,
-              "distance_unit" : "km",
-              "duration" : 1,
-              "duration_unit" : "h",
-              "end" : "2022-05-02T13:40:00+02:00",
-              "id" : "F3C4DF06",
-              "note" : "",
-              "project" : "Project Name",
-              "project_id" : "6C2EE2B1",
-              "quantity" : 0,
-              "rate" : 0,
-              "rate_unit" : "EUR",
-              "rounding_method" : "NEAREST",
-              "rounding_minutes" : 1,
-              "start" : "2022-05-02T13:39:00+02:00",
-              "subtask" : "",
-              "subtask_id" : "",
-              "sum" : 0,
-              "sum_unit" : "EUR",
-              "task" : "Task Name",
-              "task_id" : "F8F95C9D",
-              "type" : "timed",
-              "user" : ""
-            }
-        ]
-*/
-tyme.timeEntries(start, end, taskIDs, limit, billingState, billable, userID)
+### Importing Data
 
-/*
-    Sets the billing state of given time entries by their ID 
-    timeEntryIDs: uniqueIDs of the time entries to be modified
-    billingState: unbilled = 0, billed = 1, paid = 2
-*/
-tyme.setBillingState(timeEntryIDs, billingState)
+When you import data, you obviously need to check for already existing tasks or time entries, create new ones on demand or delete obsolete ones.
 
-// Shows an alert
-tyme.showAlert(title, message)
-
-// The currently used currency code
-tyme.currencyCode()
-
-// The currently used currency symbol
-tyme.currencySymbol()
-
-// Opens an URL
-tyme.openURL(url)
-
-// Opens a dialog and asks the user where to save the content to file.
-tyme.openSaveDialog(fileName, content)
- 
-/*
-    Lets the user select a file from disk. 
-    title: The title of the dialog
-    fileTypes: array. Allowed file extensions, can be empty
-    resultFunction: function (fileContents) { … });
-*/
-tyme.selectFile(title, fileTypes, resultFunction)
-```
-
-### General Calls
-
-```javascript
-
-// Removes a file. File access is restricted to the plugin folder
-utils.removeFile(fileName)
-
-// Checks if a file exists. File access is restricted to the plugin folder
-utils.fileExists(fileName)
-
-// Writes the content to a file. File access is restricted to the plugin folder
-utils.writeToFile(fileName, content)
-
-// Loads the content of the file and returns it. File access is restricted to the plugin folder
-utils.contentsOfFile(fileName)
-
-// base64 encodes a string
-utils.base64Encode(string)
-
-// base64 decodes a string
-utils.base64Decode(string)
-
-// Returns the localized string for a given identifier
-utils.localize(string)
-
-// Logs a value to a debug log
-// (Enable it in Tyme > Preferences > Developer > Debug Log)
-utils.log(string)
-
-// Converts a markdown string to HTML
-utils.markdownToHTML(markdown)
-
-/*
-    Makes a synchronous HTTP request
-    Returns an object: { "statusCode": 200, "result": string }
-
-    Standard headers are: 
-    Content-Type: application/json; charset=utf-8
-    Accept: application/json
-    These can be overidden using the headers parameter
-*/
-utils.request(url, method, headers, parameters)
-```
+Please refer to the [Importing Data](/guides/importing_data.md) page for details.
