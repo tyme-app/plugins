@@ -39,7 +39,8 @@ The following calls are available in your plugin scripts.
               "task" : "Task Name",
               "task_id" : "F8F95C9D",
               "type" : "timed",
-              "user" : ""
+              "user" : "",
+              "user_id" : ""
             }
         ]
 */
