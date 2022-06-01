@@ -95,14 +95,14 @@ class TimedSubtask {
 ```
 
 ```javascript
-class TimedTaskRecord {
+class TimeEntry {
     id // string
     billingState // unbilled=0, billed=1, paid=2
     note // string
     timeStart // date
     timeEnd // date
     userID // string, optional
-    parentTask // the task the record is contained in
+    parentTask // the task the entry is contained in
     static create(id)
     static fromID(id)
     delete()
@@ -125,7 +125,7 @@ class MileageTask {
 ```
 
 ```javascript
-class MileageTaskRecord {
+class MileageEntry {
     id // string
     billingState // unbilled=0, billed=1, paid=2
     traveledDistance // float, kilometers
@@ -133,7 +133,7 @@ class MileageTaskRecord {
     timeStart // date
     timeEnd // date
     userID // string, optional
-    parentTask // the task the record is contained in
+    parentTask // the task the entry is contained in
     static create(id)
     static fromID(id)
     delete()
