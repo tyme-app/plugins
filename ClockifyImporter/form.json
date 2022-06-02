@@ -1,0 +1,15 @@
+[
+  {
+    "id": "clockifyKey",
+    "type": "securetext",
+    "name": "input.key",
+    "placeholder": "input.key.placeholder",
+    "persist": true
+  },
+  {
+    "id": "clockifyKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.key.hint"
+  }
+]

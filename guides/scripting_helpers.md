@@ -31,7 +31,7 @@ The following calls are available in your plugin scripts.
               "rate_unit" : "EUR",
               "rounding_method" : "NEAREST",
               "rounding_minutes" : 1,
-              "start" : "2022-05-02T13:39:00+02:00",
+              "start" : "2022-05-02T13:39:00+02:00", // ISO 8601
               "subtask" : "",
               "subtask_id" : "",
               "sum" : 0,

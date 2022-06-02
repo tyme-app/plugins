@@ -2,7 +2,7 @@
   "en": {
     "input.key": "Lexoffice Key",
     "input.key.placeholder": "Please enter your personal key",
-    "input.key.hint": "Generate your **key** from the [https://app.lexoffice.de/addons/public-api](Lexoffice Public API) page.",
+    "input.key.hint": "Generate your **key** from the [Lexoffice Public API](https://app.lexoffice.de/addons/public-api) page.",
     "input.startdate": "From",
     "input.enddate": "To",
     "input.client": "Client",
@@ -25,7 +25,7 @@
   "de": {
     "input.key": "Lexoffice Schlüssel",
     "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
-    "input.key.hint": "Erzeuge deinen **Schlüssel** mit der [https://app.lexoffice.de/addons/public-api](Lexoffice Public API).",
+    "input.key.hint": "Erzeuge deinen **Schlüssel** mit der [Lexoffice Public API](https://app.lexoffice.de/addons/public-api).",
     "input.startdate": "Von",
     "input.enddate": "Bis",
     "input.client": "Kunde",

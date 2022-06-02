@@ -1,0 +1,16 @@
+{
+  "id": "clockify_importer",
+  "tymeMinVersion": "2022.11",
+  "version": "1.0",
+  "type": "import",
+  "name": "Clockify Import",
+  "summary": "Import your data from Clockify right into Tyme.",
+  "author": "Lars Gerckens",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "doc.text.magnifyingglass",
+  "scriptName": "script.js",
+  "scriptMain": "importer.start()",
+  "scriptPreview": "",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}

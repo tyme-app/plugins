@@ -1,0 +1,12 @@
+{
+  "en": {
+    "input.key": "Clockify API Key",
+    "input.key.placeholder": "Please enter your API key",
+    "input.key.hint": "You can view the API key in your [User Settings](https://app.clockify.me/user/settings)."
+  },
+  "de": {
+    "input.key": "Clockify API Key",
+    "input.key.placeholder": "Bitte gib deinen API Schlüssel ein",
+    "input.key.hint": "Du kannst den API-Schlüssel in deinen [Benutzer-Einstellungen](https://app.clockify.me/user/settings) einsehen."
+  }
+}
