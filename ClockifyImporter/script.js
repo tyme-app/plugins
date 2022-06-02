@@ -34,12 +34,18 @@ class ClockifyImporter {
 
         this.users = this.generateLookup("users");
         this.clients = this.generateLookup("clients");
+        this.tags = this.generateLookup("tags");
         this.projects = this.generateLookup("projects");
         this.tasks = {};
 
         for (let projectID in this.projects) {
-            let tasks = this.generateLookup("/projects/" + projectID + "/tasks");
+            let tasks = this.generateLookup("projects/" + projectID + "/tasks");
             this.tasks = {...this.tasks, ...tasks};
+        }
+
+        for (let userID in this.users) {
+            const timeEntries = this.generateLookup("user/" + userID + "/time-entries/");
+            this.timeEntries = {...this.timeEntries, ...timeEntries};
         }
 
         utils.log(JSON.stringify(this.tasks));
