@@ -1,13 +1,13 @@
 # Tyme Plugins
 
-**Currently in Closed Beta**
+**Currently in Beta**
 If you have an idea for a plugin or want to develop our own using a beta version, let us know: [Contact](https://www.tyme-app.com/en/contact/).
 
 ![macOS Plugins](/guides/plugins_macos.png)
 
 ## Overview
 
-Tyme on your Mac and iPhone offers a JavaScript plugin interface, which lets you customize the export of your logged time entries or lets your import any data.
+Tyme on your Mac and iPhone offers a **JavaScript plugin interface**, which lets you customize the export of your logged time entries or lets your import any data.
 Using a plugin you can transform logged time entries into any format you need or send it to any webservice.
 
 Plugins that are already available can be downloaded directly in Tyme via: **Tyme > Preferences > Plugins**
