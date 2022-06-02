@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>Icon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.tyme-app.Tyme3.grandtotalimporter</string>
+	<key>CFBundleVersion</key>
+	<string>3.0</string>
+	<key>Globals</key>
+	<array>
+		<dict>
+			<key>label</key>
+			<string>More about Tyme</string>
+			<key>type</key>
+			<string>link</string>
+			<key>url</key>
+			<string>https://www.tyme-app.com</string>
+		</dict>
+	</array>
+	<key>GlobalsInfo</key>
+	<string>Info for Plugin</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>4</real>
+	<key>callOnDeactivate</key>
+	<true/>
+	<key>copyright</key>
+	<string>© 2013-2022 Lars Gerckens</string>
+	<key>types</key>
+	<array>
+		<string>timeimporter</string>
+	</array>
+	<key>TimeImporterEntryURLTemplate</key>
+	<string>tyme://time_entry/%@</string>
+</dict>
+</plist>

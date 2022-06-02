@@ -1,0 +1,17 @@
+{
+  "id": "grandtotal_invoices",
+  "tymeMinVersion": "2022.1",
+  "version": "2.0",
+  "type": "export",
+  "name": "GrandTotal Invoice",
+  "summary": "Sync your recorded times automatically to GrandTotal.",
+  "author": "Lars Gerckens",
+  "authorUrl": "https://www.tyme-app.com/en/grandtotal-plugin",
+  "icon": "doc.text.magnifyingglass",
+  "scriptName": "",
+  "scriptMain": "THE INVOICE FUNCTIONALITY IS ALREADY BUILT IN INTO TYME. THIS PLUGIN IS THE GRANDTOTAL COUNTERPART",
+  "scriptPreview": "",
+  "formName": "",
+  "localizationName": "",
+  "isBuiltIn": true
+}

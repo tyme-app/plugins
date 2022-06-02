@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mediaatelier.estimates.sendToTyme</string>
+	<key>copyright</key>
+	<string>© 2020 Stefan Fürst</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>GrandTotalMinimumVersion</key>
+	<real>6.0</real>
+	<key>types</key>
+	<array>
+		<string>estimates</string>
+	</array>
+</dict>
+</plist>
