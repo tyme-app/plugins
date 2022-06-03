@@ -12,10 +12,9 @@ Then you can use the following classes in a plugin script to create the entire p
 This example checks, if a category exists, creates one on demand, creates a new project and connects it to the category:
 
 ```javascript
-let category = Category.fromID("prefix_id1");
-if (category === null) {
-    category = Category.create("prefix_id1");
-    category.name = "My Category";
+const id = "prefix_id1";
+let category = Category.fromID(id) ?? Category.create(id);
+category.name = "My Category";
 }
 
 let project = Project.create("prefix_id2");
