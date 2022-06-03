@@ -31,17 +31,17 @@ This file defines the type, version, compatibility and entry point for the plugi
 ```javascript
 {
   "id": "unique_id_of_your_plugin",
-  "tymeMinVersion": "2022.9", // the minimum compatible version of Tyme for this plugin
+  "tymeMinVersion": "2022.11", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
-  "name": "My Fancy Export Plugin",
+  "name": "My Fancy Plugin",
   "summary": "A description of what the plugin does.",
   "author": "John Doe",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "doc.text.magnifyingglass",
+  "icon": "doc.text.magnifyingglass", // not yet used
   "scriptName": "script.js",
   "scriptMain": "createInvoice()", // the method to call when exporting
-  "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return)
+  "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return), only export plugins
   "formName": "form.json",
   "localizationName": "localization.json"
 }

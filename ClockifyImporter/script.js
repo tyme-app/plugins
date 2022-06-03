@@ -84,6 +84,16 @@ class ClockifyImporter {
         this.processData();
     }
 
+    extractEstimate(estimateString) {
+        let matches = estimateString.match(/PT([\d]+)H/);
+
+        if (matches && matches.length > 0) {
+            return parseInt(matches[1]) * 60 * 60;
+        }
+
+        return 0;
+    }
+
     processData() {
         const idPrefix = "clockify-";
 
@@ -94,14 +104,12 @@ class ClockifyImporter {
             let tymeCategory = Category.fromID(id) ?? Category.create(id);
             tymeCategory.name = client["name"];
             tymeCategory.isCompleted = client["archived"];
-
-            // utils.log("client: " + JSON.stringify(client));
         }
 
         for (let projectID in this.projects) {
             const project = this.projects[projectID];
             const id = idPrefix + project["id"];
-            const clientId = idPrefix + project["clientId"];
+            const clientID = idPrefix + project["clientId"];
 
             let hourlyRate = 0;
 
@@ -109,7 +117,7 @@ class ClockifyImporter {
                 hourlyRate = project["hourlyRate"]["amount"];
             }
 
-            if (project['billable'] === 1 && hourlyRate === 0) {
+            if (project['billable'] && hourlyRate === 0) {
                 hourlyRate = this.workspaceHourlyRate / 100.0;
             } else {
                 hourlyRate = hourlyRate / 100.0;
@@ -120,8 +128,9 @@ class ClockifyImporter {
             tymeProject.note = project["note"];
             tymeProject.isCompleted = project["archived"];
             tymeProject.color = parseInt(project["color"].replace("#", "0x"));
+            tymeProject.defaultHourlyRate = hourlyRate;
 
-            const category = Category.fromID(clientId);
+            const category = Category.fromID(clientID);
             if (category) {
                 tymeProject.category = category;
                 if (category.isCompleted) {
@@ -129,35 +138,39 @@ class ClockifyImporter {
                 }
             }
 
-            /*
-                        project["billable"];
-                        project["estimate"];
-                        project["timeEstimate"];
-                        project["budgetEstimate"];
-             */
+            let plannedDuration = 0;
 
-            // utils.log("project: " + JSON.stringify(project));
+            if (project["timeEstimate"] && project["timeEstimate"]["active"] && project["timeEstimate"]["type"] === "MANUAL") {
+                plannedDuration = this.extractEstimate(project["timeEstimate"]["estimate"]);
+            }
+
+            tymeProject.plannedDuration = plannedDuration;
         }
 
         for (let taskID in this.tasks) {
             const task = this.tasks[taskID];
             const id = idPrefix + task["id"];
-            const projectId = idPrefix + task["projectId"];
+            const projectID = idPrefix + task["projectId"];
 
             let tymeTask = TimedTask.fromID(id) ?? TimedTask.create(id);
             tymeTask.name = task["name"];
             tymeTask.note = task["note"];
             tymeTask.isCompleted = task["status"] === "DONE";
             tymeTask.billable = task["billable"];
-            tymeTask.project = Project.fromID(projectId);
+            const project = Project.fromID(projectID);
+            tymeTask.project = project;
 
-            // utils.log("task: " + JSON.stringify(task));
+            if (project.isCompleted) {
+                tymeTask.isCompleted = true;
+            }
 
-            /*
-            task["hourlyRate"]["amount"];
-            task["estimate"];
-            task["timeEstimate"];
-             */
+            if (task["estimate"]) {
+                tymeTask.plannedDuration = this.extractEstimate(task["estimate"]);
+            }
+
+            if (task["hourlyRate"]) {
+                tymeTask.hourlyRate = task["hourlyRate"]["amount"]
+            }
         }
 
         for (let timeEntryID in this.timeEntries) {
@@ -168,29 +181,31 @@ class ClockifyImporter {
                 continue;
             }
 
-            let taskId = "";
+            let taskID = "";
 
             if (!timeEntry["taskId"]) {
-                const projectId = idPrefix + timeEntry["projectId"];
-                taskId = idPrefix + timeEntry["projectId"] + "-default";
-                let tymeTask = TimedTask.fromID(taskId) ?? TimedTask.create(taskId);
-                tymeTask.project = Project.fromID(projectId);
+                const projectID = idPrefix + timeEntry["projectId"];
+                taskID = idPrefix + timeEntry["projectId"] + "-default";
+                let tymeTask = TimedTask.fromID(taskID) ?? TimedTask.create(taskID);
+                tymeTask.project = Project.fromID(projectID);
                 tymeTask.name = "Default Task";
             } else {
-                taskId = idPrefix + timeEntry["taskId"];
+                taskID = idPrefix + timeEntry["taskId"];
             }
 
             let tymeEntry = TimeEntry.fromID(id) ?? TimeEntry.create(id);
             tymeEntry.note = timeEntry["description"];
             tymeEntry.timeStart = Date.parse(timeEntry["timeInterval"]["start"]);
             tymeEntry.timeEnd = Date.parse(timeEntry["timeInterval"]["end"]);
-            tymeEntry.parentTask = TimedTask.fromID(taskId);
+            tymeEntry.parentTask = TimedTask.fromID(taskID);
 
-            /*
-            timeEntry["userId"];
-             */
+            const userID = timeEntry["userId"];
+            const user = this.users[userID];
+            const tymeUserID = tyme.userIDForEmail(user["email"]);
 
-            utils.log("timeEntry: " + JSON.stringify(timeEntry));
+            if(tymeUserID) {
+                tymeEntry.userID = tymeUserID;
+            }
         }
     }
 
