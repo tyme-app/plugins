@@ -34,12 +34,12 @@ class ClockifyImporter {
 
         this.users = this.generateLookup("users", {"status": "ACTIVE"});
 
-        const activeClients = this.generateLookup("clients", {"archived": false});
-        const archivedClients = this.generateLookup("clients", {"archived": true});
+        const activeClients = this.generateLookup("clients", {"archived": "false"});
+        const archivedClients = this.generateLookup("clients", {"archived": "true"});
         this.clients = {...activeClients, ...archivedClients};
 
-        const activeProjects = this.generateLookup("projects", {"archived": false});
-        const archivedProjects = this.generateLookup("projects", {"archived": true});
+        const activeProjects = this.generateLookup("projects", {"archived": "false"});
+        const archivedProjects = this.generateLookup("projects", {"archived": "true"});
         this.projects = {...activeProjects, ...archivedProjects};
 
         this.tasks = {};
@@ -130,10 +130,10 @@ class ClockifyImporter {
             tymeProject.color = parseInt(project["color"].replace("#", "0x"));
             tymeProject.defaultHourlyRate = hourlyRate;
 
-            const category = Category.fromID(clientID);
-            if (category) {
-                tymeProject.category = category;
-                if (category.isCompleted) {
+            const tymeCategory = Category.fromID(clientID);
+            if (tymeCategory) {
+                tymeProject.category = tymeCategory;
+                if (tymeCategory.isCompleted) {
                     tymeProject.isCompleted = true;
                 }
             }
@@ -203,7 +203,7 @@ class ClockifyImporter {
             const user = this.users[userID];
             const tymeUserID = tyme.userIDForEmail(user["email"]);
 
-            if(tymeUserID) {
+            if (tymeUserID) {
                 tymeEntry.userID = tymeUserID;
             }
         }

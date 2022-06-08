@@ -15,7 +15,6 @@ This example checks, if a category exists, creates one on demand, creates a new 
 const id = "prefix_id1";
 let category = Category.fromID(id) ?? Category.create(id);
 category.name = "My Category";
-}
 
 let project = Project.create("prefix_id2");
 project.name = "My Project";
