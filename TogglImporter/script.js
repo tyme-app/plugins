@@ -46,114 +46,95 @@ class TogglImporter {
 
     processData() {
         const idPrefix = "toggl-";
+        const defaultHourlyRate = this.workspaces[0]["default_hourly_rate"];
+        const rounding = this.workspaces[0]["rounding"] + 1;
+        const roundingMinutes = this.workspaces[0]["rounding_minutes"];
 
-        for (const workspace of this.workspaces) {
-            const workspaceID = workspace["id"];
-            const defaultHourlyRate = workspace["default_hourly_rate"];
-            const rounding = workspace["rounding"] + 1;
-            const roundingMinutes = workspace["rounding_minutes"];
+        for (let clientID in this.clients) {
+            const client = this.clients[clientID];
+            const id = idPrefix + clientID;
 
-            for (let clientID in this.clients) {
-                const client = this.clients[clientID];
-                const id = idPrefix + clientID;
-                const wid = client["wid"];
+            let tymeCategory = Category.fromID(id) ?? Category.create(id);
+            tymeCategory.name = client["name"];
+        }
 
-                if (wid !== workspaceID) {
-                    continue;
-                }
+        for (let projectID in this.projects) {
+            const project = this.projects[projectID];
+            const id = idPrefix + projectID;
+            const clientID = idPrefix + project["cid"];
 
-                let tymeCategory = Category.fromID(id) ?? Category.create(id);
-                tymeCategory.name = client["name"];
+            let tymeProject = Project.fromID(id) ?? Project.create(id);
+            tymeProject.name = project["name"];
+            tymeProject.isCompleted = !project["active"];
+            tymeProject.color = parseInt(project["hex_color"].replace("#", "0x"));
+            tymeProject.defaultHourlyRate = project["rate"] ?? defaultHourlyRate;
+            if (!project["auto_estimates"]) {
+                tymeProject.plannedDuration = project["estimated_hours"] * 60 * 60;
+            }
+            tymeProject.category = Category.fromID(clientID);
+        }
+
+        for (let taskID in this.tasks) {
+            const task = this.tasks[taskID];
+            const id = idPrefix + taskID;
+            const projectID = idPrefix + task["pid"];
+            let billable = true;
+            const togglProject = this.projects[task["pid"]]
+
+            if (togglProject) {
+                billable = togglProject["billable"];
             }
 
-            for (let projectID in this.projects) {
-                const project = this.projects[projectID];
-                const id = idPrefix + projectID;
-                const clientID = idPrefix + project["cid"];
-                const wid = project["wid"];
+            let tymeTask = TimedTask.fromID(id) ?? TimedTask.create(id);
+            tymeTask.name = task["name"];
+            tymeTask.isCompleted = !task["active"];
+            tymeTask.billable = billable;
+            tymeTask.plannedDuration = task["estimated_seconds"];
+            tymeTask.roundingMethod = rounding;
+            tymeTask.roundingMinutes = roundingMinutes;
 
-                if (wid !== workspaceID) {
-                    continue;
-                }
+            const project = Project.fromID(projectID);
+            tymeTask.project = project;
 
-                let tymeProject = Project.fromID(id) ?? Project.create(id);
-                tymeProject.name = project["name"];
-                tymeProject.isCompleted = !project["active"];
-                tymeProject.color = parseInt(project["hex_color"].replace("#", "0x"));
-                tymeProject.defaultHourlyRate = project["rate"] ?? defaultHourlyRate;
-                if (!project["auto_estimates"]) {
-                    tymeProject.plannedDuration = project["estimated_hours"] * 60 * 60;
-                }
-                tymeProject.category = Category.fromID(clientID);
+            if (project.isCompleted) {
+                tymeTask.isCompleted = true;
+            }
+        }
+
+        for (const timeEntry of this.timeEntries) {
+            const timeEntryID = idPrefix + timeEntry["id"];
+            const projectID = idPrefix + (timeEntry["pid"] ?? "-default");
+            const taskID = idPrefix + (timeEntry["tid"] ?? (projectID + "-default"));
+
+            // make sure the tasks & project exists
+
+            let tymeProject = Project.fromID(projectID);
+            if (!tymeProject) {
+                tymeProject = Project.create(projectID);
+                tymeProject.name = "Default";
+                tymeProject.color = 0xFF9900;
+                tymeProject.defaultHourlyRate = defaultHourlyRate;
             }
 
-            for (let taskID in this.tasks) {
-                const task = this.tasks[taskID];
-                const id = idPrefix + taskID;
-                const wid = task["wid"];
-                const projectID = idPrefix + task["pid"];
-                let billable = true;
-                const togglProject = this.projects[task["pid"]]
-
-                if (togglProject) {
-                    billable = togglProject["billable"];
-                }
-
-                if (wid !== workspaceID) {
-                    continue;
-                }
-
-                let tymeTask = TimedTask.fromID(id) ?? TimedTask.create(id);
-                tymeTask.name = task["name"];
-                tymeTask.isCompleted = !task["active"];
-                tymeTask.billable = billable;
-                tymeTask.plannedDuration = task["estimated_seconds"];
-                tymeTask.roundingMethod = rounding;
-                tymeTask.roundingMinutes = roundingMinutes;
-                
-                const project = Project.fromID(projectID);
-                tymeTask.project = project;
-
-                if (project.isCompleted) {
-                    tymeTask.isCompleted = true;
-                }
+            let tymeTask = TimedTask.fromID(taskID);
+            if (!tymeTask) {
+                tymeTask = TimedTask.create(taskID);
+                tymeTask.name = "Default";
+                tymeTask.project = tymeProject;
             }
 
-            for (const timeEntry of this.timeEntries) {
-                const timeEntryID = idPrefix + timeEntry["id"];
-                const projectID = idPrefix + (timeEntry["pid"] ?? "-default");
-                const taskID = idPrefix + (timeEntry["tid"] ?? (projectID + "-default"));
+            let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
+            tymeEntry.note = timeEntry["description"];
+            tymeEntry.timeStart = Date.parse(timeEntry["start"]);
+            tymeEntry.timeEnd = Date.parse(timeEntry["end"]);
+            tymeEntry.parentTask = TimedTask.fromID(taskID);
 
-                // make sure the tasks & project exists
+            const userID = timeEntry["uid"];
+            const user = this.users[userID];
+            const tymeUserID = tyme.userIDForEmail(user["email"]);
 
-                let tymeProject = Project.fromID(projectID);
-                if (!tymeProject) {
-                    tymeProject = Project.create(projectID);
-                    tymeProject.name = "Default";
-                    tymeProject.color = 0xFF9900;
-                    tymeProject.defaultHourlyRate = defaultHourlyRate;
-                }
-
-                let tymeTask = TimedTask.fromID(taskID);
-                if (!tymeTask) {
-                    tymeTask = TimedTask.create(taskID);
-                    tymeTask.name = "Default";
-                    tymeTask.project = tymeProject;
-                }
-
-                let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
-                tymeEntry.note = timeEntry["description"];
-                tymeEntry.timeStart = Date.parse(timeEntry["start"]);
-                tymeEntry.timeEnd = Date.parse(timeEntry["end"]);
-                tymeEntry.parentTask = TimedTask.fromID(taskID);
-
-                const userID = timeEntry["uid"];
-                const user = this.users[userID];
-                const tymeUserID = tyme.userIDForEmail(user["email"]);
-
-                if (tymeUserID) {
-                    tymeEntry.userID = tymeUserID;
-                }
+            if (tymeUserID) {
+                tymeEntry.userID = tymeUserID;
             }
         }
     }
