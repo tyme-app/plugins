@@ -155,36 +155,6 @@ class TogglImporter {
                 this.users[id] = entry;
             }.bind(this));
         }
-
-        /*
-        {
-            "8543447": {
-                "id": 8543447,
-                "default_wid": 6453792,
-                "email": "sandbox_tester1@tyme-app.com",
-                "fullname": "Sandbox_tester1",
-                "jquery_timeofday_format": "h:i A",
-                "jquery_date_format": "m/d/Y",
-                "timeofday_format": "h:mm A",
-                "date_format": "MM/DD/YYYY",
-                "store_start_and_stop_time": false,
-                "beginning_of_week": 1,
-                "language": "en_US",
-                "image_url": "https://assets.track.toggl.com/images/profile.png",
-                "at": "2022-06-05T16:10:12+00:00",
-                "created_at": "2022-06-05T16:10:12+00:00",
-                "record_timeline": false,
-                "should_upgrade": true,
-                "timezone": "Europe/Berlin",
-                "openid_enabled": false,
-                "send_product_emails": true,
-                "send_weekly_report": true,
-                "send_timer_notifications": true,
-                "invitation": {},
-                "duration_format": "improved"
-            }
-        }
-        */
     }
 
     getWorkspaces() {
@@ -194,28 +164,6 @@ class TogglImporter {
         }
 
         this.workspaces = workspaceResponse;
-        /*
-                [{
-                    "id": 6453792,
-                    "name": "Sandbox_tester1's workspace",
-                    "profile": 102,
-                    "premium": true,
-                    "admin": true,
-                    "default_hourly_rate": 0,
-                    "default_currency": "USD",
-                    "only_admins_may_create_projects": false,
-                    "only_admins_see_billable_rates": false,
-                    "only_admins_see_team_dashboard": false,
-                    "projects_billable_by_default": true,
-                    "rounding": 1,
-                    "rounding_minutes": 0,
-                    "api_token": "adcfa72098ad32281ff40b509614345e",
-                    "at": "2022-06-05T16:10:12+00:00",
-                    "logo_url": "https://assets.toggl.com/images/workspace.jpg",
-                    "ical_url": "/ical/workspace_user/00d417f4d4e2f3a5687954c2b73758f4",
-                    "ical_enabled": true
-                }]
-        */
         return true;
     }
 
@@ -235,15 +183,6 @@ class TogglImporter {
                 this.clients[id] = entry;
             }.bind(this));
         }
-
-        /*
-        [{
-            "id": 58852166,
-            "wid": 6453792,
-            "name": "A client",
-            "at": "2022-06-08T08:47:30+00:00"
-        }]
-        */
     }
 
     getProjects() {
@@ -270,44 +209,6 @@ class TogglImporter {
                 }.bind(this));
             }
         }
-
-        /*
-        [{
-            "id": 182848734,
-            "wid": 6453792,
-            "cid": 58852166,
-            "name": "My Furst Project rate 100 USD, estimate 100",
-            "billable": true,
-            "is_private": true,
-            "active": true,
-            "template": false,
-            "at": "2022-06-08T08:50:06+00:00",
-            "created_at": "2022-06-08T08:47:30+00:00",
-            "color": "13",
-            "auto_estimates": false,
-            "estimated_hours": 100,
-            "actual_hours": 6,
-            "rate": 100,
-            "currency": "USD",
-            "hex_color": "#d92b2b"
-        }, {
-            "id": 182848755,
-            "wid": 6453792,
-            "name": "Project no client task estimate",
-            "billable": true,
-            "is_private": true,
-            "active": true,
-            "template": false,
-            "at": "2022-06-08T08:50:41+00:00",
-            "created_at": "2022-06-08T08:48:13+00:00",
-            "color": "14",
-            "auto_estimates": true,
-            "estimated_hours": 100,
-            "actual_hours": 14,
-            "currency": "USD",
-            "hex_color": "#525266"
-        }]
-        */
     }
 
     getTasks() {
@@ -333,39 +234,6 @@ class TogglImporter {
                 }.bind(this));
             }
         }
-
-        /*
-        {
-            "82618735": {
-                "id": 82618735,
-                "name": "some task!",
-                "wid": 6453792,
-                "pid": 182848734,
-                "active": true,
-                "at": "2022-06-08T08:50:06+00:00",
-                "estimated_seconds": 0
-            },
-            "82618758": {
-                "id": 82618758,
-                "name": "another task",
-                "wid": 6453792,
-                "pid": 182848755,
-                "active": true,
-                "at": "2022-06-08T08:50:31+00:00",
-                "estimated_seconds": 360000,
-                "tracked_seconds": 50400
-            },
-            "82618795": {
-                "id": 82618795,
-                "name": "donetask",
-                "wid": 6453792,
-                "pid": 182848755,
-                "active": false,
-                "at": "2022-06-08T08:50:41+00:00",
-                "estimated_seconds": 0
-            }
-        }
-        */
     }
 
     getTimeEntries() {
@@ -412,104 +280,6 @@ class TogglImporter {
                     page++;
                 }
                 while (!finished);
-
-                /*
-                    {
-                    "total_grand": 75641000,
-                    "total_billable": 72031000,
-                    "total_currencies": [{
-                        "currency": "USD",
-                        "amount": 600.61
-                    }],
-                    "total_count": 4,
-                    "per_page": 50,
-                    "data": [{
-                        "id": 2523771768,
-                        "pid": 182848755,
-                        "tid": null,
-                        "uid": 8543447,
-                        "description": "hello description",
-                        "start": "2022-06-08T10:48:49+02:00",
-                        "end": "2022-06-08T10:48:58+02:00",
-                        "updated": "2022-06-08T10:49:04+02:00",
-                        "dur": 9000,
-                        "user": "Sandbox_tester1",
-                        "use_stop": true,
-                        "client": null,
-                        "project": "Project no client task estimate",
-                        "project_color": "0",
-                        "project_hex_color": "#525266",
-                        "task": null,
-                        "billable": 0,
-                        "is_billable": true,
-                        "cur": "USD",
-                        "tags": []
-                    }, {
-                        "id": 2523775211,
-                        "pid": null,
-                        "tid": null,
-                        "uid": 8543447,
-                        "description": "no assigned anything",
-                        "start": "2022-06-08T09:50:59+02:00",
-                        "end": "2022-06-08T10:51:09+02:00",
-                        "updated": "2022-06-08T10:51:09+02:00",
-                        "dur": 3610000,
-                        "user": "Sandbox_tester1",
-                        "use_stop": true,
-                        "client": null,
-                        "project": null,
-                        "project_color": "0",
-                        "project_hex_color": null,
-                        "task": null,
-                        "billable": 0,
-                        "is_billable": false,
-                        "cur": "USD",
-                        "tags": []
-                    }, {
-                        "id": 2523772288,
-                        "pid": 182848734,
-                        "tid": null,
-                        "uid": 8543447,
-                        "description": "more tracking oder wat?",
-                        "start": "2022-06-08T04:49:08+02:00",
-                        "end": "2022-06-08T10:49:30+02:00",
-                        "updated": "2022-06-08T10:49:36+02:00",
-                        "dur": 21622000,
-                        "user": "Sandbox_tester1",
-                        "use_stop": true,
-                        "client": "A client",
-                        "project": "My Furst Project rate 100 USD, estimate 100",
-                        "project_color": "0",
-                        "project_hex_color": "#d92b2b",
-                        "task": null,
-                        "billable": 600.61,
-                        "is_billable": true,
-                        "cur": "USD",
-                        "tags": []
-                    }, {
-                        "id": 2523775606,
-                        "pid": 182848755,
-                        "tid": 82618758,
-                        "uid": 8543447,
-                        "description": "task assigned",
-                        "start": "2022-06-06T10:51:00+02:00",
-                        "end": "2022-06-07T00:51:00+02:00",
-                        "updated": "2022-06-08T10:51:47+02:00",
-                        "dur": 50400000,
-                        "user": "Sandbox_tester1",
-                        "use_stop": true,
-                        "client": null,
-                        "project": "Project no client task estimate",
-                        "project_color": "0",
-                        "project_hex_color": "#525266",
-                        "task": "another task",
-                        "billable": 0,
-                        "is_billable": true,
-                        "cur": "USD",
-                        "tags": []
-                    }]
-                }
-                */
             }
         }
     }
