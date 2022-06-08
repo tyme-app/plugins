@@ -95,7 +95,7 @@ class TogglImporter {
                 let billable = true;
                 const togglProject = this.projects[task["pid"]]
 
-                if(togglProject) {
+                if (togglProject) {
                     billable = togglProject["billable"];
                 }
 
@@ -108,6 +108,9 @@ class TogglImporter {
                 tymeTask.isCompleted = !task["active"];
                 tymeTask.billable = billable;
                 tymeTask.plannedDuration = task["estimated_seconds"];
+                tymeTask.roundingMethod = rounding;
+                tymeTask.roundingMinutes = roundingMinutes;
+                
                 const project = Project.fromID(projectID);
                 tymeTask.project = project;
 
