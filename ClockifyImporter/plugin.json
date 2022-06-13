@@ -7,7 +7,7 @@
   "summary": "Import your data from Clockify right into Tyme.",
   "author": "Lars Gerckens",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "doc.text.magnifyingglass",
+  "icon": "clockify_icon.png",
   "scriptName": "script.js",
   "scriptMain": "importer.start()",
   "scriptPreview": "",

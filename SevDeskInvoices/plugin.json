@@ -7,7 +7,7 @@
   "summary": "Export your recorded times and notes to SevDesk as a draft invoice. Offers a live preview of the data before creating the invoice.",
   "author": "Lars Gerckens",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "doc.text.magnifyingglass",
+  "icon": "sevdesk_icon.png",
   "scriptName": "script.js",
   "scriptMain": "sevDeskResolver.createNewInvoice()",
   "scriptPreview": "timeEntriesConverter.generatePreview()",
