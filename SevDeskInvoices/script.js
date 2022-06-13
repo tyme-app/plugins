@@ -1,0 +1,292 @@
+class TimeEntriesConverter {
+    constructor() {
+
+    }
+
+    timeEntriesFromFormValues() {
+        return tyme.timeEntries(
+            formValue.startDate,
+            formValue.endDate,
+            formValue.taskIDs,
+            null,
+            formValue.onlyUnbilled ? 0 : null,
+            formValue.includeNonBillable ? null : true,
+            formValue.teamMemberID
+        ).filter(function (timeEntry) {
+            return parseFloat(timeEntry.sum) > 0;
+        })
+    }
+
+    timeEntryIDs() {
+        return this.timeEntriesFromFormValues()
+            .map(function (entry) {
+                return entry.id;
+            });
+    }
+
+    aggregatedTimeEntryData() {
+        let data =
+            this.timeEntriesFromFormValues()
+                .reduce(function (data, timeEntry) {
+                    const key = timeEntry.task_id + timeEntry.subtask_id;
+
+                    if (data[key] == null) {
+                        let entry = {
+                            'name': '',
+                            'quantity': 0.0,
+                            'unit': '',
+                            'price': parseFloat(timeEntry.rate),
+                            'note': '',
+                            'sum': 0.0
+                        };
+
+                        // unity: Stk=1, Std=9, km=10
+
+                        if (timeEntry.type === 'timed') {
+                            entry.unit = utils.localize('unit.hours')
+                            entry.unitID = 9;
+                        } else if (timeEntry.type === 'mileage') {
+                            entry.unit = utils.localize('unit.kilometer')
+                            entry.unitID = 10;
+                        } else if (timeEntry.type === 'fixed') {
+                            entry.unit = utils.localize('unit.quantity')
+                            entry.unitID = 1;
+                        }
+
+                        entry.name = timeEntry.task;
+
+                        if (timeEntry.subtask.length > 0) {
+                            entry.name += ': ' + timeEntry.subtask
+                        }
+
+                        data[key] = entry;
+                    }
+
+                    if (timeEntry.type === 'timed') {
+                        const durationHours = parseFloat(timeEntry.duration) / 60.0
+                        data[key].quantity += durationHours;
+                    } else if (timeEntry.type === 'mileage') {
+                        const distance = parseFloat(timeEntry.distance)
+                        data[key].quantity += distance;
+                    } else if (timeEntry.type === 'fixed') {
+                        const quantity = parseFloat(timeEntry.quantity)
+                        data[key].quantity += quantity;
+                    }
+
+                    data[key].sum += timeEntry.sum;
+
+                    if (data[key].note.length > 0 && timeEntry.note.length > 0) {
+                        data[key].note += '<br/>';
+                    }
+                    data[key].note += timeEntry.note;
+
+                    return data;
+
+                }, {});
+
+        return Object.keys(data)
+            .map(function (key) {
+                return data[key];
+            })
+            .sort(function (a, b) {
+                return a.name > b.name;
+            });
+    }
+
+    generatePreview() {
+        const data = this.aggregatedTimeEntryData()
+        const total = data.reduce(function (sum, timeEntry) {
+            sum += timeEntry.sum;
+            return sum;
+        }, 0.0);
+
+        var str = '';
+        str += '![](plugins/SevDeskInvoices/sevdesk_logo.png)\n';
+        str += '## ' + utils.localize('invoice.header') + '\n';
+
+        str += '|' + utils.localize('invoice.position');
+        str += '|' + utils.localize('invoice.price');
+        str += '|' + utils.localize('invoice.quantity');
+        str += '|' + utils.localize('invoice.unit');
+        str += '|' + utils.localize('invoice.net');
+        str += '|\n';
+
+        str += '|-|-:|-:|-|-:|\n';
+
+        data.forEach((entry) => {
+
+            var name = entry.name;
+
+            if (formValue.showNotes) {
+                name = '**' + entry.name + '**';
+                name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
+            }
+
+            str += '|' + name;
+            str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
+            str += '|' + entry.quantity.toFixed(2);
+            str += '|' + entry.unit;
+            str += '|' + entry.sum.toFixed(2) + ' ' + tyme.currencySymbol();
+            str += '|\n';
+        });
+
+        str += '|||||**' + total.toFixed(2) + ' ' + tyme.currencySymbol() + '**|\n';
+        return utils.markdownToHTML(str);
+    }
+}
+
+class SevDeskResolver {
+    constructor(apiKey, timeEntriesConverter) {
+        this.apiKey = apiKey;
+        this.timeEntriesConverter = timeEntriesConverter;
+        this.baseURL = 'https://my.sevdesk.de/api';
+        this.invoicePath = '/v1/Invoice/Factory/saveInvoice';
+        this.contactsPath = '/v1/Contact';
+        this.userPath = '/v1/SevUser';
+    }
+
+    getSevUser() {
+        const url = this.baseURL + this.userPath;
+        const response = utils.request(url, 'GET', {'Authorization': this.apiKey}, null);
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 200) {
+            const parsedData = JSON.parse(result);
+            const contacts = parsedData['objects'];
+            let contactList = [];
+
+            contacts.forEach((contact, index) => {
+                contactList.push({
+                    "name": contact["fullname"],
+                    "value": contact["id"],
+                })
+            });
+
+            return contactList;
+
+        } else {
+            return [
+                {
+                    'name': utils.localize('input.data.empty'),
+                    'value': ''
+                }
+            ]
+        }
+    }
+
+    getContacts() {
+        const url = this.baseURL + this.contactsPath;
+        const response = utils.request(url, 'GET', {'Authorization': this.apiKey}, {"depth": 1});
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 200) {
+            const parsedData = JSON.parse(result);
+            const contacts = parsedData['objects'];
+            let contactList = [];
+
+            contacts.forEach((contact, index) => {
+                if (contact["name"]) {
+                    contactList.push({
+                        "name": contact["name"],
+                        "value": contact["id"],
+                    })
+                } else if (contact["surename"] && contact["familyname"]) {
+                    contactList.push({
+                        "name": contact["surename"] + " " + contact["familyname"],
+                        "value": contact["id"],
+                    })
+                }
+            });
+
+            return contactList;
+
+        } else {
+            return [
+                {
+                    'name': utils.localize('input.data.empty'),
+                    'value': ''
+                }
+            ]
+        }
+    }
+
+    createNewInvoice() {
+        const invoiceID = this.makeCreateNewInvoice();
+
+        if (invoiceID !== null) {
+            if (formValue.markAsBilled) {
+                const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
+                tyme.setBillingState(timeEntryIDs, 1);
+            }
+            tyme.openURL('https://my.sevdesk.de/#/fi/edit/type/RE/id/' + invoiceID);
+        }
+    }
+
+    makeCreateNewInvoice() {
+        const data = this.timeEntriesConverter.aggregatedTimeEntryData()
+        let invoicePosSave = [];
+
+        data.forEach((entry) => {
+            const note = formValue.showNotes ? entry.note : '';
+            invoicePosSave.push({
+                "objectName": "InvoicePos",
+                "quantity": entry.quantity,
+                "price": entry.price,
+                "name": entry.name,
+                "unity": {
+                    "id": entry.unitID,
+                    "objectName": "Unity"
+                },
+                "text": note,
+                "taxRate": formValue.taxRate,
+                "mapAll": true
+            })
+        });
+
+        const params = {
+            "invoice": {
+                "id": null,
+                "objectName": "Invoice",
+                "invoiceNumber": null,
+                "contact": {
+                    "id": formValue.contactID,
+                    "objectName": "Contact"
+                },
+                "contactPerson": {
+                    "id": formValue.userID,
+                    "objectName": "SevUser"
+                },
+                "invoiceDate": new Date().toISOString(),
+                "discount": 0,
+                "deliveryDate": formValue.startDate.toISOString(),
+                "deliveryDateUntil": formValue.endDate.toISOString(),
+                "status": "100",
+                "taxRate": formValue.taxRate,
+                "taxType": "default",
+                "invoiceType": "RE",
+                "currency": tyme.currencyCode(),
+                "mapAll": true
+            },
+            "invoicePosSave": invoicePosSave,
+            "takeDefaultAddress": true
+        }
+
+        const url = this.baseURL + this.invoicePath;
+        const response = utils.request(url, 'POST', {'Authorization': this.apiKey}, params);
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 201) {
+            const parsedData = JSON.parse(result);
+            return parsedData["objects"]["invoice"]["id"];
+        } else {
+            tyme.showAlert('SevDesk API Error', JSON.stringify(response));
+            return null;
+        }
+    }
+}
+
+const timeEntriesConverter = new TimeEntriesConverter();
+const sevDeskResolver = new SevDeskResolver(formValue.apiKey, timeEntriesConverter);

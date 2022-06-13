@@ -1,0 +1,135 @@
+[
+  {
+    "id": "apiKey",
+    "type": "securetext",
+    "name": "input.key",
+    "placeholder": "input.key.placeholder",
+    "persist": true
+  },
+  {
+    "id": "apiKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.key.hint"
+  },
+  {
+    "id": "separator1",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "startDate",
+    "type": "date",
+    "name": "input.startdate"
+  },
+  {
+    "id": "endDate",
+    "type": "date",
+    "name": "input.enddate"
+  },
+  {
+    "id": "teamMemberID",
+    "type": "teammembers",
+    "name": ""
+  },
+  {
+    "id": "taskIDs",
+    "type": "tasks",
+    "name": ""
+  },
+  {
+    "id": "showNotes",
+    "type": "checkbox",
+    "name": "input.notes",
+    "value": "true",
+    "persist": true
+  },
+  {
+    "id": "separator2",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "taxRate",
+    "type": "dropdown",
+    "name": "input.taxrate",
+    "values": [
+      {
+        "19": "19%"
+      },
+      {
+        "7": "7%"
+      },
+      {
+        "0": "0%"
+      },
+      {
+        "": ""
+      },
+      {
+        "20": "20%"
+      },
+      {
+        "10": "10%"
+      },
+      {
+        "13": "13%"
+      },
+      {
+        "": ""
+      },
+      {
+        "7.7": "7.7%"
+      },
+      {
+        "3.7": "3.7%"
+      },
+      {
+        "2.5": "2.5%"
+      }
+    ],
+    "persist": true
+  },
+  {
+    "id": "contactID",
+    "type": "dropdown",
+    "name": "input.contact",
+    "valueFunction": "sevDeskResolver.getContacts()",
+    "valueFunctionReloadable": true,
+    "persist": true
+  },
+  {
+    "id": "userID",
+    "type": "dropdown",
+    "name": "input.user",
+    "valueFunction": "sevDeskResolver.getSevUser()",
+    "valueFunctionReloadable": true,
+    "persist": true
+  },
+  {
+    "id": "separator3",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "onlyUnbilled",
+    "type": "checkbox",
+    "name": "input.unbilled",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "markAsBilled",
+    "type": "checkbox",
+    "name": "input.billed",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "includeNonBillable",
+    "type": "checkbox",
+    "name": "input.nonbillable",
+    "value": "false",
+    "persist": true
+  }
+]
