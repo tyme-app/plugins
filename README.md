@@ -1,8 +1,5 @@
 # Tyme Plugins
 
-**Currently in Beta**
-If you have an idea for a plugin or want to develop our own using a beta version, let us know: [Contact](https://www.tyme-app.com/en/contact/).
-
 ![macOS Plugins](/guides/plugins_macos.png)
 
 ## Overview
