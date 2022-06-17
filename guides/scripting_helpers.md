@@ -20,7 +20,7 @@ The following calls are available in your plugin scripts.
               "distance" : 0,
               "distance_unit" : "km",
               "duration" : 1,
-              "duration_unit" : "h",
+              "duration_unit" : "m",
               "end" : "2022-05-02T13:40:00+02:00",
               "id" : "F3C4DF06",
               "note" : "",
