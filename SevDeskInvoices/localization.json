@@ -35,7 +35,7 @@
     "input.billed": "Exportierte Zeiten als berechnet markieren",
     "input.unbilled": "Nur nicht berechnete Zeiteinträge exportieren",
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
-    "input.clients.empty": "Es konnten keine Daten von SevDesk werden. Bitte überprüfe deinen API-Token.",
+    "input.data.empty": "Es konnten keine Daten von SevDesk werden. Bitte überprüfe deinen API-Token.",
     "input.notes": "Notizen in die Rechnung übernehmen",
     "unit.hours": "Stunden",
     "unit.kilometer": "km",
