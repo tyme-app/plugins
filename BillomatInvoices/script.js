@@ -227,7 +227,8 @@ class BillomatResolver {
     makeCreateInvoiceCall() {
         const splittedIDs = formValue.clientContact.split('#');
         if (splittedIDs.length !== 2) {
-            return;
+            tyme.showAlert('Billomat', utils.localize('input.data.empty'));
+            return null;
         }
 
         const clientID = splittedIDs[0];
