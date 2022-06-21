@@ -151,7 +151,7 @@ class BillomatResolver {
 
         if (this.clients.length === 0) {
             this.clients.push({
-                'name': utils.localize('input.clients.empty'),
+                'name': utils.localize('input.data.empty'),
                 'value': ''
             });
         }
