@@ -1,0 +1,16 @@
+{
+  "id": "billomat_invoices",
+  "tymeMinVersion": "2022.11",
+  "version": "1.0",
+  "type": "export",
+  "name": "Billomat Invoice",
+  "summary": "Export your recorded times and notes to Billomat as a draft invoice. Offers a live preview of the data before creating the invoice.",
+  "author": "Lars Gerckens",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "billomat_icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "billomatResolver.createNewInvoice()",
+  "scriptPreview": "timeEntriesConverter.generatePreview()",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}
