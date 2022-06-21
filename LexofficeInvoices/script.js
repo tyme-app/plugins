@@ -143,7 +143,7 @@ class LexOfficeResolver {
         this.clients = [];
 
         const totalPages = this.getClientPage(0);
-        for (var i = 1; i < totalPages; i++) {
+        for (let i = 1; i <= totalPages; i++) {
             this.getClientPage(i);
         }
 
@@ -159,7 +159,7 @@ class LexOfficeResolver {
 
     getClientPage(page) {
         const url = this.baseURL + this.contactPath;
-        const response = utils.request(url, 'GET', {'Authorization': 'Bearer ' + this.apiKey}, {'page': page});
+        const response = utils.request(url, 'GET', {'Authorization': 'Bearer ' + this.apiKey}, {'page': page, 'size': 25});
         const statusCode = response['statusCode'];
         const result = response['result'];
 
