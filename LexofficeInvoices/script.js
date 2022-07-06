@@ -71,7 +71,7 @@ class TimeEntriesConverter {
                     data[key].sum += timeEntry.sum;
 
                     if (data[key].note.length > 0 && timeEntry.note.length > 0) {
-                        data[key].note += '<br/>';
+                        data[key].note += '\n';
                     }
                     data[key].note += timeEntry.note;
 
