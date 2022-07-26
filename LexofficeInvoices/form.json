@@ -62,30 +62,38 @@
       },
       {
         "0": "0%"
+      }
+    ],
+    "persist": true
+  },
+  {
+    "id": "taxType",
+    "type": "dropdown",
+    "name": "input.taxtype",
+    "values": [
+      {
+        "gross": "taxtype.gross"
       },
       {
-        "": ""
+        "net": "taxtype.net"
       },
       {
-        "20": "20%"
+        "vatfree": "taxtype.vatfree"
       },
       {
-        "10": "10%"
+        "intraCommunitySupply": "taxtype.intraCommunitySupply"
       },
       {
-        "13": "13%"
+        "constructionService13b": "taxtype.constructionService13b"
       },
       {
-        "": ""
+        "externalService13b": "taxtype.externalService13b"
       },
       {
-        "7.7": "7.7%"
+        "thirdPartyCountryService": "taxtype.thirdPartyCountryService"
       },
       {
-        "3.7": "3.7%"
-      },
-      {
-        "2.5": "2.5%"
+        "thirdPartyCountryDelivery": "taxtype.thirdPartyCountryDelivery"
       }
     ],
     "persist": true

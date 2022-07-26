@@ -159,7 +159,10 @@ class LexOfficeResolver {
 
     getClientPage(page) {
         const url = this.baseURL + this.contactPath;
-        const response = utils.request(url, 'GET', {'Authorization': 'Bearer ' + this.apiKey}, {'page': page, 'size': 25});
+        const response = utils.request(url, 'GET', {'Authorization': 'Bearer ' + this.apiKey}, {
+            'page': page,
+            'size': 25
+        });
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -200,7 +203,7 @@ class LexOfficeResolver {
                 const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
                 tyme.setBillingState(timeEntryIDs, 1);
             }
-            tyme.openURL('https://app.lexoffice.de/voucher/#/' + invoiceID);
+            tyme.openURL('https://app.lexoffice.de/permalink/invoices/edit/' + invoiceID);
         }
     }
 
@@ -238,7 +241,7 @@ class LexOfficeResolver {
                 'currency': tyme.currencyCode()
             },
             'taxConditions': {
-                'taxType': 'gross'
+                'taxType': formValue.taxType
             },
             'shippingConditions': {
                 'shippingType': 'serviceperiod',
@@ -246,9 +249,6 @@ class LexOfficeResolver {
                 'shippingEndDate': formValue.endDate.toISOString()
             }
         }
-
-        // shippingType: [service, serviceperiod, delivery, deliveryperiod, none]
-        // taxType: [gross, net, vatfree, intraCommunitySupply, constructionService13b, externalService13b, thirdPartyCountryService, thirdPartyCountryDelivery]
 
         const url = this.baseURL + this.invoicePath;
         const response = utils.request(url, 'POST', {'Authorization': 'Bearer ' + this.apiKey}, params);

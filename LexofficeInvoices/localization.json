@@ -7,6 +7,7 @@
     "input.enddate": "To",
     "input.client": "Client",
     "input.taxrate": "Tax Rate",
+    "input.taxtype": "Tax Type",
     "input.billed": "Mark exported time entries as billed",
     "input.unbilled": "Export only unbilled time entries",
     "input.nonbillable": "Include non-billable tasks",
@@ -20,7 +21,15 @@
     "invoice.price": "Price",
     "invoice.quantity": "Quantity",
     "invoice.unit": "Unit",
-    "invoice.net": "Net"
+    "invoice.net": "Net",
+    "taxtype.gross": "Gross",
+    "taxtype.net": "Net",
+    "taxtype.vatfree": "Vat Free",
+    "taxtype.intraCommunitySupply": "Intra-community supply according to §13b UStG",
+    "taxtype.constructionService13b": "Construction services according to §13b UStG",
+    "taxtype.externalService13b": "Third-party services within the EU according to §13b UStG",
+    "taxtype.thirdPartyCountryService": "Services provided to third countries",
+    "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
     "input.key": "Lexoffice Schlüssel",
@@ -30,6 +39,7 @@
     "input.enddate": "Bis",
     "input.client": "Kunde",
     "input.taxrate": "Mehrwertsteuersatz",
+    "input.taxtype": "Steuerart",
     "input.billed": "Exportierte Zeiten als berechnet markieren",
     "input.unbilled": "Nur nicht berechnete Zeiteinträge exportieren",
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
@@ -43,6 +53,14 @@
     "invoice.price": "Preis",
     "invoice.quantity": "Anzahl",
     "invoice.unit": "Einheit",
-    "invoice.net": "Netto"
+    "invoice.net": "Netto",
+    "taxtype.gross": "Brutto",
+    "taxtype.net": "Netto",
+    "taxtype.vatfree": "Steuerfrei",
+    "taxtype.intraCommunitySupply": "Innergemeinschaftliche Lieferung gem. §13b UStG",
+    "taxtype.constructionService13b": "Bauleistungen gem. §13b UStG",
+    "taxtype.externalService13b": "Fremdleistungen innerhalb der EU gem. §13b UStG",
+    "taxtype.thirdPartyCountryService": "Dienstleistungen an Drittländer",
+    "taxtype.thirdPartyCountryDelivery": "Ausfuhrlieferungen an Drittländer"
   }
 }
