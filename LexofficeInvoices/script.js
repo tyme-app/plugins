@@ -134,7 +134,6 @@ class LexOfficeResolver {
     constructor(lexOfficeAPIClient, timeEntriesConverter) {
         this.lexOfficeAPIClient = lexOfficeAPIClient;
         this.timeEntriesConverter = timeEntriesConverter;
-        this.baseURL = 'https://api.lexoffice.io';
         this.invoicePath = '/v1/invoices/';
         this.contactPath = '/v1/contacts/';
     }
@@ -158,11 +157,10 @@ class LexOfficeResolver {
     }
 
     getClientPage(page) {
-        const url = this.baseURL + this.contactPath;
-        const response = utils.request(url, 'GET', {'Authorization': 'Bearer ' + this.apiKey}, {
+        const response = this.lexOfficeAPIClient.callResource(this.contactPath, 'GET', {
             'page': page,
             'size': 25
-        });
+        }, false);
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -250,8 +248,12 @@ class LexOfficeResolver {
             }
         }
 
-        const url = this.baseURL + this.invoicePath;
-        const response = utils.request(url, 'POST', {'Authorization': 'Bearer ' + this.apiKey}, params);
+        const response = this.lexOfficeAPIClient.callResource(this.invoicePath, 'POST', params, true);
+
+        if (response == null) {
+            return null;
+        }
+
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -288,9 +290,14 @@ class LexOfficeAPIClient {
 
     fetchTokensFromCode() {
         const url = this.baseURL + "auth/code";
+        const code = tyme.getSecureValue(this.authCodeKey);
         const response = utils.request(url, 'POST', {}, {"code": code});
         const statusCode = response['statusCode'];
         const result = response['result'];
+
+        tyme.showAlert('fetchTokensFromCode', JSON.stringify(response));
+
+        tyme.setSecureValue(this.authCodeKey, null);
 
         if (statusCode === 200) {
             const json = JSON.parse(result);
@@ -311,6 +318,8 @@ class LexOfficeAPIClient {
         const statusCode = response['statusCode'];
         const result = response['result'];
 
+        tyme.showAlert('refreshTokens', JSON.stringify(response));
+
         if (statusCode === 200) {
             const json = JSON.parse(result);
             tyme.setSecureValue(this.accessTokenKey, json['access_token']);
@@ -324,8 +333,17 @@ class LexOfficeAPIClient {
         }
     }
 
-    callResource(path, method, params) {
-        const url = this.baseURL + path;
+    callResource(path, method, params, doAuth) {
+        if (!this.isAuthenticated()) {
+            if (this.hasAuthCode()) {
+                this.fetchTokensFromCode();
+            } else if (doAuth) {
+                this.startAuthFlow();
+                return;
+            }
+        }
+
+        const url = this.baseURL + 'resource';
         const accessToken = tyme.getSecureValue(this.accessTokenKey);
 
         const combinedParams = {
@@ -336,14 +354,19 @@ class LexOfficeAPIClient {
         }
 
         const response = utils.request(url, method, {}, combinedParams);
-        const statusCode = response['statusCode'];
-        const result = response['result'];
 
-        if (statusCode === 200) {
-            return JSON.parse(result);
-        } else {
-            return null;
+        tyme.showAlert('combinedParams', JSON.stringify(url));
+        tyme.showAlert('combinedParams', JSON.stringify(combinedParams));
+        tyme.showAlert('callResource', JSON.stringify(response));
+
+        if (doAuth && statusCode === 401) {
+            const refreshToken = tyme.getSecureValue(this.refreshTokenKey);
+            if (this.refreshTokens(refreshToken)) {
+                return this.callResource(path, method, params);
+            }
         }
+
+        return response;
     }
 }
 
