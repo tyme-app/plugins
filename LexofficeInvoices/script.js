@@ -337,7 +337,7 @@ class LexOfficeAPIClient {
                 this.fetchTokensFromCode();
             } else if (doAuth) {
                 this.startAuthFlow();
-                return;
+                return null;
             }
         }
 
@@ -353,7 +353,7 @@ class LexOfficeAPIClient {
 
         const response = utils.request(url, 'POST', {}, combinedParams);
 
-        if (doAuth && statusCode === 401) {
+        if (doAuth && response['statusCode'] === 401) {
             const refreshToken = tyme.getSecureValue(this.refreshTokenKey);
             if (this.refreshTokens(refreshToken)) {
                 return this.callResource(path, method, params, false);
