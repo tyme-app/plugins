@@ -78,6 +78,13 @@ tyme.openSaveDialog(fileName, content)
     resultFunction: function (fileContents) { … });
 */
 tyme.selectFile(title, fileTypes, resultFunction)
+
+// Saves a value to the local device keychain. Use this method to store secure values
+tyme.setSecureValue(key, value)
+
+// Retrieves a value from the local device keychain
+tyme.getSecureValue(key)
+
 ```
 
 ### General Calls

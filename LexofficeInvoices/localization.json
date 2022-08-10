@@ -1,8 +1,7 @@
 {
   "en": {
-    "input.key": "Lexoffice Key",
-    "input.key.placeholder": "Please enter your personal key",
-    "input.key.hint": "Generate your **key** from the [Lexoffice Public API](https://app.lexoffice.de/addons/public-api) page.",
+    "button.auth": "Connect with Lexoffice",
+    "button.auth.hint": "To create an invoice for Lexoffice, you need to give Tyme access to Lexoffice once.",
     "input.startdate": "From",
     "input.enddate": "To",
     "input.client": "Client",
@@ -11,7 +10,7 @@
     "input.billed": "Mark exported time entries as billed",
     "input.unbilled": "Export only unbilled time entries",
     "input.nonbillable": "Include non-billable tasks",
-    "input.clients.empty": "Could not fetch clients. Please check your Lexoffice Key",
+    "input.clients.empty": "Could not fetch clients. Please authenticate with Lexoffice.",
     "input.notes": "Include notes in invoice",
     "unit.hours": "Hour",
     "unit.kilometer": "km",
@@ -32,9 +31,8 @@
     "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
-    "input.key": "Lexoffice Schlüssel",
-    "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
-    "input.key.hint": "Erzeuge deinen **Schlüssel** mit der [Lexoffice Public API](https://app.lexoffice.de/addons/public-api).",
+    "button.auth": "Mit Lexoffice verbinden",
+    "button.auth.hint": "Um eine Rechnung für Lexoffice zu erstellen, musst du Tyme einmalig den Zugriff auf Lexoffice geben.",
     "input.startdate": "Von",
     "input.enddate": "Bis",
     "input.client": "Kunde",
@@ -43,7 +41,7 @@
     "input.billed": "Exportierte Zeiten als berechnet markieren",
     "input.unbilled": "Nur nicht berechnete Zeiteinträge exportieren",
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
-    "input.clients.empty": "Es konnten keine Kunden abgerufen werden. Bitte überprüfe deinen Lexoffice-Schlüssel",
+    "input.clients.empty": "Es konnten keine Kunden abgerufen werden. Bitte verbinde dich mit Lexoffice.",
     "input.notes": "Notizen in die Rechnung übernehmen",
     "unit.hours": "Stunde",
     "unit.kilometer": "km",

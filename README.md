@@ -60,15 +60,16 @@ A form is a JSON file with the following structure:
 [
     {
         "id": "someUniqueID",
-        "type": "[securetext|text|separator|date|teammembers|tasks|checkbox|dropdown]",
+        "type": "[button|securetext|text|separator|date|teammembers|tasks|checkbox|dropdown]",
         "name": "label or localization key",
         "placeholder": "label or localization key", // only text
-        "persist": true,
+        "persist": false,
         "value": "initial value",
         "values": [ // only dropdown
             {"key1": "label or localization key"},
             {"key1": "label or localization key"}
         ],
+        "actionFunction": "openWebsite()", // only button
         "valueFunction": "getClients()", // only dropdown
         "valueFunctionReloadable": true // shows a button to reload the dropdown
     },

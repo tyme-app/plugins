@@ -131,8 +131,8 @@ class TimeEntriesConverter {
 }
 
 class LexOfficeResolver {
-    constructor(apiKey, timeEntriesConverter) {
-        this.apiKey = apiKey;
+    constructor(lexOfficeAPIClient, timeEntriesConverter) {
+        this.lexOfficeAPIClient = lexOfficeAPIClient;
         this.timeEntriesConverter = timeEntriesConverter;
         this.baseURL = 'https://api.lexoffice.io';
         this.invoicePath = '/v1/invoices/';
@@ -265,5 +265,88 @@ class LexOfficeResolver {
     }
 }
 
+class LexOfficeAPIClient {
+    constructor() {
+        this.baseURL = 'https://staging.tyme-app.com/lex/';
+        this.refreshTokenKey = 'lexoffice_refresh_token';
+        this.accessTokenKey = 'lexoffice_access_token';
+        this.authCodeKey = 'lexoffice_auth_code';
+    }
+
+    startAuthFlow() {
+        tyme.openURL(this.baseURL + "auth/new");
+    }
+
+    hasAuthCode() {
+        return tyme.getSecureValue(this.authCodeKey) != null;
+    }
+
+    isAuthenticated() {
+        return tyme.getSecureValue(this.accessTokenKey) != null
+            && tyme.getSecureValue(this.refreshTokenKey) != null;
+    }
+
+    fetchTokensFromCode() {
+        const url = this.baseURL + "auth/code";
+        const response = utils.request(url, 'POST', {}, {"code": code});
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 200) {
+            const json = JSON.parse(result);
+            tyme.setSecureValue(this.accessTokenKey, json['access_token']);
+            tyme.setSecureValue(this.refreshTokenKey, json['refresh_token']);
+            return true;
+        } else {
+            tyme.showAlert('Lexoffice Auth Error', JSON.stringify(response));
+            tyme.setSecureValue(this.accessTokenKey, null);
+            tyme.setSecureValue(this.refreshTokenKey, null);
+            return false;
+        }
+    }
+
+    refreshTokens(token) {
+        const url = this.baseURL + "auth/refresh";
+        const response = utils.request(url, 'POST', {}, {"refresh_token": token});
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 200) {
+            const json = JSON.parse(result);
+            tyme.setSecureValue(this.accessTokenKey, json['access_token']);
+            tyme.setSecureValue(this.refreshTokenKey, json['refresh_token']);
+            return true;
+        } else {
+            tyme.showAlert('Lexoffice Token Refresh Error', JSON.stringify(response));
+            tyme.setSecureValue(this.accessTokenKey, null);
+            tyme.setSecureValue(this.refreshTokenKey, null);
+            return false;
+        }
+    }
+
+    callResource(path, method, params) {
+        const url = this.baseURL + path;
+        const accessToken = tyme.getSecureValue(this.accessTokenKey);
+
+        const combinedParams = {
+            'path': path,
+            'method': method,
+            'params': params,
+            'access_token': accessToken
+        }
+
+        const response = utils.request(url, method, {}, combinedParams);
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 200) {
+            return JSON.parse(result);
+        } else {
+            return null;
+        }
+    }
+}
+
 const timeEntriesConverter = new TimeEntriesConverter();
-const lexOfficeResolver = new LexOfficeResolver(formValue.lexofficeKey, timeEntriesConverter);
+const lexOfficeAPIClient = new LexOfficeAPIClient();
+const lexOfficeResolver = new LexOfficeResolver(lexOfficeAPIClient, timeEntriesConverter);
