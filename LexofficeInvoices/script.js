@@ -295,8 +295,6 @@ class LexOfficeAPIClient {
         const statusCode = response['statusCode'];
         const result = response['result'];
 
-        tyme.showAlert('fetchTokensFromCode', JSON.stringify(response));
-
         tyme.setSecureValue(this.authCodeKey, null);
 
         if (statusCode === 200) {
@@ -353,16 +351,12 @@ class LexOfficeAPIClient {
             'access_token': accessToken
         }
 
-        const response = utils.request(url, method, {}, combinedParams);
-
-        tyme.showAlert('combinedParams', JSON.stringify(url));
-        tyme.showAlert('combinedParams', JSON.stringify(combinedParams));
-        tyme.showAlert('callResource', JSON.stringify(response));
+        const response = utils.request(url, 'POST', {}, combinedParams);
 
         if (doAuth && statusCode === 401) {
             const refreshToken = tyme.getSecureValue(this.refreshTokenKey);
             if (this.refreshTokens(refreshToken)) {
-                return this.callResource(path, method, params);
+                return this.callResource(path, method, params, false);
             }
         }
 
