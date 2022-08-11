@@ -157,10 +157,17 @@ class LexOfficeResolver {
     }
 
     getClientPage(page) {
-        const response = this.lexOfficeAPIClient.callResource(this.contactPath, 'GET', {
-            'page': page,
-            'size': 25
-        });
+        const response = this.lexOfficeAPIClient.callResource(
+            this.contactPath,
+            'GET',
+            {'page': page, 'size': 25},
+            false
+        );
+
+        if (response == null) {
+            return 0;
+        }
+
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -251,7 +258,12 @@ class LexOfficeResolver {
             }
         }
 
-        const response = this.lexOfficeAPIClient.callResource(this.invoicePath, 'POST', params);
+        const response = this.lexOfficeAPIClient.callResource(
+            this.invoicePath,
+            'POST',
+            params,
+            true
+        );
 
         if (response == null) {
             return null;
@@ -332,7 +344,7 @@ class LexOfficeAPIClient {
         }
     }
 
-    callResource(path, method, params) {
+    callResource(path, method, params, doAuth) {
         if (!this.isAuthenticated()) {
             if (this.hasAuthCode()) {
                 this.fetchTokensFromCode();
@@ -357,7 +369,7 @@ class LexOfficeAPIClient {
         if (response['statusCode'] === 401 && this.isAuthenticated()) {
             const refreshToken = tyme.getSecureValue(this.refreshTokenKey);
             if (this.refreshTokens(refreshToken)) {
-                return this.callResource(path, method, params);
+                return this.callResource(path, method, params, false);
             }
         }
 
