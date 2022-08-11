@@ -201,7 +201,10 @@ class LexOfficeResolver {
                 const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
                 tyme.setBillingState(timeEntryIDs, 1);
             }
-            tyme.openURL('https://app.lexoffice.de/permalink/invoices/edit/' + invoiceID);
+            // Live Permalink
+            // tyme.openURL('https://app.lexoffice.de/permalink/invoices/edit/' + invoiceID);
+            // Sandbox Permalink
+            tyme.openURL('https://lexoffice-sandbox.grld.eu/permalink/invoices/edit/' + invoiceID);
         }
     }
 
