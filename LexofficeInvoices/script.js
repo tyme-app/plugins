@@ -160,7 +160,7 @@ class LexOfficeResolver {
         const response = this.lexOfficeAPIClient.callResource(this.contactPath, 'GET', {
             'page': page,
             'size': 25
-        }, false);
+        });
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -248,7 +248,7 @@ class LexOfficeResolver {
             }
         }
 
-        const response = this.lexOfficeAPIClient.callResource(this.invoicePath, 'POST', params, true);
+        const response = this.lexOfficeAPIClient.callResource(this.invoicePath, 'POST', params);
 
         if (response == null) {
             return null;
@@ -303,7 +303,7 @@ class LexOfficeAPIClient {
             tyme.setSecureValue(this.refreshTokenKey, json['refresh_token']);
             return true;
         } else {
-            tyme.showAlert('Lexoffice Auth Error', JSON.stringify(response));
+            utils.log('Lexoffice Auth Error ' + JSON.stringify(response));
             tyme.setSecureValue(this.accessTokenKey, null);
             tyme.setSecureValue(this.refreshTokenKey, null);
             return false;
@@ -316,22 +316,20 @@ class LexOfficeAPIClient {
         const statusCode = response['statusCode'];
         const result = response['result'];
 
-        tyme.showAlert('refreshTokens', JSON.stringify(response));
-
         if (statusCode === 200) {
             const json = JSON.parse(result);
             tyme.setSecureValue(this.accessTokenKey, json['access_token']);
             tyme.setSecureValue(this.refreshTokenKey, json['refresh_token']);
             return true;
         } else {
-            tyme.showAlert('Lexoffice Token Refresh Error', JSON.stringify(response));
+            utils.log('Lexoffice Token Refresh Error' + JSON.stringify(response));
             tyme.setSecureValue(this.accessTokenKey, null);
             tyme.setSecureValue(this.refreshTokenKey, null);
             return false;
         }
     }
 
-    callResource(path, method, params, doAuth) {
+    callResource(path, method, params) {
         if (!this.isAuthenticated()) {
             if (this.hasAuthCode()) {
                 this.fetchTokensFromCode();
@@ -353,10 +351,10 @@ class LexOfficeAPIClient {
 
         const response = utils.request(url, 'POST', {}, combinedParams);
 
-        if (doAuth && response['statusCode'] === 401) {
+        if (response['statusCode'] === 401 && this.isAuthenticated()) {
             const refreshToken = tyme.getSecureValue(this.refreshTokenKey);
             if (this.refreshTokens(refreshToken)) {
-                return this.callResource(path, method, params, false);
+                return this.callResource(path, method, params);
             }
         }
 
