@@ -197,7 +197,22 @@ class ClockifyImporter {
             tymeEntry.note = timeEntry["description"];
             tymeEntry.timeStart = Date.parse(timeEntry["timeInterval"]["start"]);
             tymeEntry.timeEnd = Date.parse(timeEntry["timeInterval"]["end"]);
-            tymeEntry.parentTask = TimedTask.fromID(taskID);
+
+            let parentTask = TimedTask.fromID(taskID);
+
+            if (formValue.splitTasksNonBillable && parentTask.billable && !timeEntry["billable"]) {
+                let nonBillableTaskID = taskID + "_nb";
+                let nonBillableTask = TimedTask.fromID(nonBillableTaskID) ?? TimedTask.create(nonBillableTaskID);
+                nonBillableTask.name = parentTask.name + " (Non-billable)";
+                nonBillableTask.billable = false;
+                nonBillableTask.isCompleted = parentTask.isCompleted;
+                nonBillableTask.plannedDuration = parentTask.plannedDuration;
+                nonBillableTask.hourlyRate = parentTask.hourlyRate;
+                nonBillableTask.project = Project.fromID(idPrefix + timeEntry["projectId"]);
+                parentTask = nonBillableTask;
+            }
+
+            tymeEntry.parentTask = parentTask;
 
             const userID = timeEntry["userId"];
             const user = this.users[userID];
