@@ -11,5 +11,17 @@
     "type": "hint",
     "name": "",
     "value": "input.key.hint"
+  },
+  {
+    "id": "separator",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "splitTasksNonBillable",
+    "type": "checkbox",
+    "name": "input.billable.tasks",
+    "value": "false",
+    "persist": true
   }
 ]

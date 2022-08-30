@@ -1,7 +1,7 @@
 {
   "id": "clockify_importer",
   "tymeMinVersion": "2022.11",
-  "version": "1.0",
+  "version": "1.1",
   "type": "import",
   "name": "Clockify Import",
   "summary": "Import your data from Clockify right into Tyme.",
