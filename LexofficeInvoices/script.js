@@ -208,7 +208,8 @@ class LexOfficeResolver {
                 const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
                 tyme.setBillingState(timeEntryIDs, 1);
             }
-            tyme.openURL('https://api.tyme-app.com/lex/invoice/edit/' + invoiceID);
+
+            this.lexOfficeAPIClient.editInvoice(invoiceID);
         }
     }
 
@@ -285,6 +286,10 @@ class LexOfficeAPIClient {
         this.refreshTokenKey = 'lexoffice_refresh_token';
         this.accessTokenKey = 'lexoffice_access_token';
         this.authCodeKey = 'lexoffice_auth_code';
+    }
+
+    editInvoice(invoiceID) {
+        tyme.openURL(this.baseURL + "invoice/edit/" + invoiceID);
     }
 
     startAuthFlow() {
