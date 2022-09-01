@@ -269,12 +269,16 @@ class LexOfficeResolver {
 
         const statusCode = response['statusCode'];
         const result = response['result'];
+        const parsedData = JSON.parse(result);
 
         if (statusCode === 201) {
-            const parsedData = JSON.parse(result);
             return parsedData['id'];
         } else {
-            tyme.showAlert('Lexoffice API Error', JSON.stringify(response));
+            if (parsedData['message'] != null) {
+                tyme.showAlert(utils.localize('api.invoice.error.title'), parsedData['message']);
+            } else {
+                tyme.showAlert(utils.localize('api.invoice.error.title'), JSON.stringify(response));
+            }
             return null;
         }
     }

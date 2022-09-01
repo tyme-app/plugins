@@ -1,5 +1,6 @@
 {
   "en": {
+    "api.invoice.error.title": "Could not create invoice",
     "button.auth": "Connect with Lexoffice",
     "button.auth.hint": "To create an invoice for Lexoffice, you need to give Tyme access to Lexoffice once.",
     "input.startdate": "From",
@@ -31,6 +32,7 @@
     "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
+    "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
     "button.auth": "Mit Lexoffice verbinden",
     "button.auth.hint": "Um eine Rechnung für Lexoffice zu erstellen, musst du Tyme einmalig den Zugriff auf Lexoffice geben.",
     "input.startdate": "Von",
