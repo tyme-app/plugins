@@ -98,10 +98,10 @@
     "persist": true
   },
   {
-    "id": "clientID",
+    "id": "contactID",
     "type": "dropdown",
-    "name": "input.client",
-    "valueFunction": "lexOfficeResolver.getClients()",
+    "name": "input.contact",
+    "valueFunction": "lexOfficeResolver.getContacts()",
     "valueFunctionReloadable": false,
     "persist": true
   },

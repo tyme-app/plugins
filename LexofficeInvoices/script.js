@@ -138,25 +138,25 @@ class LexOfficeResolver {
         this.contactPath = '/v1/contacts/';
     }
 
-    getClients() {
-        this.clients = [];
+    getContacts() {
+        this.contacts = [];
 
-        const totalPages = this.getClientPage(0);
+        const totalPages = this.getContactPage(0);
         for (let i = 1; i <= totalPages; i++) {
-            this.getClientPage(i);
+            this.getContactPage(i);
         }
 
-        if (this.clients.length === 0) {
-            this.clients.push({
+        if (this.contacts.length === 0) {
+            this.contacts.push({
                 'name': utils.localize('input.clients.empty'),
                 'value': ''
             });
         }
 
-        return this.clients;
+        return this.contacts;
     }
 
-    getClientPage(page) {
+    getContactPage(page) {
         const response = this.lexOfficeAPIClient.callResource(
             this.contactPath,
             'GET',
@@ -177,21 +177,21 @@ class LexOfficeResolver {
             const totalPages = parsedData['totalPages'];
 
             content
-                .filter(function (client) {
-                    return client.roles.hasOwnProperty('customer');
+                .filter(function (contact) {
+                    return contact.roles.hasOwnProperty('customer');
                 })
-                .forEach((client, index) => {
-                    let clientObject = {
-                        'value': client.id
+                .forEach((contact, index) => {
+                    let contactObject = {
+                        'value': contact.id
                     }
 
-                    if (client.hasOwnProperty('company') && client.company.hasOwnProperty('name')) {
-                        clientObject.name = client.company.name;
-                    } else if (client.hasOwnProperty('person') && client.person.hasOwnProperty('firstName') && client.person.hasOwnProperty('lastName')) {
-                        clientObject.name = client.person.firstName + ' ' + client.person.lastName;
+                    if (contact.hasOwnProperty('company') && contact.company.hasOwnProperty('name')) {
+                        contactObject.name = contact.company.name;
+                    } else if (contact.hasOwnProperty('person') && contact.person.hasOwnProperty('firstName') && contact.person.hasOwnProperty('lastName')) {
+                        contactObject.name = contact.person.firstName + ' ' + contact.person.lastName;
                     }
 
-                    this.clients.push(clientObject);
+                    this.contacts.push(contactObject);
                 });
 
             return totalPages;
@@ -240,7 +240,7 @@ class LexOfficeResolver {
         const params = {
             'voucherDate': new Date().toISOString(),
             'address': {
-                'contactId': formValue.clientID
+                'contactId': formValue.contactID
             },
             'lineItems': lineItems,
             'totalPrice': {
