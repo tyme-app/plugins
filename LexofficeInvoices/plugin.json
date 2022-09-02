@@ -1,7 +1,7 @@
 {
   "id": "lexoffice_invoices",
   "tymeMinVersion": "2022.13",
-  "version": "1.5",
+  "version": "1.6",
   "type": "export",
   "name": "Lexoffice Invoice",
   "summary": "Export your recorded times and notes to Lexoffice as a draft invoice. Offers a live preview of the data before creating the invoice.",
