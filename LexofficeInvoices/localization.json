@@ -2,7 +2,7 @@
   "en": {
     "api.invoice.error.title": "Could not create invoice",
     "button.auth": "Connect with Lexoffice",
-    "button.auth.hint": "To create an invoice for Lexoffice, you need to give Tyme access to Lexoffice once.",
+    "button.auth.hint": "To create an invoice for Lexoffice, you need to give Tyme access to Lexoffice once. Access can be revoked at any time in your [Lexoffice account](https://app.lexoffice.de/addons/) (Settings > Extensions).",
     "input.startdate": "From",
     "input.enddate": "To",
     "input.contact": "Client",
@@ -34,7 +34,7 @@
   "de": {
     "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
     "button.auth": "Mit Lexoffice verbinden",
-    "button.auth.hint": "Um eine Rechnung für Lexoffice zu erstellen, musst du Tyme einmalig den Zugriff auf Lexoffice geben.",
+    "button.auth.hint": "Um eine Rechnung für Lexoffice zu erstellen, musst du Tyme einmalig den Zugriff auf Lexoffice geben. Der Zugriff kann jederzeit in deinem [Lexoffice-Konto](https://app.lexoffice.de/addons/) (Einstellungen > Erweiterungen) widerrufen werden.",
     "input.startdate": "Von",
     "input.enddate": "Bis",
     "input.contact": "Kunde",
