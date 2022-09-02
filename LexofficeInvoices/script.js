@@ -88,7 +88,8 @@ class TimeEntriesConverter {
             });
     }
 
-    generatePreview() {
+    generatePreview(isAuthenticated) {
+
         const data = this.aggregatedTimeEntryData()
         const total = data.reduce(function (sum, timeEntry) {
             sum += timeEntry.sum;
@@ -97,6 +98,11 @@ class TimeEntriesConverter {
 
         var str = '';
         str += '![](plugins/LexofficeInvoices/lexoffice_logo.png)\n';
+
+        if (!isAuthenticated) {
+            str += "#### <span style='color: darkred;'>" + utils.localize('not.connected.message') + "</span>\n";
+        }
+
         str += '## ' + utils.localize('invoice.header') + '\n';
 
         str += '|' + utils.localize('invoice.position');
@@ -198,6 +204,12 @@ class LexOfficeResolver {
         } else {
             return 0
         }
+    }
+
+    generatePreview() {
+        return this.timeEntriesConverter.generatePreview(
+            this.lexOfficeAPIClient.isAuthenticated()
+        )
     }
 
     createInvoice() {

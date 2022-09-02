@@ -10,7 +10,7 @@
   "icon": "lexoffice_icon.png",
   "scriptName": "script.js",
   "scriptMain": "lexOfficeResolver.createInvoice()",
-  "scriptPreview": "timeEntriesConverter.generatePreview()",
+  "scriptPreview": "lexOfficeResolver.generatePreview()",
   "formName": "form.json",
   "localizationName": "localization.json"
 }
