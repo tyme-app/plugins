@@ -215,14 +215,14 @@ class LexOfficeResolver {
 
     makeCreateInvoiceCall() {
         const data = this.timeEntriesConverter.aggregatedTimeEntryData()
-        var lineItems = [];
+        let lineItems = [];
 
         const taxPercentage = 1.0 + parseFloat(formValue.taxRate) / 100.0;
 
         data.forEach((entry) => {
             const note = formValue.showNotes ? entry.note : '';
 
-            lineItems.push({
+            const lineItem = {
                 'type': 'custom',
                 'name': entry.name,
                 'description': note,
@@ -230,11 +230,17 @@ class LexOfficeResolver {
                 'unitName': entry.unit,
                 'unitPrice': {
                     'currency': tyme.currencyCode(),
-                    'netAmount': entry.price.toFixed(2),
-                    'grossAmount': (entry.price * taxPercentage).toFixed(2),
-                    'taxRatePercentage': formValue.taxRate
+                    "taxRatePercentage": formValue.taxRate
                 }
-            })
+            };
+
+            if (formValue.taxType === "gross") {
+                lineItem["unitPrice"]["grossAmount"] = (entry.price * taxPercentage).toFixed(2);
+            } else {
+                lineItem["unitPrice"]["netAmount"] = entry.price.toFixed(2);
+            }
+
+            lineItems.push(lineItem);
         });
 
         const params = {
