@@ -230,14 +230,14 @@ class LexOfficeResolver {
                 'unitName': entry.unit,
                 'unitPrice': {
                     'currency': tyme.currencyCode(),
-                    "taxRatePercentage": formValue.taxRate
+                    'taxRatePercentage': formValue.taxRate
                 }
             };
 
-            if (formValue.taxType === "gross") {
-                lineItem["unitPrice"]["grossAmount"] = (entry.price * taxPercentage).toFixed(2);
+            if (formValue.taxType === 'gross') {
+                lineItem['unitPrice']['grossAmount'] = (entry.price * taxPercentage).toFixed(2);
             } else {
-                lineItem["unitPrice"]["netAmount"] = entry.price.toFixed(2);
+                lineItem['unitPrice']['netAmount'] = entry.price.toFixed(2);
             }
 
             lineItems.push(lineItem);
@@ -299,11 +299,11 @@ class LexOfficeAPIClient {
     }
 
     editInvoice(invoiceID) {
-        tyme.openURL(this.baseURL + "invoice/edit/" + invoiceID);
+        tyme.openURL(this.baseURL + 'invoice/edit/' + invoiceID);
     }
 
     startAuthFlow() {
-        tyme.openURL(this.baseURL + "auth/new");
+        tyme.openURL(this.baseURL + 'auth/new');
     }
 
     hasAuthCode() {
@@ -316,9 +316,9 @@ class LexOfficeAPIClient {
     }
 
     fetchTokensFromCode() {
-        const url = this.baseURL + "auth/code";
+        const url = this.baseURL + 'auth/code';
         const code = tyme.getSecureValue(this.authCodeKey);
-        const response = utils.request(url, 'POST', {}, {"code": code});
+        const response = utils.request(url, 'POST', {}, {'code': code});
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -338,8 +338,8 @@ class LexOfficeAPIClient {
     }
 
     refreshTokens(token) {
-        const url = this.baseURL + "auth/refresh";
-        const response = utils.request(url, 'POST', {}, {"refresh_token": token});
+        const url = this.baseURL + 'auth/refresh';
+        const response = utils.request(url, 'POST', {}, {'refresh_token': token});
         const statusCode = response['statusCode'];
         const result = response['result'];
 
