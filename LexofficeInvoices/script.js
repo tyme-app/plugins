@@ -238,7 +238,7 @@ class LexOfficeResolver {
                 'type': 'custom',
                 'name': entry.name,
                 'description': note,
-                'quantity': entry.quantity.toFixed(2),
+                'quantity': entry.quantity.toFixed(4),
                 'unitName': entry.unit,
                 'unitPrice': {
                     'currency': tyme.currencyCode(),
