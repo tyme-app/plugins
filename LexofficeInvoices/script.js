@@ -342,7 +342,7 @@ class LexOfficeAPIClient {
             tyme.setSecureValue(this.refreshTokenKey, json['refresh_token']);
             return true;
         } else {
-            utils.log('Lexoffice Auth Error ' + JSON.stringify(response));
+            utils.log('lexoffice Auth Error ' + JSON.stringify(response));
             tyme.setSecureValue(this.accessTokenKey, null);
             tyme.setSecureValue(this.refreshTokenKey, null);
             return false;
@@ -361,7 +361,7 @@ class LexOfficeAPIClient {
             tyme.setSecureValue(this.refreshTokenKey, json['refresh_token']);
             return true;
         } else {
-            utils.log('Lexoffice Token Refresh Error' + JSON.stringify(response));
+            utils.log('lexoffice Token Refresh Error' + JSON.stringify(response));
             tyme.setSecureValue(this.accessTokenKey, null);
             tyme.setSecureValue(this.refreshTokenKey, null);
             return false;
