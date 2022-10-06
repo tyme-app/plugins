@@ -304,8 +304,7 @@ class LexOfficeResolver {
 
 class LexOfficeAPIClient {
     constructor() {
-        //this.baseURL = 'https://api.tyme-app.com/lex/';
-        this.baseURL = 'http://localhost:8888/lex/';
+        this.baseURL = 'https://api.tyme-app.com/lex/';
         this.lexofficeIDKey = 'lexoffice_id';
         this.authCodeKey = 'lexoffice_auth_code';
     }
