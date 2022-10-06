@@ -305,7 +305,7 @@ class LexOfficeResolver {
 class LexOfficeAPIClient {
     constructor() {
         this.baseURL = 'https://api.tyme-app.com/lex/';
-        this.lexofficeIDKey = 'lexoffice_id';
+        this.lexTokenKey = 'lexoffice_token';
         this.authCodeKey = 'lexoffice_auth_code';
     }
 
@@ -322,7 +322,7 @@ class LexOfficeAPIClient {
     }
 
     isAuthenticated() {
-        return tyme.getSecureValue(this.lexofficeIDKey) != null
+        return tyme.getSecureValue(this.lexTokenKey) != null
     }
 
     fetchTokenFromCode() {
@@ -336,11 +336,11 @@ class LexOfficeAPIClient {
 
         if (statusCode === 200) {
             const json = JSON.parse(result);
-            tyme.setSecureValue(this.lexofficeIDKey, json['id']);
+            tyme.setSecureValue(this.lexTokenKey, json['lex_token']);
             return true;
         } else {
             utils.log('lexoffice Auth Error ' + JSON.stringify(response));
-            tyme.setSecureValue(this.lexofficeIDKey, null);
+            tyme.setSecureValue(this.lexTokenKey, null);
             return false;
         }
     }
@@ -356,19 +356,19 @@ class LexOfficeAPIClient {
         }
 
         const url = this.baseURL + 'resource';
-        const lexofficeID = tyme.getSecureValue(this.lexofficeIDKey);
+        const lexofficeToken = tyme.getSecureValue(this.lexTokenKey);
 
         const combinedParams = {
             'path': path,
             'method': method,
             'params': params,
-            'id': lexofficeID
+            'lex_token': lexofficeToken
         }
 
         const response = utils.request(url, 'POST', {}, combinedParams);
 
         if (response['statusCode'] === 401 && this.isAuthenticated()) {
-            tyme.setSecureValue(this.lexofficeIDKey, null);
+            tyme.setSecureValue(this.lexTokenKey, null);
         }
 
         return response;
