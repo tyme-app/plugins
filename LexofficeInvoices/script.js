@@ -115,7 +115,6 @@ class TimeEntriesConverter {
         str += '|-|-:|-:|-|-:|\n';
 
         data.forEach((entry) => {
-
             var name = entry.name;
 
             if (formValue.showNotes) {
@@ -125,7 +124,7 @@ class TimeEntriesConverter {
 
             str += '|' + name;
             str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
-            str += '|' + entry.quantity.toFixed(2);
+            str += '|' + entry.quantity.toFixed(4);
             str += '|' + entry.unit;
             str += '|' + entry.sum.toFixed(2) + ' ' + tyme.currencySymbol();
             str += '|\n';
