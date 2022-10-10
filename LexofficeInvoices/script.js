@@ -36,8 +36,7 @@ class TimeEntriesConverter {
                             'quantity': 0.0,
                             'unit': '',
                             'price': parseFloat(timeEntry.rate),
-                            'note': '',
-                            'sum': 0.0
+                            'note': ''
                         };
 
                         if (timeEntry.type === 'timed') {
@@ -68,8 +67,6 @@ class TimeEntriesConverter {
                         data[key].quantity += quantity;
                     }
 
-                    data[key].sum += timeEntry.sum;
-
                     if (data[key].note.length > 0 && timeEntry.note.length > 0) {
                         data[key].note += '\n';
                     }
@@ -91,12 +88,10 @@ class TimeEntriesConverter {
     generatePreview(isAuthenticated) {
 
         const data = this.aggregatedTimeEntryData()
-        const total = data.reduce(function (sum, timeEntry) {
-            sum += timeEntry.sum;
-            return sum;
-        }, 0.0);
 
-        var str = '';
+        let total = 0.0;
+        let str = '';
+
         str += '![](plugins/LexofficeInvoices/lexoffice_logo.png)\n';
 
         if (!isAuthenticated) {
@@ -115,18 +110,24 @@ class TimeEntriesConverter {
         str += '|-|-:|-:|-|-:|\n';
 
         data.forEach((entry) => {
-            var name = entry.name;
+            let name = entry.name;
 
             if (formValue.showNotes) {
                 name = '**' + entry.name + '**';
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
             }
 
+            let price = entry.price.toFixed(2);
+            let quantity = entry.quantity.toFixed(4);
+            let sum = parseFloat(price) * parseFloat(quantity);
+
+            total += sum;
+
             str += '|' + name;
-            str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
-            str += '|' + entry.quantity.toFixed(4);
+            str += '|' + price + ' ' + tyme.currencySymbol();
+            str += '|' + quantity;
             str += '|' + entry.unit;
-            str += '|' + entry.sum.toFixed(2) + ' ' + tyme.currencySymbol();
+            str += '|' + sum.toFixed(2) + ' ' + tyme.currencySymbol();
             str += '|\n';
         });
 
