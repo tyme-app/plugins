@@ -85,6 +85,10 @@ class TimeEntriesConverter {
             });
     }
 
+    roundNumber(num, places) {
+        return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
+    }
+
     generatePreview(isAuthenticated) {
 
         const data = this.aggregatedTimeEntryData()
@@ -95,7 +99,7 @@ class TimeEntriesConverter {
         str += '![](plugins/LexofficeInvoices/lexoffice_logo.png)\n';
 
         if (!isAuthenticated) {
-            str += "#### <span style='color: darkred;'>" + utils.localize('not.connected.message') + "</span>\n";
+            str += "#### <span style='color: darkred; font-size: 16px;'>" + utils.localize('not.connected.message') + "</span>\n";
         }
 
         str += '## ' + utils.localize('invoice.header') + '\n';
@@ -117,21 +121,21 @@ class TimeEntriesConverter {
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
             }
 
-            let price = entry.price.toFixed(2);
-            let quantity = entry.quantity.toFixed(4);
-            let sum = parseFloat(price) * parseFloat(quantity);
+            let price = this.roundNumber(entry.price, 2);
+            let quantity = this.roundNumber(entry.quantity, 4);
+            let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
 
-            total += sum;
+            total += parseFloat(sum);
 
             str += '|' + name;
             str += '|' + price + ' ' + tyme.currencySymbol();
             str += '|' + quantity;
             str += '|' + entry.unit;
-            str += '|' + sum.toFixed(2) + ' ' + tyme.currencySymbol();
+            str += '|' + this.roundNumber(sum, 2) + ' ' + tyme.currencySymbol();
             str += '|\n';
         });
 
-        str += '|||||**' + total.toFixed(2) + ' ' + tyme.currencySymbol() + '**|\n';
+        str += '|||||**' + this.roundNumber(total, 2) + ' ' + tyme.currencySymbol() + '**|\n';
         return utils.markdownToHTML(str);
     }
 }
