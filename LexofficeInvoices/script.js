@@ -36,8 +36,7 @@ class TimeEntriesConverter {
                             'quantity': 0.0,
                             'unit': '',
                             'price': parseFloat(timeEntry.rate),
-                            'note': '',
-                            'sum': 0.0
+                            'note': ''
                         };
 
                         if (timeEntry.type === 'timed') {
@@ -68,8 +67,6 @@ class TimeEntriesConverter {
                         data[key].quantity += quantity;
                     }
 
-                    data[key].sum += timeEntry.sum;
-
                     if (data[key].note.length > 0 && timeEntry.note.length > 0) {
                         data[key].note += '\n';
                     }
@@ -88,14 +85,16 @@ class TimeEntriesConverter {
             });
     }
 
+    roundNumber(num, places) {
+        return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
+    }
+
     generatePreview() {
         const data = this.aggregatedTimeEntryData()
-        const total = data.reduce(function (sum, timeEntry) {
-            sum += timeEntry.sum;
-            return sum;
-        }, 0.0);
 
-        var str = '';
+        let total = 0.0;
+        let str = '';
+
         str += '![](plugins/LexofficeInvoices/lexoffice_logo.png)\n';
         str += '## ' + utils.localize('invoice.header') + '\n';
 
@@ -109,23 +108,28 @@ class TimeEntriesConverter {
         str += '|-|-:|-:|-|-:|\n';
 
         data.forEach((entry) => {
-
-            var name = entry.name;
+            let name = entry.name;
 
             if (formValue.showNotes) {
                 name = '**' + entry.name + '**';
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
             }
 
+            let price = this.roundNumber(entry.price, 2);
+            let quantity = this.roundNumber(entry.quantity, 4);
+            let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
+
+            total += parseFloat(sum);
+
             str += '|' + name;
-            str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
-            str += '|' + entry.quantity.toFixed(2);
+            str += '|' + price + ' ' + tyme.currencySymbol();
+            str += '|' + quantity;
             str += '|' + entry.unit;
-            str += '|' + entry.sum.toFixed(2) + ' ' + tyme.currencySymbol();
+            str += '|' + this.roundNumber(sum, 2) + ' ' + tyme.currencySymbol();
             str += '|\n';
         });
 
-        str += '|||||**' + total.toFixed(2) + ' ' + tyme.currencySymbol() + '**|\n';
+        str += '|||||**' + this.roundNumber(total, 2) + ' ' + tyme.currencySymbol() + '**|\n';
         return utils.markdownToHTML(str);
     }
 }
@@ -209,26 +213,32 @@ class LexOfficeResolver {
 
     makeCreateInvoiceCall() {
         const data = this.timeEntriesConverter.aggregatedTimeEntryData()
-        var lineItems = [];
+        let lineItems = [];
 
         const taxPercentage = 1.0 + parseFloat(formValue.taxRate) / 100.0;
 
         data.forEach((entry) => {
             const note = formValue.showNotes ? entry.note : '';
 
-            lineItems.push({
+            const lineItem = {
                 'type': 'custom',
                 'name': entry.name,
                 'description': note,
-                'quantity': entry.quantity.toFixed(2),
+                'quantity': entry.quantity.toFixed(4),
                 'unitName': entry.unit,
                 'unitPrice': {
                     'currency': tyme.currencyCode(),
-                    'netAmount': entry.price.toFixed(2),
-                    'grossAmount': (entry.price * taxPercentage).toFixed(2),
                     'taxRatePercentage': formValue.taxRate
                 }
-            })
+            };
+
+            if (formValue.taxType === 'gross') {
+                lineItem['unitPrice']['grossAmount'] = (entry.price * taxPercentage).toFixed(2);
+            } else {
+                lineItem['unitPrice']['netAmount'] = entry.price.toFixed(2);
+            }
+
+            lineItems.push(lineItem);
         });
 
         const params = {
@@ -252,14 +262,19 @@ class LexOfficeResolver {
 
         const url = this.baseURL + this.invoicePath;
         const response = utils.request(url, 'POST', {'Authorization': 'Bearer ' + this.apiKey}, params);
+        
         const statusCode = response['statusCode'];
         const result = response['result'];
+        const parsedData = JSON.parse(result);
 
         if (statusCode === 201) {
-            const parsedData = JSON.parse(result);
             return parsedData['id'];
         } else {
-            tyme.showAlert('Lexoffice API Error', JSON.stringify(response));
+            if (parsedData['message'] != null) {
+                tyme.showAlert(utils.localize('api.invoice.error.title'), parsedData['message']);
+            } else {
+                tyme.showAlert(utils.localize('api.invoice.error.title'), JSON.stringify(response));
+            }
             return null;
         }
     }
