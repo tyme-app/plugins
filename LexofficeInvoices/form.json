@@ -1,16 +1,15 @@
 [
   {
-    "id": "lexofficeKey",
-    "type": "securetext",
-    "name": "input.key",
-    "placeholder": "input.key.placeholder",
-    "persist": true
+    "id": "lexofficeAuthButton",
+    "type": "button",
+    "name": "button.auth",
+    "actionFunction": "lexOfficeAPIClient.startAuthFlow()"
   },
   {
     "id": "lexofficeKeyHint",
     "type": "hint",
     "name": "",
-    "value": "input.key.hint"
+    "value": "button.auth.hint"
   },
   {
     "id": "separator1",
@@ -99,11 +98,11 @@
     "persist": true
   },
   {
-    "id": "clientID",
+    "id": "contactID",
     "type": "dropdown",
-    "name": "input.client",
-    "valueFunction": "lexOfficeResolver.getClients()",
-    "valueFunctionReloadable": true,
+    "name": "input.contact",
+    "valueFunction": "lexOfficeResolver.getContacts()",
+    "valueFunctionReloadable": false,
     "persist": true
   },
   {

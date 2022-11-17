@@ -89,13 +89,19 @@ class TimeEntriesConverter {
         return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
     }
 
-    generatePreview() {
+    generatePreview(isAuthenticated) {
+
         const data = this.aggregatedTimeEntryData()
 
         let total = 0.0;
         let str = '';
 
         str += '![](plugins/LexofficeInvoices/lexoffice_logo.png)\n';
+
+        if (!isAuthenticated) {
+            str += "#### <span style='color: darkred; font-size: 16px;'>" + utils.localize('not.connected.message') + "</span>\n";
+        }
+
         str += '## ' + utils.localize('invoice.header') + '\n';
 
         str += '|' + utils.localize('invoice.position');
@@ -135,38 +141,43 @@ class TimeEntriesConverter {
 }
 
 class LexOfficeResolver {
-    constructor(apiKey, timeEntriesConverter) {
-        this.apiKey = apiKey;
+    constructor(lexOfficeAPIClient, timeEntriesConverter) {
+        this.lexOfficeAPIClient = lexOfficeAPIClient;
         this.timeEntriesConverter = timeEntriesConverter;
-        this.baseURL = 'https://api.lexoffice.io';
         this.invoicePath = '/v1/invoices/';
         this.contactPath = '/v1/contacts/';
     }
 
-    getClients() {
-        this.clients = [];
+    getContacts() {
+        this.contacts = [];
 
-        const totalPages = this.getClientPage(0);
+        const totalPages = this.getContactPage(0);
         for (let i = 1; i <= totalPages; i++) {
-            this.getClientPage(i);
+            this.getContactPage(i);
         }
 
-        if (this.clients.length === 0) {
-            this.clients.push({
+        if (this.contacts.length === 0) {
+            this.contacts.push({
                 'name': utils.localize('input.clients.empty'),
                 'value': ''
             });
         }
 
-        return this.clients;
+        return this.contacts;
     }
 
-    getClientPage(page) {
-        const url = this.baseURL + this.contactPath;
-        const response = utils.request(url, 'GET', {'Authorization': 'Bearer ' + this.apiKey}, {
-            'page': page,
-            'size': 25
-        });
+    getContactPage(page) {
+        const response = this.lexOfficeAPIClient.callResource(
+            this.contactPath,
+            'GET',
+            {'page': page, 'size': 25},
+            false
+        );
+
+        if (response == null) {
+            return 0;
+        }
+
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -176,27 +187,33 @@ class LexOfficeResolver {
             const totalPages = parsedData['totalPages'];
 
             content
-                .filter(function (client) {
-                    return client.roles.hasOwnProperty('customer');
+                .filter(function (contact) {
+                    return contact.roles.hasOwnProperty('customer');
                 })
-                .forEach((client, index) => {
-                    let clientObject = {
-                        'value': client.id
+                .forEach((contact, index) => {
+                    let contactObject = {
+                        'value': contact.id
                     }
 
-                    if (client.hasOwnProperty('company') && client.company.hasOwnProperty('name')) {
-                        clientObject.name = client.company.name;
-                    } else if (client.hasOwnProperty('person') && client.person.hasOwnProperty('firstName') && client.person.hasOwnProperty('lastName')) {
-                        clientObject.name = client.person.firstName + ' ' + client.person.lastName;
+                    if (contact.hasOwnProperty('company') && contact.company.hasOwnProperty('name')) {
+                        contactObject.name = contact.company.name;
+                    } else if (contact.hasOwnProperty('person') && contact.person.hasOwnProperty('firstName') && contact.person.hasOwnProperty('lastName')) {
+                        contactObject.name = contact.person.firstName + ' ' + contact.person.lastName;
                     }
 
-                    this.clients.push(clientObject);
+                    this.contacts.push(contactObject);
                 });
 
             return totalPages;
         } else {
             return 0
         }
+    }
+
+    generatePreview() {
+        return this.timeEntriesConverter.generatePreview(
+            this.lexOfficeAPIClient.isAuthenticated()
+        )
     }
 
     createInvoice() {
@@ -207,7 +224,8 @@ class LexOfficeResolver {
                 const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
                 tyme.setBillingState(timeEntryIDs, 1);
             }
-            tyme.openURL('https://app.lexoffice.de/permalink/invoices/edit/' + invoiceID);
+
+            this.lexOfficeAPIClient.editInvoice(invoiceID);
         }
     }
 
@@ -244,7 +262,7 @@ class LexOfficeResolver {
         const params = {
             'voucherDate': new Date().toISOString(),
             'address': {
-                'contactId': formValue.clientID
+                'contactId': formValue.contactID
             },
             'lineItems': lineItems,
             'totalPrice': {
@@ -260,9 +278,17 @@ class LexOfficeResolver {
             }
         }
 
-        const url = this.baseURL + this.invoicePath;
-        const response = utils.request(url, 'POST', {'Authorization': 'Bearer ' + this.apiKey}, params);
-        
+        const response = this.lexOfficeAPIClient.callResource(
+            this.invoicePath,
+            'POST',
+            params,
+            true
+        );
+
+        if (response == null) {
+            return null;
+        }
+
         const statusCode = response['statusCode'];
         const result = response['result'];
         const parsedData = JSON.parse(result);
@@ -280,5 +306,79 @@ class LexOfficeResolver {
     }
 }
 
+class LexOfficeAPIClient {
+    constructor() {
+        this.baseURL = 'https://api.tyme-app.com/lex/';
+        this.lexTokenKey = 'lexoffice_token';
+        this.authCodeKey = 'lexoffice_auth_code';
+    }
+
+    editInvoice(invoiceID) {
+        tyme.openURL(this.baseURL + 'invoice/edit/' + invoiceID);
+    }
+
+    startAuthFlow() {
+        tyme.openURL(this.baseURL + 'auth/new');
+    }
+
+    hasAuthCode() {
+        return tyme.getSecureValue(this.authCodeKey) != null;
+    }
+
+    isAuthenticated() {
+        return tyme.getSecureValue(this.lexTokenKey) != null
+    }
+
+    fetchTokenFromCode() {
+        const url = this.baseURL + 'auth/code';
+        const code = tyme.getSecureValue(this.authCodeKey);
+        const response = utils.request(url, 'POST', {}, {'code': code});
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        tyme.setSecureValue(this.authCodeKey, null);
+
+        if (statusCode === 200) {
+            const json = JSON.parse(result);
+            tyme.setSecureValue(this.lexTokenKey, json['lex_token']);
+            return true;
+        } else {
+            utils.log('lexoffice Auth Error ' + JSON.stringify(response));
+            tyme.setSecureValue(this.lexTokenKey, null);
+            return false;
+        }
+    }
+
+    callResource(path, method, params, doAuth) {
+        if (!this.isAuthenticated()) {
+            if (this.hasAuthCode()) {
+                this.fetchTokenFromCode();
+            } else if (doAuth) {
+                this.startAuthFlow();
+                return null;
+            }
+        }
+
+        const url = this.baseURL + 'resource';
+        const lexofficeToken = tyme.getSecureValue(this.lexTokenKey);
+
+        const combinedParams = {
+            'path': path,
+            'method': method,
+            'params': params,
+            'lex_token': lexofficeToken
+        }
+
+        const response = utils.request(url, 'POST', {}, combinedParams);
+
+        if (response['statusCode'] === 401 && this.isAuthenticated()) {
+            tyme.setSecureValue(this.lexTokenKey, null);
+        }
+
+        return response;
+    }
+}
+
 const timeEntriesConverter = new TimeEntriesConverter();
-const lexOfficeResolver = new LexOfficeResolver(formValue.lexofficeKey, timeEntriesConverter);
+const lexOfficeAPIClient = new LexOfficeAPIClient();
+const lexOfficeResolver = new LexOfficeResolver(lexOfficeAPIClient, timeEntriesConverter);
