@@ -1,0 +1,48 @@
+[
+  {
+    "id": "openProjectURL",
+    "type": "text",
+    "name": "input.url",
+    "placeholder": "input.url.placeholder",
+    "persist": true,
+    "value": "https://community.openproject.org"
+  },
+  {
+    "id": "openProjectKey",
+    "type": "securetext",
+    "name": "input.key",
+    "placeholder": "input.key.placeholder",
+    "persist": true
+  },
+  {
+    "id": "openProjectKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.key.hint"
+  },
+  {
+    "id": "sep",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "updateTasks",
+    "type": "checkbox",
+    "persist": true,
+    "name": "input.updateTasks"
+  },
+  {
+    "id": "updateTimeFrame",
+    "type": "dropdown",
+    "name": "input.updateTasksTimeFrame",
+    "persist": true,
+    "value": "14",
+    "valueFunction": "getTimeFrames()"
+  },
+  {
+    "id": "updateTimeFrameHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.updateTasks.hint"
+  }
+]

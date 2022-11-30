@@ -1,0 +1,16 @@
+{
+  "id": "openproject_importer",
+  "tymeMinVersion": "2022.11",
+  "version": "1.0",
+  "type": "import",
+  "name": "OpenProject Import",
+  "summary": "Import your currently assigned work packages from OpenProject right into Tyme.",
+  "author": "Lars Malewski",
+  "authorUrl": "https://larsmalewski.de",
+  "icon": "openproject_icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "importer.start()",
+  "scriptPreview": "",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}
