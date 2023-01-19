@@ -36,8 +36,17 @@
     "type": "dropdown",
     "name": "input.updateTasksTimeFrame",
     "persist": true,
-    "value": "14",
-    "valueFunction": "getTimeFrames()"
+    "values": [
+      {
+        "14": "input.timeFrame.14"
+      },
+      {
+        "30": "input.timeFrame.30"
+      },
+      {
+        "60": "input.timeFrame.60"
+      }
+    ]
   },
   {
     "id": "updateTimeFrameHint",

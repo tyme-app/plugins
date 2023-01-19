@@ -384,24 +384,3 @@ function extractEstimate(estimateString) {
 
     return estimateInSeconds;
 }
-
-/**
- * Time frames for updating imported tasks. 
- * Used by the import form.
- */
-function getTimeFrames() {
-    return [
-        {
-            "name": "14 Tage",
-            "value": "14"
-        },
-        {
-            "name": "30 Tage",
-            "value": "30"
-        },
-        {
-            "name": "60 Tage",
-            "value": "60"
-        }
-    ];
-}
