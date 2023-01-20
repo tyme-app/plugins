@@ -135,7 +135,6 @@ class OpenProjectImporter {
             this.updateRecentWorkPackages();
         }
 
-        // utils.log(JSON.stringify(this.status));
         this.workPackages = this.apiClient.loadWorkPackages();
 
         // Extract project ids from work packages and load projects
@@ -205,7 +204,7 @@ class OpenProjectImporter {
     processData() {
         for (let categoryID of this.categories) {
             const category = this.projects[categoryID] ?? this.apiClient.loadProject(categoryID);
-            const id = "openproject-category-" + categoryID;
+            const id = "openproject-" + categoryID;
 
             let tymeCategory = Category.fromID(id) ?? Category.create(id);
             tymeCategory.name = category.name;
@@ -237,13 +236,13 @@ class OpenProjectImporter {
      * @param {*} project Project from OpenProject.
      */
     createOrUpdateProject(project) {
-        const id = "openproject-project-" + project.id;
+        const id = "openproject-" + project.id;
 
         let tymeProject = Project.fromID(id) ?? Project.create(id);
         tymeProject.name = project.name;
         tymeProject.isCompleted = !project.active;
 
-        const categoryID = "openproject-category-" + this.getCategoryIDFromProject(project);
+        const categoryID = "openproject-" + this.getCategoryIDFromProject(project);
         tymeProject.category = Category.fromID(categoryID);
     }
 
@@ -252,8 +251,8 @@ class OpenProjectImporter {
      * @param {*} workPackage Work package from OpenProject.
      */
     createOrUpdateTask(workPackage) {
-        const id = "openproject-work_package-" + workPackage.id;
-        const projectID = "openproject-project-" + this.extractProjectID(workPackage?._links?.project?.href);
+        const id = "openproject-" + workPackage.id;
+        const projectID = "openproject-" + this.extractProjectID(workPackage?._links?.project?.href);
 
         let tymeTask = TimedTask.fromID(id) ?? TimedTask.create(id);
         tymeTask.name = workPackage.subject;
@@ -331,7 +330,7 @@ class OpenProjectImporter {
 
         // Load time entries for given time frame
         const timeEntries = tyme.timeEntries(start, end);
-        const regex = new RegExp(/(?:openproject-work_package-)\d+/);
+        const regex = new RegExp(/(?:openproject-)\d+/);
 
         // Array of work packages
         const workPackageIDs = new Set();
@@ -343,7 +342,7 @@ class OpenProjectImporter {
             }
 
             // Extract only the work package id
-            workPackageIDs.add(match[0].replace('openproject-work_package-', ''));
+            workPackageIDs.add(match[0].replace('openproject-', ''));
         }
 
         return Array.from(workPackageIDs);
