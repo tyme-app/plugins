@@ -1,5 +1,6 @@
 {
   "en": {
+    "locale.identifier": "en-US",
     "api.invoice.error.title": "Could not create invoice",
     "not.connected.message": "Tyme is not connected to lexoffice. Please click on 'Connect with lexoffice'.",
     "button.auth": "Connect with lexoffice",
@@ -14,9 +15,10 @@
     "input.nonbillable": "Include non-billable tasks",
     "input.clients.empty": "Could not fetch clients. Please connect with lexoffice first.",
     "input.notes": "Include notes in invoice",
-    "unit.hours": "Hour",
+    "input.note.times": "Display times in notes",
+    "unit.hours": "Hours",
     "unit.kilometer": "km",
-    "unit.quantity": "Piece",
+    "unit.quantity": "Pieces",
     "invoice.header": "Invoice items",
     "invoice.position": "Position",
     "invoice.price": "Price",
@@ -33,6 +35,7 @@
     "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
+    "locale.identifier": "de-DE",
     "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
     "not.connected.message": "Tyme ist nicht mit lexoffice verbunden. Klicke bitte auf 'Mit lexoffice verbinden'.",
     "button.auth": "Mit lexoffice verbinden",
@@ -47,7 +50,8 @@
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
     "input.clients.empty": "Es konnten keine Kunden abgerufen werden. Bitte verbinde dich zuerst mit lexoffice.",
     "input.notes": "Notizen in die Rechnung übernehmen",
-    "unit.hours": "Stunde",
+    "input.note.times": "Zeiten in Notizen anzeigen",
+    "unit.hours": "Stunden",
     "unit.kilometer": "km",
     "unit.quantity": "Stück",
     "invoice.header": "Rechnungspositionen",

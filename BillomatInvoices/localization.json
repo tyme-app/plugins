@@ -1,5 +1,6 @@
 {
   "en": {
+    "locale.identifier": "en-US",
     "input.key": "API Token",
     "input.key.placeholder": "Please enter your API-Token",
     "input.billomatID": "Billomat ID",
@@ -13,10 +14,11 @@
     "input.nonbillable": "Include non-billable tasks",
     "input.data.empty": "Could not fetch data from Billomat. Please check your API-Token Key.",
     "input.notes": "Include notes in invoice",
+    "input.note.times": "Display times in notes",
     "input.unit.hint": "Please note that the units (Hour, Piece, km) must exist in Billomat. Otherwise Billomat cannot assign them automatically.",
-    "unit.hours": "Hour",
+    "unit.hours": "Hours",
     "unit.kilometer": "km",
-    "unit.quantity": "Piece",
+    "unit.quantity": "Pieces",
     "invoice.header": "Invoice items",
     "invoice.position": "Position",
     "invoice.price": "Price",
@@ -25,6 +27,7 @@
     "invoice.net": "Net"
   },
   "de": {
+    "locale.identifier": "de-DE",
     "input.key": "API Token",
     "input.key.placeholder": "Bitte gib deinen API-Token ein",
     "input.billomatID": "Billomat ID",
@@ -38,8 +41,9 @@
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
     "input.data.empty": "Es konnten keine Daten von Billomat werden. Bitte überprüfe deinen API-Token.",
     "input.notes": "Notizen in die Rechnung übernehmen",
+    "input.note.times": "Zeiten in Notizen anzeigen",
     "input.unit.hint": "Beachte bitte, dass die Einheiten (Stunde, Stück, km) in Billomat existieren müssen. Ansonsten kann Billomat diese nicht automatisch zuordnen.",
-    "unit.hours": "Stunde",
+    "unit.hours": "Stunden",
     "unit.kilometer": "km",
     "unit.quantity": "Stück",
     "invoice.header": "Rechnungspositionen",

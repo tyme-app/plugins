@@ -40,7 +40,7 @@ class TimeEntriesConverter {
                             'sum': 0.0
                         };
 
-                        // unity: Stk=1, Std=9, km=10
+                        // unit: Stk=1, Std=9, km=10
 
                         if (timeEntry.type === 'timed') {
                             entry.unit = utils.localize('unit.hours')
@@ -59,15 +59,17 @@ class TimeEntriesConverter {
                         data[key] = entry;
                     }
 
+                    let currentQuantity = 0;
+
                     if (timeEntry.type === 'timed') {
-                        const durationHours = parseFloat(timeEntry.duration) / 60.0
-                        data[key].quantity += durationHours;
+                        currentQuantity = parseFloat(timeEntry.duration) / 60.0
+                        data[key].quantity += currentQuantity;
                     } else if (timeEntry.type === 'mileage') {
-                        const distance = parseFloat(timeEntry.distance)
-                        data[key].quantity += distance;
+                        currentQuantity = parseFloat(timeEntry.distance)
+                        data[key].quantity += currentQuantity;
                     } else if (timeEntry.type === 'fixed') {
-                        const quantity = parseFloat(timeEntry.quantity)
-                        data[key].quantity += quantity;
+                        currentQuantity = parseFloat(timeEntry.quantity)
+                        data[key].quantity += currentQuantity;
                     }
 
                     data[key].sum += timeEntry.sum;
@@ -75,11 +77,22 @@ class TimeEntriesConverter {
                     if (data[key].note.length > 0 && timeEntry.note.length > 0) {
                         data[key].note += '<br/>';
                     }
-                    data[key].note += timeEntry.note;
 
+                    if (formValue.showTimesInNotes
+                        && timeEntry.hasOwnProperty("start")
+                        && timeEntry.hasOwnProperty("end")) {
+
+                        data[key].note += this.formatDate(timeEntry.start, false) + " ";
+                        data[key].note += this.formatDate(timeEntry.start, true) + " - ";
+                        data[key].note += this.formatDate(timeEntry.end, true) + " (";
+                        data[key].note += this.roundNumber(currentQuantity, 1) + " " + data[key].unit + ")";
+                        data[key].note += "\n"
+                    }
+
+                    data[key].note += timeEntry.note;
                     return data;
 
-                }, {});
+                }.bind(this), {});
 
         return Object.keys(data)
             .map(function (key) {
@@ -88,6 +101,19 @@ class TimeEntriesConverter {
             .sort(function (a, b) {
                 return a.name > b.name;
             });
+    }
+
+    formatDate(dateString, timeOnly) {
+        let locale = utils.localize('locale.identifier');
+        if (timeOnly) {
+            return (new Date(dateString)).toLocaleTimeString(locale, {hour: '2-digit', minute: '2-digit'});
+        } else {
+            return (new Date(dateString)).toLocaleDateString(locale);
+        }
+    }
+
+    roundNumber(num, places) {
+        return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
     }
 
     generatePreview() {

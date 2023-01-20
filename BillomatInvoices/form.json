@@ -52,6 +52,13 @@
     "persist": true
   },
   {
+    "id": "showTimesInNotes",
+    "type": "checkbox",
+    "name": "input.note.times",
+    "value": "false",
+    "persist": true
+  },
+  {
     "id": "separator2",
     "type": "separator",
     "name": ""

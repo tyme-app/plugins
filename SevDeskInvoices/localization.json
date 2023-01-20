@@ -1,5 +1,6 @@
 {
   "en": {
+    "locale.identifier": "en-US",
     "input.key": "API Token",
     "input.key.placeholder": "Please enter your API-Token",
     "input.key.hint": "You can find your API token under your [user](https://my.sevdesk.de/#/admin/userManagement) > API token.",
@@ -13,9 +14,10 @@
     "input.nonbillable": "Include non-billable tasks",
     "input.data.empty": "Could not fetch data from SevDesk. Please check your API-Token Key.",
     "input.notes": "Include notes in invoice",
-    "unit.hours": "Hour",
+    "input.note.times": "Display times in notes",
+    "unit.hours": "Hours",
     "unit.kilometer": "km",
-    "unit.quantity": "Piece",
+    "unit.quantity": "Pieces",
     "invoice.header": "Invoice items",
     "invoice.position": "Position",
     "invoice.price": "Price",
@@ -24,6 +26,7 @@
     "invoice.net": "Net"
   },
   "de": {
+    "locale.identifier": "de-DE",
     "input.key": "API Token",
     "input.key.placeholder": "Bitte gib deinen API-Token ein",
     "input.key.hint": "Deinen API-Token kannst du unter deinem [Benutzer](https://my.sevdesk.de/#/admin/userManagement) > API-Token finden.",
@@ -37,7 +40,8 @@
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
     "input.data.empty": "Es konnten keine Daten von SevDesk werden. Bitte überprüfe deinen API-Token.",
     "input.notes": "Notizen in die Rechnung übernehmen",
-    "unit.hours": "Stunde",
+    "input.note.times": "Zeiten in Notizen anzeigen",
+    "unit.hours": "Stunden",
     "unit.kilometer": "km",
     "unit.quantity": "Stück",
     "invoice.header": "Rechnungspositionen",
