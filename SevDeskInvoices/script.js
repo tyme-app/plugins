@@ -83,13 +83,14 @@ class TimeEntriesConverter {
 
                     if (formValue.showTimesInNotes
                         && timeEntry.hasOwnProperty("start")
-                        && timeEntry.hasOwnProperty("end")) {
+                        && timeEntry.hasOwnProperty("end")
+                        && timeEntry.type !== "fixed") {
 
                         data[key].note += this.formatDate(timeEntry.start, false) + " ";
                         data[key].note += this.formatDate(timeEntry.start, true) + " - ";
                         data[key].note += this.formatDate(timeEntry.end, true) + " (";
                         data[key].note += this.roundNumber(currentQuantity, 1) + " " + data[key].unit + ")";
-                        data[key].note += "\n"
+                        data[key].note += "<br/>";
                     }
 
                     data[key].note += timeEntry.note;
