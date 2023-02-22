@@ -1,7 +1,7 @@
 {
   "id": "billomat_invoices",
   "tymeMinVersion": "2022.16",
-  "version": "1.2",
+  "version": "1.3",
   "type": "export",
   "name": "Billomat Invoice",
   "summary": "Export your recorded times and notes to Billomat as a draft invoice. Offers a live preview of the data before creating the invoice.",
