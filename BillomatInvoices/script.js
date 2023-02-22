@@ -162,9 +162,9 @@ class TimeEntriesConverter {
 class BillomatResolver {
     constructor(billomatID, apiKey, timeEntriesConverter) {
         this.apiKey = apiKey;
-        this.billomatID = billomatID;
+        this.billomatID = billomatID.length !== 0 ? billomatID : "default";
         this.headers = {'X-BillomatApiKey': this.apiKey};
-        this.baseURL = 'https://' + billomatID + '.billomat.net/api/';
+        this.baseURL = 'https://' + this.billomatID + '.billomat.net/api/';
         this.timeEntriesConverter = timeEntriesConverter;
     }
 
