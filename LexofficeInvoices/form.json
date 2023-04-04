@@ -56,6 +56,23 @@
     "name": ""
   },
   {
+    "id": "roundingOption",
+    "type": "dropdown",
+    "name": "input.rounding",
+    "values": [
+      {
+        "4": "input.rounding.4"
+      },
+      {
+        "2": "input.rounding.2"
+      },
+      {
+        "0": "input.rounding.0"
+      }
+    ],
+    "persist": true
+  },
+  {
     "id": "taxRate",
     "type": "dropdown",
     "name": "input.taxrate",
