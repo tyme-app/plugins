@@ -75,8 +75,6 @@ class TimeEntriesConverter {
                         data[key].quantity += currentQuantity;
                     }
 
-                    data[key].sum += timeEntry.sum;
-
                     if (data[key].note.length > 0 && timeEntry.note.length > 0) {
                         data[key].note += '<br/>';
                     }
@@ -122,11 +120,8 @@ class TimeEntriesConverter {
 
     generatePreview() {
         const data = this.aggregatedTimeEntryData()
-        const total = data.reduce(function (sum, timeEntry) {
-            sum += timeEntry.sum;
-            return sum;
-        }, 0.0);
 
+        let total = 0.0;
         var str = '';
         str += '![](plugins/SevDeskInvoices/sevdesk_logo.png)\n';
         str += '## ' + utils.localize('invoice.header') + '\n';
@@ -149,15 +144,21 @@ class TimeEntriesConverter {
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
             }
 
+            let price = this.roundNumber(entry.price, 2);
+            let quantity = this.roundNumber(entry.quantity, 4);
+            let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
+
+            total += parseFloat(sum);
+
             str += '|' + name;
-            str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
-            str += '|' + entry.quantity.toFixed(2);
+            str += '|' + price + ' ' + tyme.currencySymbol();
+            str += '|' + quantity;
             str += '|' + entry.unit;
-            str += '|' + entry.sum.toFixed(2) + ' ' + tyme.currencySymbol();
+            str += '|' + sum + ' ' + tyme.currencySymbol();
             str += '|\n';
         });
 
-        str += '|||||**' + total.toFixed(2) + ' ' + tyme.currencySymbol() + '**|\n';
+        str += '|||||**' + this.roundNumber(total, 2) + ' ' + tyme.currencySymbol() + '**|\n';
         return utils.markdownToHTML(str);
     }
 }
