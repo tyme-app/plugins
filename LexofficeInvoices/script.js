@@ -144,7 +144,7 @@ class TimeEntriesConverter {
             }
 
             let price = this.roundNumber(entry.price, 2);
-            let quantity = this.roundNumber(entry.quantity, 4);
+            let quantity = this.roundNumber(entry.quantity, formValue.roundingOption);
             let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
 
             total += parseFloat(sum);
@@ -264,7 +264,7 @@ class LexOfficeResolver {
                 'type': 'custom',
                 'name': entry.name,
                 'description': note,
-                'quantity': entry.quantity.toFixed(4),
+                'quantity': this.timeEntriesConverter.roundNumber(entry.quantity, formValue.roundingOption),
                 'unitName': entry.unit,
                 'unitPrice': {
                     'currency': tyme.currencyCode(),

@@ -1,7 +1,7 @@
 {
   "id": "toggl_importer",
-  "tymeMinVersion": "2022.11",
-  "version": "1.0",
+  "tymeMinVersion": "2023.1",
+  "version": "1.1",
   "type": "import",
   "name": "Toggl Import",
   "summary": "Import your data from toggl right into Tyme.",

@@ -68,6 +68,9 @@ class TogglImporter {
             tymeProject.isCompleted = !project["active"];
             tymeProject.color = parseInt(project["hex_color"].replace("#", "0x"));
             tymeProject.defaultHourlyRate = project["rate"] ?? defaultHourlyRate;
+            tymeProject.roundingMethod = rounding;
+            tymeProject.roundingMinutes = roundingMinutes;
+
             if (!project["auto_estimates"]) {
                 tymeProject.plannedDuration = project["estimated_hours"] * 60 * 60;
             }
