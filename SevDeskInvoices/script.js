@@ -312,7 +312,7 @@ class SevDeskResolver {
             const parsedData = JSON.parse(result);
             return parsedData["objects"]["invoice"]["id"];
         } else {
-            tyme.showAlert('SevDesk API Error', JSON.stringify(response));
+            tyme.showAlert('sevDesk API Error', JSON.stringify(response));
             return null;
         }
     }
