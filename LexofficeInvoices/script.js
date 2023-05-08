@@ -90,13 +90,21 @@ class TimeEntriesConverter {
 
                 }.bind(this), {});
 
-        return Object.keys(data)
+        let sortedData = Object.keys(data)
             .map(function (key) {
                 return data[key];
             })
             .sort(function (a, b) {
                 return a.name > b.name;
             });
+
+        sortedData.forEach((entry) => {
+            if (entry.note.length > 2000) {
+                entry.note = entry.note.substring(0, 1999) + "…";
+            }
+        });
+
+        return sortedData;
     }
 
     formatDate(dateString, timeOnly) {
