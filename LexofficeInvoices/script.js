@@ -32,6 +32,7 @@ class TimeEntriesConverter {
 
                     if (data[key] == null) {
                         let entry = {
+                            'project': '',
                             'name': '',
                             'quantity': 0.0,
                             'unit': '',
@@ -47,6 +48,7 @@ class TimeEntriesConverter {
                             entry.unit = utils.localize('unit.quantity')
                         }
 
+                        entry.project = timeEntry.project;
                         entry.name = timeEntry.task;
 
                         if (timeEntry.subtask.length > 0) {
@@ -90,13 +92,21 @@ class TimeEntriesConverter {
 
                 }.bind(this), {});
 
-        return Object.keys(data)
+        let sortedData = Object.keys(data)
             .map(function (key) {
                 return data[key];
             })
             .sort(function (a, b) {
                 return a.name > b.name;
             });
+
+        sortedData.forEach((entry) => {
+            if (entry.note.length > 2000) {
+                entry.note = entry.note.substring(0, 1999) + "…";
+            }
+        });
+
+        return sortedData;
     }
 
     formatDate(dateString, timeOnly) {
@@ -141,6 +151,10 @@ class TimeEntriesConverter {
             if (formValue.showNotes) {
                 name = '**' + entry.name + '**';
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
+            }
+
+            if (formValue.prefixProject) {
+                name = '**' + entry.project + ':** ' + name;
             }
 
             let price = this.roundNumber(entry.price, 2);
@@ -258,11 +272,12 @@ class LexOfficeResolver {
         const taxPercentage = 1.0 + parseFloat(formValue.taxRate) / 100.0;
 
         data.forEach((entry) => {
+            const name = formValue.prefixProject ? entry.project + ": " +  entry.name : entry.name;
             const note = formValue.showNotes ? entry.note : '';
 
             const lineItem = {
                 'type': 'custom',
-                'name': entry.name,
+                'name': name,
                 'description': note,
                 'quantity': this.timeEntriesConverter.roundNumber(entry.quantity, formValue.roundingOption),
                 'unitName': entry.unit,

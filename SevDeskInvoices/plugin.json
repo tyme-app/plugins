@@ -1,10 +1,10 @@
 {
   "id": "sevdesk_invoices",
   "tymeMinVersion": "2022.16",
-  "version": "1.5",
+  "version": "1.6",
   "type": "export",
-  "name": "SevDesk Invoice",
-  "summary": "Export your recorded times and notes to SevDesk as a draft invoice. Offers a live preview of the data before creating the invoice.",
+  "name": "sevDesk Invoice",
+  "summary": "Export your recorded times and notes to sevDesk as a draft invoice. Offers a live preview of the data before creating the invoice.",
   "author": "Lars Gerckens",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "sevdesk_icon.png",
