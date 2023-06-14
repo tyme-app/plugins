@@ -21,7 +21,35 @@
     "value": "input.key.hint"
   },
   {
-    "id": "sep",
+    "id": "sep_1",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "insertWorkPackageNumber",
+    "type": "dropdown",
+    "name": "input.insertWorkPackageNumber",
+    "persist": true,
+    "values": [
+      {
+        "no": "input.insertWorkPackageNumber.no"
+      },
+      {
+        "prepend": "input.insertWorkPackageNumber.prepend"
+      },
+      {
+        "append": "input.insertWorkPackageNumber.append"
+      }
+    ]
+  },
+  {
+    "id": "insertWorkPackageNumberHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.insertWorkPackageNumber.hint"
+  },
+  {
+    "id": "sep_3",
     "type": "separator",
     "name": ""
   },

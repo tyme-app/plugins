@@ -1,7 +1,7 @@
 {
   "id": "openproject_importer",
   "tymeMinVersion": "2022.11",
-  "version": "1.0",
+  "version": "1.1",
   "type": "import",
   "name": "OpenProject Import",
   "summary": "Import your currently assigned work packages from OpenProject right into Tyme.",
