@@ -188,17 +188,6 @@ class OpenProjectImporter {
         }
 
         return this.extractProjectID(parent);
-
-        // TODO: Use ancestor collection?
-        // const ancestors = project._links.ancestors;
-
-        // if (!ancestors?.length || ancestors?.length === 0) {
-        //     return project["id"];
-        // }
-
-        // const projectURL = ancestors[ancestors.length - 1].href;
-        // const projectID = this.extractProjectID(projectURL);
-        // return projectID
     }
 
     processData() {
@@ -255,7 +244,7 @@ class OpenProjectImporter {
         const projectID = "openproject-" + this.extractProjectID(workPackage?._links?.project?.href);
 
         let tymeTask = TimedTask.fromID(id) ?? TimedTask.create(id);
-        tymeTask.name = workPackage.subject;
+        tymeTask.name = this.createTaskName(workPackage.subject, workPackage.id);
         tymeTask.isCompleted = this.isClosed(workPackage._links.status.href);
         const project = Project.fromID(projectID)
         tymeTask.project = project;
@@ -280,6 +269,23 @@ class OpenProjectImporter {
             tymeTask.plannedDuration = extractEstimate(workPackage["estimatedTime"]);
         } else {
             tymeTask.plannedDuration = null;
+        }
+    }
+
+    /**
+     * Creates the task name from a work package name and id.
+     * @param {string} name Name for the task.
+     * @param {string} id ID of the work package.
+     * @returns Task name based on import setting.
+     */
+    createTaskName(name, id) {
+        switch (formValue.insertWorkPackageNumber) {
+            case 'prepend':
+                return `[${id}] ${name}`;
+            case 'append':
+                return `${name} [${id}]`
+            default:
+                return name;
         }
     }
 
