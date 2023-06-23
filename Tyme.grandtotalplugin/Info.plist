@@ -33,5 +33,7 @@
 	</array>
 	<key>TimeImporterEntryURLTemplate</key>
 	<string>tyme://time_entry/%@</string>
+	<key>RequiresFullDiskAccess</key>
+    <true/>
 </dict>
 </plist>

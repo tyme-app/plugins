@@ -14,5 +14,7 @@
 	<array>
 		<string>estimates</string>
 	</array>
+	<key>RequiresFullDiskAccess</key>
+	<true/>
 </dict>
 </plist>
