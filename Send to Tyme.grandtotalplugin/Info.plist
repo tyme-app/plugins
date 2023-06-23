@@ -5,9 +5,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.mediaatelier.estimates.sendToTyme</string>
 	<key>copyright</key>
-	<string>© 2020 Stefan Fürst</string>
+	<string>© 2023 Stefan Fürst</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.0</string>
+	<string>3.1</string>
 	<key>GrandTotalMinimumVersion</key>
 	<real>6.0</real>
 	<key>types</key>
