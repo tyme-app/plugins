@@ -272,12 +272,12 @@ class LexOfficeResolver {
         const taxPercentage = 1.0 + parseFloat(formValue.taxRate) / 100.0;
 
         data.forEach((entry) => {
-            const name = formValue.prefixProject ? entry.project + ": " +  entry.name : entry.name;
+            const name = formValue.prefixProject ? entry.project + ": " + entry.name : entry.name;
             const note = formValue.showNotes ? entry.note : '';
 
             const lineItem = {
                 'type': 'custom',
-                'name': name,
+                'name': name.length > 255 ? (name.substring(0, 254) + "…") : name,
                 'description': note,
                 'quantity': this.timeEntriesConverter.roundNumber(entry.quantity, formValue.roundingOption),
                 'unitName': entry.unit,

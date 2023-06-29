@@ -7,7 +7,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.tyme-app.Tyme3.grandtotalimporter</string>
 	<key>CFBundleVersion</key>
-	<string>3.0</string>
+	<string>3.1</string>
 	<key>Globals</key>
 	<array>
 		<dict>
@@ -26,12 +26,14 @@
 	<key>callOnDeactivate</key>
 	<true/>
 	<key>copyright</key>
-	<string>© 2013-2022 Lars Gerckens</string>
+	<string>© 2013-2023 Lars Gerckens</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>
 	</array>
 	<key>TimeImporterEntryURLTemplate</key>
 	<string>tyme://time_entry/%@</string>
+	<key>RequiresFullDiskAccess</key>
+    <true/>
 </dict>
 </plist>
