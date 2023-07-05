@@ -26,7 +26,7 @@
 	<key>callOnDeactivate</key>
 	<true/>
 	<key>copyright</key>
-	<string>© 2013-2023 Lars Gerckens</string>
+	<string>© 2013-2023 Unit Numberfive oHG</string>
 	<key>types</key>
 	<array>
 		<string>timeimporter</string>

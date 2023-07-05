@@ -5,7 +5,7 @@
   "type": "export",
   "name": "lexoffice Invoice",
   "summary": "Export your recorded times and notes to lexoffice as a draft invoice. Offers a live preview of the data before creating the invoice.",
-  "author": "Lars Gerckens",
+  "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "lexoffice_icon.png",
   "scriptName": "script.js",
