@@ -5,7 +5,7 @@
   "type": "import",
   "name": "Toggl Import",
   "summary": "Import your data from toggl right into Tyme.",
-  "author": "Lars Gerckens",
+  "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "toggl_icon.png",
   "scriptName": "script.js",

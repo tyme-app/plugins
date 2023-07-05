@@ -5,7 +5,7 @@
   "type": "import",
   "name": "Clockify Import",
   "summary": "Import your data from Clockify right into Tyme.",
-  "author": "Lars Gerckens",
+  "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "clockify_icon.png",
   "scriptName": "script.js",
