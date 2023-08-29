@@ -169,6 +169,7 @@ class SevDeskResolver {
         this.timeEntriesConverter = timeEntriesConverter;
         this.baseURL = 'https://my.sevdesk.de/api';
         this.invoicePath = '/v1/Invoice/Factory/saveInvoice';
+        this.invoiceNumberPath = '/v1/SevSequence/Factory/getByType';
         this.contactsPath = '/v1/Contact';
         this.userPath = '/v1/SevUser';
     }
@@ -249,6 +250,27 @@ class SevDeskResolver {
                 tyme.setBillingState(timeEntryIDs, 1);
             }
             tyme.openURL('https://my.sevdesk.de/#/fi/edit/type/RE/id/' + invoiceID);
+        }
+    }
+
+    getInvoiceNumber() {
+        const params = {
+            "objectType": "Invoice",
+            "type": "RE"
+        };
+        const url = this.baseURL + this.invoiceNumberPath;
+        const response = utils.request(url, 'GET', {'Authorization': this.apiKey}, params);
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        if (statusCode === 201) {
+            const parsedData = JSON.parse(result);
+            tyme.showAlert('sevDesk API Error', JSON.stringify(parsedData));
+            //return parsedData["objects"]["invoice"]["id"];
+            return null;
+        } else {
+            tyme.showAlert('sevDesk API Error', JSON.stringify(response));
+            return null;
         }
     }
 
