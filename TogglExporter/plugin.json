@@ -1,0 +1,16 @@
+{
+  "id": "toggl_importer",
+  "tymeMinVersion": "2023.1",
+  "version": "1.0",
+  "type": "export",
+  "name": "Toggl Export",
+  "summary": "Export your data to toggl.",
+  "author": "Robert Boulanger",
+  "authorUrl": "https://www.boulanger.de",
+  "icon": "toggl_icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "exporter.start()",
+  "scriptPreview": "exporter.generatePreview()",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}
