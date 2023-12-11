@@ -19,7 +19,6 @@ class TogglApiClient {
         if (statusCode === 200) {
             return JSON.parse(result);
         } else {
-            tyme.showAlert('Toggl API Error', JSON.stringify(response));
             return null;
         }
     }
@@ -52,6 +51,7 @@ class TogglExporter {
         this.clients = {};
         this.projects = {};
         this.tasks = {};
+
         if (apiKey.length > 0) {
             this.getWorkspaces()
             this.getUsers();
@@ -63,6 +63,10 @@ class TogglExporter {
 
     getUsers() {
         this.users = {};
+
+        if (Object.keys(this.workspaces).length === 0) {
+            return;
+        }
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
@@ -92,6 +96,10 @@ class TogglExporter {
     getClients() {
         this.clients = {};
 
+        if (Object.keys(this.workspaces).length === 0) {
+            return;
+        }
+
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
             const clientsResponse = this.apiClient.getJSON("/api/v8/workspaces/" + id + "/clients");
@@ -110,11 +118,16 @@ class TogglExporter {
     getProjects() {
         this.projects = {};
 
+        if (Object.keys(this.workspaces).length === 0) {
+            return;
+        }
+
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
             const path = "/api/v8/workspaces/" + id + "/projects";
 
             const activeProjectsResponse = this.apiClient.getJSON(path, {"active": "true"});
+
             if (activeProjectsResponse) {
                 activeProjectsResponse.forEach(function (entry) {
                     const id = entry["id"];
@@ -131,11 +144,14 @@ class TogglExporter {
                 }.bind(this));
             }
         }
-
     }
 
     getTasks() {
         this.tasks = {};
+
+        if (Object.keys(this.workspaces).length === 0) {
+            return;
+        }
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
@@ -157,7 +173,6 @@ class TogglExporter {
                 }.bind(this));
             }
         }
-
     }
 
     timeEntriesFromFormValues() {
@@ -200,10 +215,14 @@ class TogglExporter {
     generatePreview() {
         let startDisabled = false
         const data = this.timeEntriesFromFormValues()
-        let header = '![](plugins/TogglExporter/toggl_icon.png)\n';
+        let header = '';
+
+        if (Object.keys(this.workspaces).length === 0) {
+            header += `## <span style='color: darkred;'>${utils.localize('error.api')}</span>\n\n`;
+        }
+
         let missingPids = new Set()
         let missingTids = new Set()
-        //let str = "|start|duration|client|project|task|description\n"
         let str = `|${utils.localize('table.start')}|${utils.localize('table.duration')}|${utils.localize('table.client')}|${utils.localize('table.project')}|${utils.localize('table.task')}|${utils.localize('table.description')}\n`
         str += '|-|-:|-|-|-|-|\n';
         for (let entry of data) {
@@ -243,7 +262,7 @@ class TogglExporter {
             let missedPidStr = ""
             let missedTidStr = ""
             if (missedPids.length > 0) {
-                missedPidStr = `*_${utils.localize('error.missedProjects')}_:*\n${missedPids.join()} `
+                missedPidStr = `*_${utils.localize('error.missedProjects')}_*\n${missedPids.join()} `
             }
             if (missedTids.length > 0) {
                 missedTidStr = `*_${utils.localize('error.missedTasks')}_*\n${missedTids.join("\n")} `
@@ -314,13 +333,8 @@ class TogglExporter {
             } catch (e) {
                 utils.log(e)
             }
-
         }
-
-
     }
-
-
 }
 
 const exporter = new TogglExporter(formValue.togglKey);

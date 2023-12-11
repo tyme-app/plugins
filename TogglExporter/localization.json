@@ -1,7 +1,7 @@
 {
   "en": {
     "locale.identifier": "en-US",
-    "input.key": "Toggl API Key",
+    "input.key": "toggl API Key",
     "input.key.placeholder": "Please enter your API key",
     "input.key.hint": "You can find the token in your [toggl profile](https://track.toggl.com/profile).",
     "input.startdate": "From",
@@ -15,15 +15,16 @@
     "table.project": "Project",
     "table.task": "Task",
     "table.description": "Description",
-    "error.header": "The following data could not be found in Toggl",
+    "error.header": "The following data could not be found in toggl",
     "error.missedProjects": "Missing Projects:",
     "error.missedTasks": "Missing Tasks:",
-    "error.explain": "Change your selection or rename projects and tasks so that they correspond to those in Toggl or create them in Toggl. The Export button will not trigger anything until the problem is solved.",
-    "error.noError": "Everything is fine, press Export below, to push the records to Toggl."
+    "error.explain": "Change your selection or rename projects and tasks so that they correspond to those in toggl or create them in toggl. The Export button will not trigger anything until the problem is solved.",
+    "error.noError": "Everything is fine, press Export below, to push the records to toggl.",
+    "error.api": "No access to your toggl account. Please check your API key."
   },
   "de": {
     "locale.identifier": "de-DE",
-    "input.key": "Toggl API Key",
+    "input.key": "toggl API Key",
     "input.key.placeholder": "Bitte gib deinen API Schlüssel ein",
     "input.key.hint": "Du findest den API Token in deinem [toggl Profil](https://track.toggl.com/profile).",
     "input.startdate": "Von",
@@ -37,10 +38,11 @@
     "table.project": "Projekt",
     "table.task": "Tätigkeit",
     "table.description": "Beschreibung",
-    "error.header": "Die folgenden Daten konnten nicht in Toggl gefunden werden",
+    "error.header": "Die folgenden Daten konnten nicht in toggl gefunden werden",
     "error.missedProjects": "Fehlende Projekte",
     "error.missedTasks": "Fehlende Aufgaben",
-    "error.explain": "Ändere Deine Auswahl, oder benenne Projekte und Aufgaben so um, dass sie jenen in Toggl entsprechen oder lege sie in Toggle an. Der Exportieren Button wird nichts auslösen, bis das Problem behoben ist.",
-    "error.noError": "Alles scheint in Ordnung zu sein. Drücke auf den Exportieren Button um die angezeigten Daten in Toggl zu importieren."
+    "error.explain": "Ändere Deine Auswahl, oder benenne Projekte und Aufgaben so um, dass sie jenen in toggl entsprechen oder lege sie in toggle an. Der Exportieren Button wird nichts auslösen, bis das Problem behoben ist.",
+    "error.noError": "Alles scheint in Ordnung zu sein. Drücke auf den Exportieren Button um die angezeigten Daten in toggl zu importieren.",
+    "error.api": "Keinen Zugriff auf deinen toggl Account. Bitte überprüfe den API Key."
   }
 }
