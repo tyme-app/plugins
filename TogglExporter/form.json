@@ -1,0 +1,66 @@
+[
+  {
+    "id": "togglKey",
+    "type": "securetext",
+    "name": "input.key",
+    "placeholder": "input.key.placeholder",
+    "persist": true
+  },
+  {
+    "id": "toggleKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.key.hint"
+  },
+  {
+    "id": "separator1",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "startDate",
+    "type": "date",
+    "name": "input.startdate"
+  },
+  {
+    "id": "endDate",
+    "type": "date",
+    "name": "input.enddate"
+  },
+  {
+    "id": "teamMemberID",
+    "type": "teammembers",
+    "name": ""
+  },
+  {
+    "id": "taskIDs",
+    "type": "tasks",
+    "name": ""
+  },
+  {
+    "id": "separator3",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "onlyUnbilled",
+    "type": "checkbox",
+    "name": "input.unbilled",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "markAsBilled",
+    "type": "checkbox",
+    "name": "input.billed",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "includeNonBillable",
+    "type": "checkbox",
+    "name": "input.nonbillable",
+    "value": "false",
+    "persist": true
+  }
+]
