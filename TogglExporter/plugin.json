@@ -1,5 +1,5 @@
 {
-  "id": "toggl_importer",
+  "id": "toggl_exporter",
   "tymeMinVersion": "2023.1",
   "version": "1.0",
   "type": "export",
