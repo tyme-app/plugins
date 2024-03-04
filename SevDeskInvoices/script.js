@@ -169,7 +169,7 @@ class SevDeskResolver {
         this.timeEntriesConverter = timeEntriesConverter;
         this.baseURL = 'https://my.sevdesk.de/api';
         this.invoicePath = '/v1/Invoice/Factory/saveInvoice';
-        this.invoiceNumberPath = '/v1/SevSequence/Factory/getByType';
+        this.invoiceNumberPath = '/v1/Invoice/Factory/getNextInvoiceNumber';
         this.contactsPath = '/v1/Contact';
         this.userPath = '/v1/SevUser';
     }
@@ -292,11 +292,9 @@ class SevDeskResolver {
         const statusCode = response['statusCode'];
         const result = response['result'];
 
-        if (statusCode === 201) {
+        if (statusCode === 200) {
             const parsedData = JSON.parse(result);
-            tyme.showAlert('sevDesk API Error', JSON.stringify(parsedData));
-            //return parsedData["objects"]["invoice"]["id"];
-            return null;
+            return parsedData["objects"];
         } else {
             tyme.showAlert('sevDesk API Error', JSON.stringify(response));
             return null;
@@ -330,7 +328,7 @@ class SevDeskResolver {
             "invoice": {
                 "id": null,
                 "objectName": "Invoice",
-                "invoiceNumber": null,
+                "invoiceNumber": this.getInvoiceNumber(),
                 "contact": {
                     "id": formValue.contactID,
                     "objectName": "Contact"
