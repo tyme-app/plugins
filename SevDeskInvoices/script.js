@@ -205,8 +205,37 @@ class SevDeskResolver {
     }
 
     getContacts() {
+        let allContacts = [];
+        let offset = 0;
+        let newContactCount = 1;
+
+        while (newContactCount > 0) {
+            let contacts = this.getContactsInternal(offset, 100);
+            newContactCount = contacts.length;
+            allContacts = allContacts.concat(contacts);
+            offset += 100;
+        }
+
+
+        allContacts.sort(function (a, b) {
+            return a["name"] < b["name"] ? -1 : 1;
+        });
+
+        return allContacts;
+    }
+
+    getContactsInternal(offset, limit) {
         const url = this.baseURL + this.contactsPath;
-        const response = utils.request(url, 'GET', {'Authorization': this.apiKey}, {"depth": 1});
+        const response = utils.request(
+            url,
+            'GET',
+            {'Authorization': this.apiKey},
+            {
+                "depth": 1,
+                "limit": limit,
+                "offset": offset
+            }
+        );
         const statusCode = response['statusCode'];
         const result = response['result'];
 
