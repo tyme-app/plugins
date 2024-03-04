@@ -169,7 +169,7 @@ class SevDeskResolver {
         this.timeEntriesConverter = timeEntriesConverter;
         this.baseURL = 'https://my.sevdesk.de/api';
         this.invoicePath = '/v1/Invoice/Factory/saveInvoice';
-        this.invoiceNumberPath = '/v1/SevSequence/Factory/getByType';
+        this.invoiceNumberPath = '/v1/Invoice/Factory/getNextInvoiceNumber';
         this.contactsPath = '/v1/Contact';
         this.userPath = '/v1/SevUser';
     }
@@ -205,8 +205,37 @@ class SevDeskResolver {
     }
 
     getContacts() {
+        let allContacts = [];
+        let offset = 0;
+        let newContactCount = 1;
+
+        while (newContactCount > 0) {
+            let contacts = this.getContactsInternal(offset, 100);
+            newContactCount = contacts.length;
+            allContacts = allContacts.concat(contacts);
+            offset += 100;
+        }
+
+
+        allContacts.sort(function (a, b) {
+            return a["name"] < b["name"] ? -1 : 1;
+        });
+
+        return allContacts;
+    }
+
+    getContactsInternal(offset, limit) {
         const url = this.baseURL + this.contactsPath;
-        const response = utils.request(url, 'GET', {'Authorization': this.apiKey}, {"depth": 1});
+        const response = utils.request(
+            url,
+            'GET',
+            {'Authorization': this.apiKey},
+            {
+                "depth": 1,
+                "limit": limit,
+                "offset": offset
+            }
+        );
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -263,11 +292,9 @@ class SevDeskResolver {
         const statusCode = response['statusCode'];
         const result = response['result'];
 
-        if (statusCode === 201) {
+        if (statusCode === 200) {
             const parsedData = JSON.parse(result);
-            tyme.showAlert('sevDesk API Error', JSON.stringify(parsedData));
-            //return parsedData["objects"]["invoice"]["id"];
-            return null;
+            return parsedData["objects"];
         } else {
             tyme.showAlert('sevDesk API Error', JSON.stringify(response));
             return null;
@@ -301,7 +328,7 @@ class SevDeskResolver {
             "invoice": {
                 "id": null,
                 "objectName": "Invoice",
-                "invoiceNumber": null,
+                "invoiceNumber": this.getInvoiceNumber(),
                 "contact": {
                     "id": formValue.contactID,
                     "objectName": "Contact"
