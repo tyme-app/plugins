@@ -69,13 +69,17 @@ A form is a JSON file with the following structure:
             {"key1": "label or localization key"},
             {"key1": "label or localization key"}
         ],
-        "actionFunction": "openWebsite()", // only button
+        "actionFunction": "openWebsite()", // all elements, except of separator
         "valueFunction": "getClients()", // only dropdown
         "valueFunctionReloadable": true // shows a button to reload the dropdown
     },
 ]
 
-// The 'daterange' type was introduced in Tyme 2024.5. Please set the tymeMinVersion to 2024.5 if you plan to use it. 
+// 2024.5: 'daterange' type added
+// 2024.5: 'actionFunction' for all elements added (Previously only button). 
+
+// Please set the tymeMinVersion to 2024.5 if you plan to use the above features.
+
 
  ```
 
@@ -84,6 +88,23 @@ Values of all form elements are available in your script in the global variable 
 ```javascript
 // access a form value
 formValue.someUniqueID;
+ ```
+
+You can update the hidden or enabled state of a form element via the **formElement** property.
+
+```javascript
+// update a form element
+formElement.someUniqueID.isHidden = !formValue.includeNonBillable;
+formElement.someUniqueID.enabled = !formValue.markAsBilled;
+ ```
+
+Each form element can have an **actionFunction** that is called whenever its value changes.
+
+```javascript
+// call an action, if the value of a form element changes
+billableCheckboxClicked() {
+    formElement.markAsBilled.enabled = !formValue.onlyBillable;
+}
  ```
 
 Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
