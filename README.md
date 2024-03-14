@@ -74,6 +74,9 @@ A form is a JSON file with the following structure:
         "valueFunctionReloadable": true // shows a button to reload the dropdown
     },
 ]
+
+// The 'daterange' type was introduced in Tyme 2024.5. Please set the tymeMinVersion to 2024.5 if you plan to use it. 
+
  ```
 
 Values of all form elements are available in your script in the global variable **formValue**.
