@@ -60,7 +60,7 @@ A form is a JSON file with the following structure:
 [
     {
         "id": "someUniqueID",
-        "type": "[button|securetext|text|separator|date|teammembers|tasks|checkbox|dropdown]",
+        "type": "[button|securetext|text|separator|date|daterange|teammembers|tasks|checkbox|dropdown]",
         "name": "label or localization key",
         "placeholder": "label or localization key", // only text
         "persist": false,
