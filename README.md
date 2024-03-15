@@ -28,11 +28,11 @@ This file defines the type, version, compatibility and entry point for the plugi
 ```javascript
 {
   "id": "unique_id_of_your_plugin",
-  "tymeMinVersion": "2022.11", // the minimum compatible version of Tyme for this plugin
+  "tymeMinVersion": "2024.1", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
-  "name": "My Fancy Plugin",
-  "summary": "A description of what the plugin does.",
+  "name": "My Fancy Plugin", // localizable
+  "summary": "A description of what the plugin does.", // localizable
   "author": "John Doe",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "doc.text.magnifyingglass", // not yet used
@@ -142,11 +142,15 @@ Optional translation file. Current supported languages are German and English.
 ```javascript
 {
   "en": {
+    "plugin.name": "Awesome Plugin",
+    "plugin.summary": "This is what the plugin does…",
     "input.key": "Secret Key",
     "input.key.placeholder": "Please enter your personal key",
     …
   },
   "de": {
+    "plugin.name": "Geniales Plugin", 
+    "plugin.summary": "Das Plugin macht Folgendes…",
     "input.key": "Geheimer Schlüssel",
     "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
     …
