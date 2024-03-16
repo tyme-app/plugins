@@ -5,11 +5,14 @@ This plugin imports your open and assigned work packages from [OpenProject](http
 The plugin uses the [OpenProject API](https://www.openproject.org/docs/api/) to fetch the data. The OpenProject URL can be specified if a self-hosted version is used.
 
 ## Functionality
+
 ### Categories and Projects
+
 For each project in OpenProject, a category as well a project is created. If you have child projects in OpenProject, the projects are assigned to the same category.
 
 ### Tasks (Work Packages)
-A task is created for each work package in OpenProject. 
+
+A task is created for each work package in OpenProject.
 
 The following data is set or updated:
 | Tyme | OpenProject |
@@ -21,6 +24,7 @@ The following data is set or updated:
 | Planned Duration | Estimated time of work package |
 
 ### Updating Tasks (Work Packages) from Time Entries
+
 If the option to update tasks is enabled, the time entries for the selected range will be selected. The associated tasks are then retrieved and updated individually, even if they have been closed in OpenProject or are no longer assigned to you.
 
 If you have a high number of different tasks, the import will take much longer. This is because each work package must be retrieved individually to update the tasks.
