@@ -6,7 +6,7 @@
   "name": "OpenProject Import",
   "summary": "Import your currently assigned work packages from OpenProject right into Tyme.",
   "author": "Lars Malewski",
-  "authorUrl": "https://larsmalewski.de",
+  "authorUrl": "https://github.com/tyme-app/plugins/tree/main/OpenProjectImporter",
   "icon": "openproject_icon.png",
   "scriptName": "script.js",
   "scriptMain": "importer.start()",
