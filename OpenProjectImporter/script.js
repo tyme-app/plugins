@@ -1,5 +1,193 @@
+/**
+ * OpenProject project.
+ */
+class OpenProjectProject {
+  /**
+   * Create an OpenProject Project.
+   * @param {string} name Name of the project.
+   * @param {boolean} isCompleted Indicates if this project is completed.
+   * @param {string} projectUrl URL of the project.
+   * @param {string?} parentUrl URL of the parent project.
+   */
+  constructor(name, isCompleted, projectUrl, parentUrl) {
+    this.name = name;
+    this.isCompleted = isCompleted;
+    this.projectUrl = projectUrl;
+    this.parentUrl = parentUrl;
+  }
+
+  /**
+   * The project id of the project.
+   * @returns {number}
+   */
+  get projectId() {
+    return extractProjectIdFromUrl(this.projectUrl);
+  }
+
+  /**
+   * The category id of the project.
+   * @returns {number}
+   */
+  get categoryId() {
+    if (!this.parentUrl) {
+      return this.projectId;
+    }
+
+    return extractProjectIdFromUrl(this.parentUrl);
+  }
+
+  /**
+   * Tyme project ID of this project.
+   * @returns {string}
+   */
+  get tymeProjectId() {
+    return 'openproject-' + this.projectId;
+  }
+
+  /**
+   * Tyme category ID of this project.
+   */
+  get tymeCategoryId() {
+    return 'openproject-' + this.categoryId;
+  }
+
+  /**
+   * Create or update an existing project in Tyme.
+   */
+  createOrUpdateProject() {
+    let tymeProject = Project.fromID(this.tymeProjectId) ?? Project.create(this.tymeProjectId);
+    tymeProject.name = this.name;
+    tymeProject.isCompleted = !this.active;
+    tymeProject.category = Category.fromID(this.tymeCategoryId);
+  }
+}
+
+/**
+ * OpenProject work package.
+ */
+class OpenProjectWorkPackage {
+  /**
+   *
+   * @param {number} id Work package ID.
+   * @param {string} name Name of the work package.
+   * @param {boolean} isCompleted Indicates if this work package is completed.
+   * @param {OpenProjectProject} project Project of this work package.
+   */
+  constructor(id, name, start, due, estimatedTime, isCompleted, project) {
+    this.id = id;
+    this.name = name;
+    this.start = start;
+    this.due = due;
+    this.estimatedTime = estimatedTime;
+    this.isCompleted = isCompleted;
+    this.project = project;
+  }
+
+  /**
+   * Tyme task ID of this work package.
+   * @returns {string}
+   */
+  get workPackageId() {
+    return 'openproject-' + this.id;
+  }
+
+  /**
+   * Planned duration of the work package.
+   * @returns {number?}
+   */
+  get plannedDuration() {
+    if (!this.estimatedTime) {
+      return;
+    }
+
+    return extractEstimate(this.estimatedTime);
+  }
+
+  /**
+   * Parsed start date of the work package.
+   * @returns {Date?}
+   */
+  get startDate() {
+    return this.parseDate(this.start);
+  }
+
+  /**
+   * Parsed due date of the work package.
+   * @returns {Date?}
+   */
+  get dueDate() {
+    return this.parseDate(this.due);
+  }
+
+  /**
+   * Create or update an existing task in Tyme with the data from the work package.
+   */
+  createOrUpdateTask() {
+    let tymeTask = TimedTask.fromID(this.workPackageId) ?? TimedTask.create(this.workPackageId);
+    tymeTask.name = this.createTaskName();
+    tymeTask.project = Project.fromID(this.project.tymeProjectId);
+    tymeTask.isCompleted = this.isCompleted;
+    tymeTask.isCompleted = this.isCompleted ?? false;
+    tymeTask.startDate = this.startDate;
+    tymeTask.dueDate = this.dueDate;
+    tymeTask.plannedDuration = this.plannedDuration;
+  }
+
+  /**
+   * Creates the task name from a work package name and id.
+   * @returns Task name based on import setting.
+   */
+  createTaskName() {
+    switch (formValue.insertWorkPackageNumber) {
+      case 'prepend':
+        return `[${this.id}] ${this.name}`;
+      case 'append':
+        return `${this.name} [${this.id}]`;
+      default:
+        return this.name;
+    }
+  }
+
+  /**
+   * Parses a date string to a JavaScript Date object.
+   * @param {string} dateString The date string to be parsed.
+   * @returns {Date|null} The parsed date or `null`.
+   */
+  parseDate(dateString) {
+    if (dateString === null || dateString === undefined || dateString?.trim() === '') {
+      return null;
+    }
+
+    const parsedDate = Date.parse(dateString);
+    return isNaN(parsedDate) ? null : parsedDate;
+  }
+}
+
+/**
+ * OpenProject API client.
+ */
 class OpenProjectApiClient {
+  /**
+   * Work package statuses.
+   */
+  statuses;
+
+  /**
+   * OpenProject projects.
+   */
+  projects = {};
+
+  /**
+   * Create a new OpenProjectApiClient.
+   * @param {string} url OpenProject URL.
+   * @param {string} apiKey OpenProject API key.
+   */
   constructor(url, apiKey) {
+    if (OpenProjectApiClient._instance) {
+      return OpenProjectApiClient._instance;
+    }
+    OpenProjectApiClient._instance = this;
+
     this.apiKey = apiKey;
     this.baseURL = url + '/api/v3/';
   }
@@ -18,30 +206,54 @@ class OpenProjectApiClient {
     }
     if (statusCode === 404) {
       return null;
-    } else {
-      tyme.showAlert('OpenProject API Error', JSON.stringify(response));
-      return null;
     }
+
+    tyme.showAlert('OpenProject API Error', JSON.stringify(response));
+    return null;
+  }
+
+  /**
+   * Load user.
+   * @returns {boolean} Returns `true` if user could be loaded.
+   */
+  loadUser() {
+    if (!this.getJSON('users/me')) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
    * Load statuses of work packages.
-   * @returns Array of statuses.
+   * @returns {void}
    */
   loadStatuses() {
     const response = this.getJSON('statuses');
 
     utils.log(`Loaded ${response.count} statuses`);
 
-    return response._embedded.elements;
+    this.statuses = response._embedded.elements;
+  }
+
+  /**
+   * Check if the given status (href) from OpenProject is a closed status.
+   * @param {string} statusHref Href of the status (i.e. "/api/v3/statuses/1").
+   * @returns {boolean} Returns `true` if the given status is closed.
+   */
+  isClosed(statusHref) {
+    if (!statusHref) {
+      return false;
+    }
+
+    return this.statuses.find(status => status._links.self.href == statusHref).isClosed;
   }
 
   /**
    * Load work packages from OpenProject.
-   * @param {Object} additionalParams Additional query params.
-   * @returns Array of work packages.
+   * @returns Object with work package IDs as keys and work packages.
    */
-  loadWorkPackages(additionalParams = {}) {
+  loadWorkPackages() {
     const assignedToMe = '[{"status":{"operator":"o","values":[]}},{"assignee":{"operator":"=","values":["me"]}}]';
     let workPackages = {};
     let page = 1;
@@ -52,7 +264,6 @@ class OpenProjectApiClient {
         offset: page,
         pageSize: 100,
         filters: assignedToMe,
-        ...additionalParams,
       };
       const response = this.getJSON('work_packages', params);
 
@@ -60,12 +271,18 @@ class OpenProjectApiClient {
         finished = true;
       }
 
-      response._embedded.elements.forEach(
-        function (workPackage) {
-          const id = workPackage['id'];
-          workPackages[id] = workPackage;
-        }.bind(this)
-      );
+      response._embedded.elements.forEach(workPackage => {
+        const project = this.loadProject(extractProjectIdFromUrl(workPackage?._links?.project?.href));
+        workPackages[workPackage.id] = new OpenProjectWorkPackage(
+          workPackage.id,
+          workPackage.subject,
+          workPackage.startDate,
+          workPackage.dueDate,
+          workPackage.estimatedTime,
+          this.isClosed(workPackage?._links?.status?.href),
+          project
+        );
+      });
 
       page++;
     } while (!finished);
@@ -77,33 +294,56 @@ class OpenProjectApiClient {
 
   /**
    * Load a work package from OpenProject.
-   * @param {*} workPackageID The work package ID.
-   * @returns Loaded work package.
+   * @param {number} workPackageId The work package ID.
+   * @returns {OpenProjectWorkPackage?} Loaded work package.
    */
-  loadWorkPackage(workPackageID) {
-    return this.getJSON('work_packages/' + workPackageID);
+  loadWorkPackage(workPackageId) {
+    const response = this.getJSON('work_packages/' + workPackageId);
+
+    if (!response) {
+      tils.log(`Work package with id ${workPackageId} could not be loaded.`);
+      return null;
+    }
+
+    const project = this.loadProject(extractProjectIdFromUrl(response?._links?.project?.href));
+
+    return new OpenProjectWorkPackage(
+      response.id,
+      response.subject,
+      response.startDate,
+      response.dueDate,
+      response.estimatedTime,
+      this.isClosed(response?._links?.status?.href),
+      project
+    );
+  }
+
+  /**
+   *
+   * @returns {number[]}
+   */
+  getProjectIds() {
+    return Object.keys(this.projects).map(key => parseInt(key));
   }
 
   /**
    * Load multiple projects from OpenProject.
    *
    * This will make a request for each project.
-   * @param {*} projectIDs Array of project IDs.
-   * @returns Array of projects.
+   * @param {number[]} projectIds Array of project IDs.
+   * @returns Object with project IDs as keys and projects.
    */
-  loadProjects(projectIDs) {
+  loadProjects(projectIds) {
     let projects = {};
 
-    for (const projectID of projectIDs) {
-      const response = this.loadProject(projectID);
+    for (const projectId of projectIds) {
+      const project = this.loadProject(projectId);
 
-      if (!response) {
-        utils.log(`Project with id ${projectID} could not be loaded.`);
+      if (!project) {
         continue;
       }
 
-      const id = response.id;
-      projects[id] = response;
+      projects[project.id] = project;
     }
 
     utils.log(`Loaded ${Object.keys(projects).length} projects`);
@@ -113,216 +353,120 @@ class OpenProjectApiClient {
 
   /**
    * Load a project from OpenProject.
-   * @param {number} projectID The project ID.
-   * @returns Loaded project.
+   * @param {number} projectId The project ID.
+   * @returns {OpenProjectProject?} Loaded project.
    */
-  loadProject(projectID) {
-    return this.getJSON('projects/' + projectID);
+  loadProject(projectId) {
+    // Check if project was already loaded, so return it
+    const cachedProject = this.projects[projectId];
+    if (cachedProject) {
+      return cachedProject;
+    }
+
+    // Load project from OpenProject
+    const response = this.getJSON('projects/' + projectId);
+
+    if (!response) {
+      utils.log(`Project with id ${projectId} could not be loaded.`);
+      return null;
+    }
+
+    const project = new OpenProjectProject(
+      response.name,
+      !response.active,
+      response._links.self.href,
+      response?._links?.parent?.href
+    );
+
+    this.projects[response.id] = project;
+
+    return project;
   }
 }
 
 class OpenProjectImporter {
-  constructor(url, apiKey) {
-    this.apiClient = new OpenProjectApiClient(url, apiKey);
+  /**
+   * Create a new OpenProject Importer.
+   * @param {OpenProjectApiClient} client OpenProjectApiClient
+   */
+  constructor(client) {
+    this.apiClient = client;
   }
 
+  /**
+   * Starts the import.
+   */
   start() {
-    if (!this.loadUser()) {
-      tyme.showAlert('Could not load user. Check your entered API Key and URL.');
+    if (!this.apiClient.loadUser()) {
+      tyme.showAlert('Error', utils.localize('error.couldNotLoadUser'));
       return;
     }
 
-    this.status = this.apiClient.loadStatuses();
+    // Load statuses for work packages
+    this.apiClient.loadStatuses();
 
+    // Update workpackages if they should be updated by time entries
     if (formValue.updateTasks) {
       this.updateRecentWorkPackages();
     }
 
-    this.workPackages = this.apiClient.loadWorkPackages();
-
-    // Extract project ids from work packages and load projects
-    const projectIDs = new Set();
-    for (let workPackageID in this.workPackages) {
-      const workPackage = this.workPackages[workPackageID];
-      const projectURL = workPackage._links.project.href;
-      projectIDs.add(this.extractProjectID(projectURL));
-    }
-    this.projects = this.apiClient.loadProjects(projectIDs);
-
-    // Load project categories
-    const categoryIDs = new Set();
-    for (let projectID in this.projects) {
-      const project = this.projects[projectID];
-      const categoryID = this.getCategoryIDFromProject(project);
-      if (categoryID) {
-        categoryIDs.add(categoryID);
-      }
-    }
-    this.categories = Array.from(categoryIDs);
+    // Load work packages from OpenProject
+    const workPackages = this.apiClient.loadWorkPackages();
 
     // Create projects and work packages
-    this.processData();
+    this.processCategories();
+    this.processProjects();
+    this.processTasks(workPackages);
   }
 
   /**
-   * Extracts the project id from a work package.
-   * @param {*} workPackage Work package.
-   * @returns Project ID.
+   * Process categories.
    */
-  extractProjectID(projectURL) {
-    if (!projectURL) {
-      return null;
+  processCategories() {
+    for (const projectId of this.apiClient.getProjectIds()) {
+      const project = this.apiClient.loadProject(projectId);
+      let tymeCategory = Category.fromID(project.tymeCategoryId) ?? Category.create(project.tymeCategoryId);
+      tymeCategory.name = project.name;
     }
-    const n = projectURL.lastIndexOf('/');
-    const projectID = projectURL.substring(n + 1);
-    return parseInt(projectID);
   }
 
   /**
-   * Get category id from project.
-   * @param {*} project Project.
-   * @returns {number|null} Category ID (Project ID).
+   * Process projects.
    */
-  getCategoryIDFromProject(project) {
-    const parent = project?._links?.parent?.href;
-
-    if (!parent) {
-      return project.id;
-    }
-
-    return this.extractProjectID(parent);
-  }
-
-  processData() {
-    for (let categoryID of this.categories) {
-      const category = this.projects[categoryID] ?? this.apiClient.loadProject(categoryID);
-      const id = 'openproject-' + categoryID;
-
-      let tymeCategory = Category.fromID(id) ?? Category.create(id);
-      tymeCategory.name = category.name;
-    }
-
-    for (let projectID in this.projects) {
-      const project = this.projects[projectID];
+  processProjects() {
+    for (const projectId of this.apiClient.getProjectIds()) {
+      const project = this.apiClient.loadProject(projectId);
 
       if (!project) {
         continue;
       }
 
-      this.createOrUpdateProject(project);
-    }
-
-    for (let workPackageID in this.workPackages) {
-      const workPackage = this.workPackages[workPackageID];
-
-      if (!workPackage) {
-        continue;
-      }
-
-      this.createOrUpdateTask(workPackage);
+      project.createOrUpdateProject();
     }
   }
 
   /**
-   * Creates or updates an existing project in Tyme.
-   * @param {*} project Project from OpenProject.
+   * Process tasks.
+   * @param {object} workPackages
    */
-  createOrUpdateProject(project) {
-    const id = 'openproject-' + project.id;
-
-    let tymeProject = Project.fromID(id) ?? Project.create(id);
-    tymeProject.name = project.name;
-    tymeProject.isCompleted = !project.active;
-
-    const categoryID = 'openproject-' + this.getCategoryIDFromProject(project);
-    tymeProject.category = Category.fromID(categoryID);
-  }
-
-  /**
-   * Creates or updates an existing task in Tyme with the data from the work package.
-   * @param {*} workPackage Work package from OpenProject.
-   */
-  createOrUpdateTask(workPackage) {
-    const id = 'openproject-' + workPackage.id;
-    const projectID = 'openproject-' + this.extractProjectID(workPackage?._links?.project?.href);
-
-    let tymeTask = TimedTask.fromID(id) ?? TimedTask.create(id);
-    tymeTask.name = this.createTaskName(workPackage.subject, workPackage.id);
-    tymeTask.isCompleted = this.isClosed(workPackage._links.status.href);
-    const project = Project.fromID(projectID);
-    tymeTask.project = project;
-
-    if (project.isCompleted) {
-      tymeTask.isCompleted = true;
+  processTasks(workPackages) {
+    for (const workPackageId in workPackages) {
+      const workPackage = workPackages[workPackageId];
+      workPackage.createOrUpdateTask();
     }
-
-    if (workPackage['startDate']) {
-      tymeTask.startDate = Date.parse(workPackage['startDate']);
-    } else {
-      tymeTask.startDate = null;
-    }
-
-    if (workPackage['dueDate']) {
-      tymeTask.dueDate = Date.parse(workPackage['dueDate']);
-    } else {
-      tymeTask.dueDate = null;
-    }
-
-    if (workPackage['estimatedTime']) {
-      tymeTask.plannedDuration = extractEstimate(workPackage['estimatedTime']);
-    } else {
-      tymeTask.plannedDuration = null;
-    }
-  }
-
-  /**
-   * Creates the task name from a work package name and id.
-   * @param {string} name Name for the task.
-   * @param {string} id ID of the work package.
-   * @returns Task name based on import setting.
-   */
-  createTaskName(name, id) {
-    switch (formValue.insertWorkPackageNumber) {
-      case 'prepend':
-        return `[${id}] ${name}`;
-      case 'append':
-        return `${name} [${id}]`;
-      default:
-        return name;
-    }
-  }
-
-  loadUser() {
-    const userResponse = this.apiClient.getJSON('users/me');
-    if (!userResponse) {
-      return false;
-    }
-
-    this.userID = userResponse['id'];
-
-    return true;
-  }
-
-  /**
-   * Check if the given status (href) from OpenProject is a closed status.
-   * @param {string} statusHref Href of the status (i.e. "/api/v3/statuses/1").
-   * @returns {boolean} `true` if the given status is closed.
-   */
-  isClosed(statusHref) {
-    return this.status.find(status => status._links.self.href == statusHref).isClosed;
   }
 
   /**
    * Updates recent processed work packages.
    */
   updateRecentWorkPackages() {
-    const workPackagesToUpdate = this.recentlyProcessedWorkPackageIDs();
+    const workPackagesToUpdate = this.recentlyProcessedWorkPackageIds();
 
-    for (const workPackageID of workPackagesToUpdate) {
-      const response = this.apiClient.loadWorkPackage(workPackageID);
-      if (response) {
-        utils.log('Update Work Package #' + workPackageID);
-        this.createOrUpdateTask(response);
+    for (const workPackageId of workPackagesToUpdate) {
+      const workPackage = this.apiClient.loadWorkPackage(workPackageId);
+      if (workPackage) {
+        utils.log('Update Work Package #' + workPackageId);
+        workPackage.createOrUpdateTask();
       }
     }
   }
@@ -330,9 +474,9 @@ class OpenProjectImporter {
   /**
    * Extracts the recently processed work packages from the time entries of
    * the selected time frame.
-   * @returns Array with work package IDs.
+   * @returns {number[]} Array with work package IDs.
    */
-  recentlyProcessedWorkPackageIDs() {
+  recentlyProcessedWorkPackageIds() {
     let start = new Date();
     start.setDate(start.getDate() - formValue.updateTimeFrame);
     const end = new Date();
@@ -342,7 +486,7 @@ class OpenProjectImporter {
     const regex = new RegExp(/(?:openproject-)\d+/);
 
     // Array of work packages
-    const workPackageIDs = new Set();
+    const workPackageIds = new Set();
 
     for (const entry of timeEntries) {
       const match = regex.exec(entry.task_id);
@@ -351,16 +495,32 @@ class OpenProjectImporter {
       }
 
       // Extract only the work package id
-      workPackageIDs.add(match[0].replace('openproject-', ''));
+      workPackageIds.add(match[0].replace('openproject-', ''));
     }
 
-    return Array.from(workPackageIDs);
+    return Array.from(workPackageIds);
   }
 }
 
-const importer = new OpenProjectImporter(formValue.openProjectURL, formValue.openProjectKey);
+const client = new OpenProjectApiClient(formValue.openProjectURL, formValue.openProjectKey);
+const importer = new OpenProjectImporter(client);
 
 // HELPER
+
+/**
+ * Extract the project ID from a project URL.
+ * @param {string} projectUrl Project URL.
+ * @returns {number} Project ID.
+ */
+function extractProjectIdFromUrl(projectUrl) {
+  if (!projectUrl) {
+    return null;
+  }
+
+  const n = projectUrl.lastIndexOf('/');
+  const projectId = projectUrl.substring(n + 1);
+  return parseInt(projectId);
+}
 
 /**
  * Extracts the estimated time from an ISO 8601 duration.
