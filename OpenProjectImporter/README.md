@@ -27,7 +27,8 @@ The following data is set or updated:
 
 If the option to update tasks is enabled, the time entries in Tyme for the selected range will be selected. The associated tasks are then retrieved and updated individually, even if they have been closed in OpenProject or are no longer assigned to you.
 
-If you have a high number of different tasks, the import will take much longer. This is because each work package must be retrieved individually to update the tasks.
+> [!NOTE]
+> If you have a high number of different tasks, the import will take much longer. This is because each work package must be retrieved individually to update the tasks.
 
 ## License
 
