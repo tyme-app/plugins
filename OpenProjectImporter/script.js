@@ -231,7 +231,7 @@ class OpenProjectApiClient {
       return JSON.parse(result);
     }
     if (statusCode === 404) {
-      return null;
+      return undefined;
     }
 
     tyme.showAlert('OpenProject API Error', JSON.stringify(response));
@@ -331,7 +331,7 @@ class OpenProjectApiClient {
     const response = this.getJSON('work_packages/' + workPackageId);
 
     if (!response) {
-      tils.log(`Work package with id ${workPackageId} could not be loaded.`);
+      utils.log(`Work package with id ${workPackageId} could not be loaded.`);
       return null;
     }
 
