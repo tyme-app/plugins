@@ -1,19 +1,51 @@
 /**
+ * OpenProject category.
+ */
+class OpenProjectCategory {
+  /**
+   * Create an OpenProject category.
+   * @param {number} id Category ID.
+   * @param {string} name Name of the category.
+   */
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  /**
+   * Tyme category ID of this project.
+   */
+  get tymeCategoryId() {
+    return 'openproject-' + this.id;
+  }
+
+  /**
+   * Create or update an existing category in Tyme.
+   */
+  createOrUpdateCategory() {
+    let tymeCategory = Category.fromID(this.tymeCategoryId) ?? Category.create(this.tymeCategoryId);
+    tymeCategory.name = this.name;
+  }
+}
+
+/**
  * OpenProject project.
  */
 class OpenProjectProject {
   /**
-   * Create an OpenProject Project.
+   * Create an OpenProject project.
    * @param {string} name Name of the project.
    * @param {boolean} isCompleted Indicates if this project is completed.
    * @param {string} projectUrl URL of the project.
-   * @param {string?} parentUrl URL of the parent project.
+   * @param {string} parentUrl URL of the parent project.
+   * @param {OpenProjectCategory?} category Category of this project.
    */
-  constructor(name, isCompleted, projectUrl, parentUrl) {
+  constructor(name, isCompleted, projectUrl, parentUrl, category) {
     this.name = name;
     this.isCompleted = isCompleted;
     this.projectUrl = projectUrl;
     this.parentUrl = parentUrl;
+    this.category = category;
   }
 
   /**
@@ -25,14 +57,10 @@ class OpenProjectProject {
   }
 
   /**
-   * The category id of the project.
-   * @returns {number}
+   * The project id of the parent project.
+   * @returns {number?}
    */
-  get categoryId() {
-    if (!this.parentUrl) {
-      return this.projectId;
-    }
-
+  get parentProjectId() {
     return extractProjectIdFromUrl(this.parentUrl);
   }
 
@@ -45,20 +73,13 @@ class OpenProjectProject {
   }
 
   /**
-   * Tyme category ID of this project.
-   */
-  get tymeCategoryId() {
-    return 'openproject-' + this.categoryId;
-  }
-
-  /**
    * Create or update an existing project in Tyme.
    */
   createOrUpdateProject() {
     let tymeProject = Project.fromID(this.tymeProjectId) ?? Project.create(this.tymeProjectId);
     tymeProject.name = this.name;
     tymeProject.isCompleted = !this.active;
-    tymeProject.category = Category.fromID(this.tymeCategoryId);
+    tymeProject.category = this.category ? Category.fromID(this.category.tymeCategoryId) : null;
   }
 }
 
@@ -178,6 +199,11 @@ class OpenProjectApiClient {
   projects = {};
 
   /**
+   * OpenProject categories.
+   */
+  categories = {};
+
+  /**
    * Create a new OpenProjectApiClient.
    * @param {string} url OpenProject URL.
    * @param {string} apiKey OpenProject API key.
@@ -244,6 +270,10 @@ class OpenProjectApiClient {
   isClosed(statusHref) {
     if (!statusHref) {
       return false;
+    }
+
+    if (!this.statuses) {
+      this.loadStatuses();
     }
 
     return this.statuses.find(status => status._links.self.href == statusHref).isClosed;
@@ -319,7 +349,7 @@ class OpenProjectApiClient {
   }
 
   /**
-   *
+   * Get array of project IDs.
    * @returns {number[]}
    */
   getProjectIds() {
@@ -377,13 +407,43 @@ class OpenProjectApiClient {
       response._links.self.href,
       response?._links?.parent?.href
     );
+    const category = this.categoryForProject(project);
+    project.category = category;
 
     this.projects[response.id] = project;
 
     return project;
   }
+
+  /**
+   * Get the category for a given project.
+   * @param {OpenProjectProject} project OpenProject project.
+   * @returns {OpenProjectCategory} OpenProject category.
+   */
+  categoryForProject(project) {
+    // Find the highest parent of the project
+    if (project.parentProjectId) {
+      const parentProject = this.loadProject(project.parentProjectId);
+      return this.categoryForProject(parentProject);
+    }
+
+    // Try to load previous created category
+    const cachedCategory = this.categories[project.id];
+    if (cachedCategory) {
+      return cachedCategory;
+    }
+
+    // Create new category
+    const category = new OpenProjectCategory(project.projectId, project.name);
+    this.categories[project.projectId] = category;
+
+    return category;
+  }
 }
 
+/**
+ * OpenProject Importer class.
+ */
 class OpenProjectImporter {
   /**
    * Create a new OpenProject Importer.
@@ -394,16 +454,13 @@ class OpenProjectImporter {
   }
 
   /**
-   * Starts the import.
+   * Starts the OpenProject import.
    */
   start() {
     if (!this.apiClient.loadUser()) {
       tyme.showAlert('Error', utils.localize('error.couldNotLoadUser'));
       return;
     }
-
-    // Load statuses for work packages
-    this.apiClient.loadStatuses();
 
     // Update workpackages if they should be updated by time entries
     if (formValue.updateTasks) {
@@ -423,10 +480,9 @@ class OpenProjectImporter {
    * Process categories.
    */
   processCategories() {
-    for (const projectId of this.apiClient.getProjectIds()) {
-      const project = this.apiClient.loadProject(projectId);
-      let tymeCategory = Category.fromID(project.tymeCategoryId) ?? Category.create(project.tymeCategoryId);
-      tymeCategory.name = project.name;
+    for (const categoryId in this.apiClient.categories) {
+      const category = this.apiClient.categories[categoryId];
+      category.createOrUpdateCategory();
     }
   }
 
@@ -510,15 +566,14 @@ const importer = new OpenProjectImporter(client);
 /**
  * Extract the project ID from a project URL.
  * @param {string} projectUrl Project URL.
- * @returns {number} Project ID.
+ * @returns {number?} Project ID.
  */
 function extractProjectIdFromUrl(projectUrl) {
   if (!projectUrl) {
     return null;
   }
 
-  const n = projectUrl.lastIndexOf('/');
-  const projectId = projectUrl.substring(n + 1);
+  const projectId = projectUrl.substring(projectUrl.lastIndexOf('/') + 1);
   return parseInt(projectId);
 }
 
