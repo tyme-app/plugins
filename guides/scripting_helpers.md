@@ -120,7 +120,7 @@ utils.markdownToHTML(markdown)
 
 /*
     Makes a synchronous HTTP request
-    Returns an object: { "statusCode": 200, "result": string, "headers": string }
+    Returns an object: { "statusCode": 200, "result": string, "headers": Object }
 
     Standard headers are: 
     Content-Type: application/json; charset=utf-8
