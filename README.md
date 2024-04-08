@@ -28,11 +28,11 @@ This file defines the type, version, compatibility and entry point for the plugi
 ```javascript
 {
   "id": "unique_id_of_your_plugin",
-  "tymeMinVersion": "2022.11", // the minimum compatible version of Tyme for this plugin
+  "tymeMinVersion": "2024.1", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
-  "name": "My Fancy Plugin",
-  "summary": "A description of what the plugin does.",
+  "name": "My Fancy Plugin", // localizable
+  "summary": "A description of what the plugin does.", // localizable
   "author": "John Doe",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "doc.text.magnifyingglass", // not yet used
@@ -60,7 +60,7 @@ A form is a JSON file with the following structure:
 [
     {
         "id": "someUniqueID",
-        "type": "[button|securetext|text|separator|date|teammembers|tasks|checkbox|dropdown]",
+        "type": "[button|securetext|text|separator|date|daterange|teammembers|tasks|checkbox|dropdown]",
         "name": "label or localization key",
         "placeholder": "label or localization key", // only text
         "persist": false,
@@ -69,11 +69,18 @@ A form is a JSON file with the following structure:
             {"key1": "label or localization key"},
             {"key1": "label or localization key"}
         ],
-        "actionFunction": "openWebsite()", // only button
+        "actionFunction": "openWebsite()", // all elements, except of separator
         "valueFunction": "getClients()", // only dropdown
         "valueFunctionReloadable": true // shows a button to reload the dropdown
     },
 ]
+
+// 2024.5: 'daterange' type added
+// 2024.5: 'actionFunction' for all elements added (Previously only button). 
+
+// Please set the tymeMinVersion to 2024.5 if you plan to use the above features.
+
+
  ```
 
 Values of all form elements are available in your script in the global variable **formValue**.
@@ -81,6 +88,32 @@ Values of all form elements are available in your script in the global variable 
 ```javascript
 // access a form value
 formValue.someUniqueID;
+ ```
+
+You can update the hidden or enabled state of a form element (Since Tyme 2024.5):
+
+```javascript
+class FormElement {
+    isHidden // bool
+    enabled // bool
+}
+ ```
+
+All form element can be accessed via the **formElement** property:
+
+```javascript
+// update a form element
+formElement.someUniqueID.isHidden = !formValue.includeNonBillable;
+formElement.someUniqueID.enabled = !formValue.markAsBilled;
+ ```
+
+Each form element can have an **actionFunction** that is called whenever its value changes.
+
+```javascript
+// call an action, if the value of a form element changes
+billableCheckboxClicked() {
+    formElement.markAsBilled.enabled = !formValue.onlyBillable;
+}
  ```
 
 Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
@@ -109,11 +142,15 @@ Optional translation file. Current supported languages are German and English.
 ```javascript
 {
   "en": {
+    "plugin.name": "Awesome Plugin",
+    "plugin.summary": "This is what the plugin does…",
     "input.key": "Secret Key",
     "input.key.placeholder": "Please enter your personal key",
     …
   },
   "de": {
+    "plugin.name": "Geniales Plugin", 
+    "plugin.summary": "Das Plugin macht Folgendes…",
     "input.key": "Geheimer Schlüssel",
     "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
     …
