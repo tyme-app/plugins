@@ -90,7 +90,7 @@ Values of all form elements are available in your script in the global variable 
 formValue.someUniqueID;
  ```
 
-You can update the hidden or enabled state of a form element:
+You can update the hidden or enabled state of a form element (Since Tyme 2024.5):
 
 ```javascript
 class FormElement {
