@@ -15,7 +15,8 @@
     "input.updateTasks.hint": "Updates tasks based on the time entries from the selected period, even if they have been closed in OpenProject or are no longer assigned to you.",
     "input.timeFrame.14": "14 Days",
     "input.timeFrame.30": "30 Days",
-    "input.timeFrame.60": "60 Days"
+    "input.timeFrame.60": "60 Days",
+    "error.couldNotLoadUser": "Could not load user. Check your entered API Key and URL."
   },
   "de": {
     "input.url": "OpenProject URL",
@@ -33,6 +34,7 @@
     "input.updateTasks.hint": "Aktualisiert Aufgaben, anhand der Zeiteinträge aus dem gewählten Zeitraum, auch wenn die Arbeitspakete in OpenProject geschlossen wurden oder dir nicht mehr zugewiesen sind.",
     "input.timeFrame.14": "14 Tage",
     "input.timeFrame.30": "30 Tage",
-    "input.timeFrame.60": "60 Tage"
+    "input.timeFrame.60": "60 Tage",
+    "error.couldNotLoadUser": "Konnte Benutzerdaten nicht laden. Prüfe die URL und den API Key."
   }
 }
