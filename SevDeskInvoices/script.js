@@ -216,10 +216,18 @@ class SevDeskResolver {
             offset += 100;
         }
 
-
         allContacts.sort(function (a, b) {
             return a["name"] < b["name"] ? -1 : 1;
         });
+
+        if (allContacts.length === 0) {
+            allContacts.push(
+                {
+                    'name': utils.localize('input.data.empty'),
+                    'value': ''
+                }
+            );
+        }
 
         return allContacts;
     }
@@ -261,12 +269,7 @@ class SevDeskResolver {
             return contactList;
 
         } else {
-            return [
-                {
-                    'name': utils.localize('input.data.empty'),
-                    'value': ''
-                }
-            ]
+            return [];
         }
     }
 
