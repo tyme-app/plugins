@@ -274,7 +274,7 @@ class SevDeskResolver {
     }
 
     createNewInvoice() {
-        const invoiceID = this.makeCreateNewInvoice();
+        const invoiceID = this.makeCreateNewInvoiceCall();
 
         if (invoiceID !== null) {
             if (formValue.markAsBilled) {
@@ -299,12 +299,11 @@ class SevDeskResolver {
             const parsedData = JSON.parse(result);
             return parsedData["objects"];
         } else {
-            tyme.showAlert('sevDesk API Error', JSON.stringify(response));
             return null;
         }
     }
 
-    makeCreateNewInvoice() {
+    makeCreateNewInvoiceCall() {
         const data = this.timeEntriesConverter.aggregatedTimeEntryData()
         let invoicePosSave = [];
 
@@ -363,6 +362,10 @@ class SevDeskResolver {
         if (statusCode === 201) {
             const parsedData = JSON.parse(result);
             return parsedData["objects"]["invoice"]["id"];
+        } else if (statusCode === 401) {
+            const parsedData = JSON.parse(result);
+            tyme.showAlert('sevDesk API Error ' + parsedData["status"], parsedData["message"]);
+            return null;
         } else {
             tyme.showAlert('sevDesk API Error', JSON.stringify(response));
             return null;
