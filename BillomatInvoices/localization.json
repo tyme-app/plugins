@@ -39,7 +39,7 @@
     "input.billed": "Exportierte Zeiten als berechnet markieren",
     "input.unbilled": "Nur nicht berechnete Zeiteinträge exportieren",
     "input.nonbillable": "Nicht berechenbare Aufgaben inkludieren",
-    "input.data.empty": "Es konnten keine Daten von Billomat werden. Bitte überprüfe deinen API-Token.",
+    "input.data.empty": "Es konnten keine Daten von Billomat geladen werden. Bitte überprüfe deinen API-Token.",
     "input.notes": "Notizen in die Rechnung übernehmen",
     "input.note.times": "Zeiten in Notizen anzeigen",
     "input.unit.hint": "Beachte bitte, dass die Einheiten (Stunde, Stück, km) in Billomat existieren müssen. Ansonsten kann Billomat diese nicht automatisch zuordnen.",
