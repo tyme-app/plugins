@@ -145,7 +145,7 @@ class TimeEntriesConverter {
             }
 
             let price = this.roundNumber(entry.price, 2);
-            let quantity = this.roundNumber(entry.quantity, formValue.roundingOption);
+            let quantity = this.roundNumber(entry.quantity, 2);
             let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
 
             total += parseFloat(sum);
@@ -309,7 +309,7 @@ class SevDeskResolver {
 
         data.forEach((entry) => {
             const note = formValue.showNotes ? entry.note : '';
-            const quantity = this.timeEntriesConverter.roundNumber(entry.quantity, formValue.roundingOption);
+            const quantity = this.timeEntriesConverter.roundNumber(entry.quantity, 2);
 
             invoicePosSave.push({
                 "objectName": "InvoicePos",
@@ -362,6 +362,12 @@ class SevDeskResolver {
         if (statusCode === 201) {
             const parsedData = JSON.parse(result);
             return parsedData["objects"]["invoice"]["id"];
+        } else if (statusCode === 422) {
+            tyme.showAlert(
+                utils.localize('export.error.title'),
+                utils.localize('export.empty.error')
+            );
+            return null;
         } else if (statusCode === 401) {
             const parsedData = JSON.parse(result);
             tyme.showAlert('sevDesk API Error ' + parsedData["status"], parsedData["message"]);
