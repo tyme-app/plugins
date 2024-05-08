@@ -8,10 +8,6 @@
     "input.enddate": "To",
     "input.contact": "Contact",
     "input.user": "sevDesk User",
-    "input.rounding": "Quantity Rounding",
-    "input.rounding.4": "4 Decimal Places",
-    "input.rounding.2": "2 Decimal Places",
-    "input.rounding.0": "No Decimal Places",
     "input.taxrate": "Tax Rate",
     "input.billed": "Mark exported time entries as billed",
     "input.unbilled": "Export only unbilled time entries",
@@ -27,7 +23,9 @@
     "invoice.price": "Price",
     "invoice.quantity": "Quantity",
     "invoice.unit": "Unit",
-    "invoice.net": "Net"
+    "invoice.net": "Net",
+    "export.error.title": "Error",
+    "export.empty.error": "The invoice must contain at least one item."
   },
   "de": {
     "locale.identifier": "de-DE",
@@ -53,6 +51,8 @@
     "invoice.price": "Preis",
     "invoice.quantity": "Anzahl",
     "invoice.unit": "Einheit",
-    "invoice.net": "Netto"
+    "invoice.net": "Netto",
+    "export.error.title": "Fehler",
+    "export.empty.error": "Die Rechnung muss mindestens eine Position enthalten."
   }
 }

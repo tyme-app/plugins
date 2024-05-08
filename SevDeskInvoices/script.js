@@ -362,6 +362,12 @@ class SevDeskResolver {
         if (statusCode === 201) {
             const parsedData = JSON.parse(result);
             return parsedData["objects"]["invoice"]["id"];
+        } else if (statusCode === 422) {
+            tyme.showAlert(
+                utils.localize('export.error.title'),
+                utils.localize('export.empty.error')
+            );
+            return null;
         } else if (statusCode === 401) {
             const parsedData = JSON.parse(result);
             tyme.showAlert('sevDesk API Error ' + parsedData["status"], parsedData["message"]);
