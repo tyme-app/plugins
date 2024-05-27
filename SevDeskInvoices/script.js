@@ -210,10 +210,10 @@ class SevDeskResolver {
         let newContactCount = 1;
 
         while (newContactCount > 0) {
-            let contacts = this.getContactsInternal(offset, 100);
+            let contacts = this.getContactsInternal(offset, 500);
             newContactCount = contacts.length;
             allContacts = allContacts.concat(contacts);
-            offset += 100;
+            offset += 500;
         }
 
         allContacts.sort(function (a, b) {
