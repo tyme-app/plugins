@@ -334,7 +334,25 @@ class LexOfficeResolver {
             return parsedData['id'];
         } else {
             if (parsedData['message'] != null) {
-                tyme.showAlert(utils.localize('api.invoice.error.title'), parsedData['message']);
+
+                let errorMessage = parsedData['message'];
+
+                if (parsedData['details'] != null) {
+                    parsedData['details'].forEach((detailedError) => {
+                        if (detailedError["field"] != null && detailedError["message"] != null) {
+                            errorMessage += "\n\n";
+
+                            const field = detailedError["field"]
+                                .replace(/lineitems/i, "position")
+                                .replace(/([0-9])/i, function (match, p1, offset, string) {
+                                    return '' + (parseInt(p1) + 1);
+                                });
+                            errorMessage += field + ": " + detailedError["message"];
+                        }
+                    });
+                }
+
+                tyme.showAlert(utils.localize('api.invoice.error.title'), errorMessage);
             } else {
                 tyme.showAlert(utils.localize('api.invoice.error.title'), JSON.stringify(response));
             }
