@@ -232,15 +232,7 @@ class BillomatResolver {
     }
 
     makeCreateInvoiceCall() {
-        const splittedIDs = formValue.clientContact.split('#');
-        if (splittedIDs.length !== 2) {
-            tyme.showAlert('Billomat', utils.localize('input.data.empty'));
-            return null;
-        }
-
-        const clientID = splittedIDs[0];
-        const contactID = splittedIDs[1];
-
+        const clientID = formValue.clientContact;
         const data = this.timeEntriesConverter.aggregatedTimeEntryData()
         let invoiceItems = [];
 
@@ -261,7 +253,6 @@ class BillomatResolver {
         let params = {
             "invoice": {
                 "client_id": clientID,
-                "contact_id": contactID,
                 "supply_date_type": "SUPPLY_TEXT",
                 "supply_date": formValue.startDate.toDateString() + " - " + formValue.endDate.toDateString(),
                 "net_gross": "NET",
