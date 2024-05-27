@@ -82,7 +82,7 @@ class TimeEntriesConverter {
                         && timeEntry.hasOwnProperty("start")
                         && timeEntry.hasOwnProperty("end")
                         && timeEntry.type !== "fixed") {
-                        
+
                         data[key].note += this.formatDate(timeEntry.start, false) + " ";
                         data[key].note += this.formatDate(timeEntry.start, true) + " - ";
                         data[key].note += this.formatDate(timeEntry.end, true) + " (";
@@ -171,9 +171,13 @@ class BillomatResolver {
     getClientContacts() {
         this.clients = [];
 
-        const totalPages = this.getClientPage(1);
-        for (let i = 2; i <= totalPages; i++) {
-            this.getClientPage(i);
+        const entriesPerPage = 500;
+        let currentPage = 1;
+        let newContactCount = 1;
+
+        while (newContactCount > 0) {
+            newContactCount = this.getClientPage(currentPage, entriesPerPage);
+            ++currentPage;
         }
 
         if (this.clients.length === 0) {
@@ -186,9 +190,9 @@ class BillomatResolver {
         return this.clients;
     }
 
-    getClientPage(page) {
+    getClientPage(page, entriesPerPage) {
         const url = this.baseURL + 'clients';
-        const response = utils.request(url, 'GET', this.headers, {'per_page': 50, 'page': page});
+        const response = utils.request(url, 'GET', this.headers, {'per_page': entriesPerPage, 'page': page});
         const statusCode = response['statusCode'];
         const result = response['result'];
 
@@ -200,41 +204,17 @@ class BillomatResolver {
             }
 
             const clients = parsedData['clients']["client"];
-            const total = parsedData['clients']['@total'];
 
             for (let client of clients) {
-                const contacts = this.getContacts(client['id']);
-
-                for (let contact of contacts) {
-                    this.clients.push({
-                        'name': client['name'] + " - " + contact['first_name'] + " " + contact['last_name'],
-                        'value': client['id'] + "#" + contact['id']
-                    });
-                }
+                this.clients.push({
+                    'name': client['name'] + " - " + client['first_name'] + " " + client['last_name'],
+                    'value': client['id']
+                });
             }
 
-            return total;
+            return clients.length;
         } else {
             return 0;
-        }
-    }
-
-    getContacts(clientID) {
-        const url = this.baseURL + 'contacts';
-        // we are optimistic and assume, that the user does not have more than 100 contacts per client.
-        const response = utils.request(url, 'GET', this.headers, {'client_id': clientID, 'per_page': 100, 'page': 1});
-        const statusCode = response['statusCode'];
-        const result = response['result'];
-
-        if (statusCode === 200) {
-            const parsedData = JSON.parse(result);
-            if (!parsedData['contacts']["contact"]) {
-                return [];
-            }
-
-            return parsedData['contacts']["contact"];
-        } else {
-            return [];
         }
     }
 
