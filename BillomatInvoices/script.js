@@ -254,7 +254,7 @@ class BillomatResolver {
             "invoice": {
                 "client_id": clientID,
                 "supply_date_type": "SUPPLY_TEXT",
-                "supply_date": formValue.startDate.toDateString() + " - " + formValue.endDate.toDateString(),
+                "supply_date": formValue.startDate.toLocaleDateString() + " - " + formValue.endDate.toLocaleDateString(),
                 "net_gross": "NET",
                 "invoice-items": invoiceItems
             }
