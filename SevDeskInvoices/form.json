@@ -101,7 +101,7 @@
     "id": "contactID",
     "type": "dropdown",
     "name": "input.contact",
-    "valueFunction": "sevDeskResolver.getContacts()",
+    "valueFunction": "sevdeskResolver.getContacts()",
     "valueFunctionReloadable": true,
     "persist": true
   },
@@ -109,7 +109,7 @@
     "id": "userID",
     "type": "dropdown",
     "name": "input.user",
-    "valueFunction": "sevDeskResolver.getSevUser()",
+    "valueFunction": "sevdeskResolver.getSevUser()",
     "valueFunctionReloadable": true,
     "persist": true
   },
