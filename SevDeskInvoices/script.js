@@ -75,23 +75,28 @@ class TimeEntriesConverter {
                         data[key].quantity += currentQuantity;
                     }
 
-                    if (data[key].note.length > 0 && timeEntry.note.length > 0) {
-                        data[key].note += '<br/>';
-                    }
-
                     if (formValue.showTimesInNotes
                         && timeEntry.hasOwnProperty("start")
                         && timeEntry.hasOwnProperty("end")
                         && timeEntry.type !== "fixed") {
 
+                        if (data[key].note.length > 0) {
+                            data[key].note += '<br/>';
+                        }
                         data[key].note += this.formatDate(timeEntry.start, false) + " ";
                         data[key].note += this.formatDate(timeEntry.start, true) + " - ";
                         data[key].note += this.formatDate(timeEntry.end, true) + " (";
                         data[key].note += this.roundNumber(currentQuantity, 1) + " " + data[key].unit + ")";
                         data[key].note += "<br/>";
+                        data[key].note += timeEntry.note;
+
+                    } else if (timeEntry.note.length > 0) {
+                        if (data[key].note.length > 0) {
+                            data[key].note += '<br/>';
+                        }
+                        data[key].note += timeEntry.note;
                     }
 
-                    data[key].note += timeEntry.note;
                     return data;
 
                 }.bind(this), {});
