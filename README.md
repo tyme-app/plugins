@@ -142,15 +142,15 @@ Translation file. Current supported languages are German and English.
 ```javascript
 {
   "en": {
-    "plugin.name": "Awesome Plugin",
-    "plugin.summary": "This is what the plugin does…",
+    "plugin.name": "Awesome Plugin", // required
+    "plugin.summary": "This is what the plugin does…", // required
     "input.key": "Secret Key",
     "input.key.placeholder": "Please enter your personal key",
     …
   },
   "de": {
-    "plugin.name": "Geniales Plugin", 
-    "plugin.summary": "Das Plugin macht Folgendes…",
+    "plugin.name": "Geniales Plugin",  // required
+    "plugin.summary": "Das Plugin macht Folgendes…", // required
     "input.key": "Geheimer Schlüssel",
     "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
     …
