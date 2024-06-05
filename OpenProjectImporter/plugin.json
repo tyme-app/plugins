@@ -3,7 +3,7 @@
   "tymeMinVersion": "2022.11",
   "version": "1.2",
   "type": "import",
-  "name": "OpenProject Import",
+  "name": "OpenProject Data Import",
   "summary": "Import your currently assigned work packages from OpenProject right into Tyme.",
   "author": "Lars Malewski",
   "authorUrl": "https://github.com/tyme-app/plugins/tree/main/OpenProjectImporter",
