@@ -370,14 +370,14 @@ class SevDeskResolver {
             return null;
         } else if (statusCode === 401) {
             const parsedData = JSON.parse(result);
-            tyme.showAlert('sevDesk API Error ' + parsedData["status"], parsedData["message"]);
+            tyme.showAlert('sevdesk API Error ' + parsedData["status"], parsedData["message"]);
             return null;
         } else {
-            tyme.showAlert('sevDesk API Error', JSON.stringify(response));
+            tyme.showAlert('sevdesk API Error', JSON.stringify(response));
             return null;
         }
     }
 }
 
 const timeEntriesConverter = new TimeEntriesConverter();
-const sevDeskResolver = new SevDeskResolver(formValue.apiKey, timeEntriesConverter);
+const sevdeskResolver = new SevDeskResolver(formValue.apiKey, timeEntriesConverter);
