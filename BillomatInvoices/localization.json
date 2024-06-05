@@ -1,5 +1,7 @@
 {
   "en": {
+    "plugin.name": "Billomat Invoice",
+    "plugin.summary": "Export your recorded times and notes to Billomat as a draft invoice. Offers a live preview of the data before creating the invoice.",
     "locale.identifier": "en-US",
     "input.key": "API Token",
     "input.key.placeholder": "Please enter your API-Token",
@@ -27,6 +29,8 @@
     "invoice.net": "Net"
   },
   "de": {
+    "plugin.name": "Billomat Invoice",
+    "plugin.summary": "Export your recorded times and notes to Billomat as a draft invoice. Offers a live preview of the data before creating the invoice.",
     "locale.identifier": "de-DE",
     "input.key": "API Token",
     "input.key.placeholder": "Bitte gib deinen API-Token ein",
