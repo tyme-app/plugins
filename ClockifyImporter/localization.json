@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "Clockify Import",
+    "plugin.name": "Clockify Data Import",
     "plugin.summary": "Import your data from Clockify right into Tyme.",
     "input.key": "Clockify API Key",
     "input.key.placeholder": "Please enter your API key",
@@ -8,8 +8,8 @@
     "input.billable.tasks": "Create separate tasks for non-billable time entries."
   },
   "de": {
-    "plugin.name": "Clockify Import",
-    "plugin.summary": "Import your data from Clockify right into Tyme.",
+    "plugin.name": "Clockify Daten Import",
+    "plugin.summary": "Importiere deine Daten aus Clockify direkt in Tyme.",
     "input.key": "Clockify API Key",
     "input.key.placeholder": "Bitte gib deinen API Schlüssel ein",
     "input.key.hint": "Du kannst den API-Schlüssel in deinen [Benutzer Einstellungen](https://app.clockify.me/user/settings) einsehen.\n\nEs werden alle Kunden, Projekte, Aufgaben und Zeiteinträge der letzten zwei Jahre importiert.\n\nWenn in deinem Clockify-Konto Zeiteinträge von verschiedenen Benutzern vorhanden sind, versucht der Importer, diese anhand der E-Mail-Adresse des Benutzers deinen Tyme-Nutzern zuzuordnen.",

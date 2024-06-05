@@ -1,10 +1,10 @@
 {
   "en": {
-    "plugin.name": "GrandTotal Offers",
-    "plugin.summary": "Create projects & tasks in Tyme from a draft invoice in GrandTotal."
+    "plugin.name": "Tasks from GrandTotal Offers",
+    "plugin.summary": "Automatically create projects and tasks in Tyme from a draft invoice in GrandTotal."
   },
   "de": {
-    "plugin.name": "GrandTotal Offers",
-    "plugin.summary": "Create projects & tasks in Tyme from a draft invoice in GrandTotal."
+    "plugin.name": "Aufgaben aus Angeboten von GrandTotal",
+    "plugin.summary": "Erstelle automatisch Projekte und Aufgaben in Tyme aus einem Rechnungsentwurf in GrandTotal."
   }
 }
