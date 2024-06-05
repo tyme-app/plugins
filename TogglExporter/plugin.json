@@ -3,7 +3,7 @@
   "tymeMinVersion": "2023.1",
   "version": "1.0",
   "type": "export",
-  "name": "toggl Export",
+  "name": "toggl Data Export",
   "summary": "As a freelancer, you often can't choose the rules of your clients. Some require time recording and they usually use different systems than you do. This plugin is intended for this purpose. If you record your own times with Tyme, but one of your clients uses toggl Track, you either have to record your times twice or export them to Toggl.\n\nTo use this plugin, the project names and task names of Tyme and Toggl must match exactly.\nWhen generating the preview, the plugin checks whether all selected projects and tasks are also available in toggl. If there are differences or the projects and tasks cannot be found in toggl, the plugin generates an error report in the preview window and marks all incorrect data records in red.\n\nNote: The Tyme category is used as a client in toggl.\n\nThe export button remains clickable in this case, but does not start the export until the errors are corrected.\n",
   "author": "Robert Boulanger",
   "authorUrl": "https://www.boulanger.de",

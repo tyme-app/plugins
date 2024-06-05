@@ -3,7 +3,7 @@
   "tymeMinVersion": "2022.11",
   "version": "1.1",
   "type": "import",
-  "name": "Clockify Import",
+  "name": "Clockify Data Import",
   "summary": "Import your data from Clockify right into Tyme.",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
