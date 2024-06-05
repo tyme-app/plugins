@@ -1,0 +1,10 @@
+{
+  "en": {
+    "plugin.name": "Invoices with GrandTotal",
+    "plugin.summary": "Sync your recorded times automatically to GrandTotal."
+  },
+  "de": {
+    "plugin.name": "Rechnungen mit GrandTotal",
+    "plugin.summary": "Synchronisiert deine erfassten Zeiten automatisch mit GrandTotal."
+  }
+}

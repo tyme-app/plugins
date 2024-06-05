@@ -1,5 +1,7 @@
 {
   "en": {
+    "plugin.name": "Invoices with lexoffice",
+    "plugin.summary": "Export your recorded times and notes to lexoffice as a draft invoice. Offers a live preview of the data before creating the invoice.",
     "locale.identifier": "en-US",
     "api.invoice.error.title": "Could not create invoice",
     "not.connected.message": "Tyme is not connected to lexoffice. Please click on 'Connect with lexoffice'.",
@@ -40,6 +42,8 @@
     "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
+    "plugin.name": "Rechnungen mit lexoffice",
+    "plugin.summary": "Exportiere deine erfassten Zeiten und Notizen als Rechnung nach lexoffice. Bietet eine Live-Vorschau der Daten vor der Erstellung der Rechnung.",
     "locale.identifier": "de-DE",
     "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
     "not.connected.message": "Tyme ist nicht mit lexoffice verbunden. Klicke bitte auf 'Mit lexoffice verbinden'.",

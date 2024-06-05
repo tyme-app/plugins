@@ -12,6 +12,6 @@
   "scriptMain": "THE OFFER FUNCTIONALITY IS ALREADY BUILT IN INTO TYME. THIS PLUGIN IS THE GRANDTOTAL COUNTERPART.",
   "scriptPreview": "",
   "formName": "",
-  "localizationName": "",
+  "localizationName": "localization.json",
   "isBuiltIn": true
 }

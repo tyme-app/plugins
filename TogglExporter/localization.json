@@ -1,5 +1,7 @@
 {
   "en": {
+    "plugin.name": "toggl Data Export",
+    "plugin.summary": "As a freelancer, you often can't choose the rules of your clients. Some require time recording and they usually use different systems than you do. This plugin is intended for this purpose. If you record your own times with Tyme, but one of your clients uses toggl Track, you either have to record your times twice or export them to Toggl.\n\nTo use this plugin, the project names and task names of Tyme and Toggl must match exactly.\nWhen generating the preview, the plugin checks whether all selected projects and tasks are also available in toggl. If there are differences or the projects and tasks cannot be found in toggl, the plugin generates an error report in the preview window and marks all incorrect data records in red.\n\nNote: The Tyme category is used as a client in toggl.\n\nThe export button remains clickable in this case, but does not start the export until the errors are corrected.",
     "locale.identifier": "en-US",
     "input.key": "toggl API Key",
     "input.key.placeholder": "Please enter your API key",
@@ -23,6 +25,8 @@
     "error.api": "No access to your toggl account. Please check your API key."
   },
   "de": {
+    "plugin.name": "toggl Daten Export",
+    "plugin.summary": "Als Freiberufler kannst du dir die Regeln deiner Kunden oft nicht aussuchen. Einige verlangen eine Zeiterfassung, und sie verwenden meist andere Systeme als Sie. Dieses Plugin ist für diesen Zweck gedacht. Wenn du deine eigenen Zeiten mit Tyme erfasst, aber einer deiner Kunden Toggl Track verwendet, musst du entweder deine Zeiten doppelt erfassen oder sie nach Toggl exportieren.\n\nUm dieses Plugin zu nutzen, müssen die Projekt- und Aufgabennamen von Tyme und Toggl exakt übereinstimmen.\nBeim Erzeugen der Vorschau prüft das Plugin, ob alle ausgewählten Projekte und Aufgaben auch in Toggl vorhanden sind. Bei Unterschieden oder wenn die Projekte und Aufgaben in Toggl nicht gefunden werden, generiert das Plugin eine Fehlermeldung im Vorschaufenster und markiert alle fehlerhaften Datensätze in rot.\n\nHinweis: Die Kategorie Tyme wird in toggl als Mandant verwendet.\n\nDer Export-Button bleibt in diesem Fall klickbar, startet den Export aber erst, wenn die Fehler behoben sind.",
     "locale.identifier": "de-DE",
     "input.key": "toggl API Key",
     "input.key.placeholder": "Bitte gib deinen API Schlüssel ein",

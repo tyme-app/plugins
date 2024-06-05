@@ -31,8 +31,8 @@ This file defines the type, version, compatibility and entry point for the plugi
   "tymeMinVersion": "2024.1", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
-  "name": "My Fancy Plugin", // localizable
-  "summary": "A description of what the plugin does.", // localizable
+  "name": "My Fancy Plugin", // deprecated v2024.9
+  "summary": "A description of what the plugin does.", // deprecated v2024.9
   "author": "John Doe",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "doc.text.magnifyingglass", // not yet used
@@ -137,7 +137,7 @@ getClients()
 
 ### Localization File
 
-Optional translation file. Current supported languages are German and English.
+Translation file. Current supported languages are German and English.
 
 ```javascript
 {
