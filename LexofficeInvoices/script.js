@@ -109,8 +109,8 @@ class TimeEntriesConverter {
             });
 
         sortedData.forEach((entry) => {
-            if (entry.note.length > 2000) {
-                entry.note = entry.note.substring(0, 1999) + "…";
+            if (entry.note.length > 1800) {
+                entry.note = entry.note.substring(0, 1799) + "…";
             }
         });
 
