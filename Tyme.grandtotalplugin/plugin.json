@@ -1,7 +1,7 @@
 {
   "id": "grandtotal_invoices",
   "tymeMinVersion": "2022.1",
-  "version": "3.1",
+  "version": "3.2",
   "type": "export",
   "name": "Invoices with GrandTotal",
   "summary": "Sync your recorded times automatically to GrandTotal.",
