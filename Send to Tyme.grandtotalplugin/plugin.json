@@ -1,7 +1,7 @@
 {
   "id": "grandtotal_offers",
   "tymeMinVersion": "2022.1",
-  "version": "3.1",
+  "version": "3.2",
   "type": "import",
   "name": "Tasks from GrandTotal Offers",
   "summary": "Automatically create projects and tasks in Tyme from a draft invoice in GrandTotal.",

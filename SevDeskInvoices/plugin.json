@@ -1,7 +1,7 @@
 {
   "id": "sevdesk_invoices",
   "tymeMinVersion": "2022.16",
-  "version": "2.5",
+  "version": "2.6",
   "type": "export",
   "name": "Invoices with sevdesk",
   "summary": "Export your recorded times and notes to sevdesk as a draft invoice. Offers a live preview of the data before creating the invoice.",
