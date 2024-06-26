@@ -1,0 +1,17 @@
+{
+  "id": "hookmark_plugin",
+  "tymeMinVersion": "2023.1",
+  "version": "1.0",
+  "type": "export",
+  "name": "Hookmark Integration",
+  "summary": "Create a bookmark for Hookmark from time entries, projects or tasks.",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.tyme-app.com/en/blog-2024-05-01-hookmark/",
+  "icon": "icon.png",
+  "scriptName": "",
+  "scriptMain": "",
+  "scriptPreview": "",
+  "formName": "",
+  "localizationName": "localization.json",
+  "isBuiltIn": true
+}

@@ -1,0 +1,10 @@
+{
+  "en": {
+    "plugin.name": "Raycast Integration",
+    "plugin.summary": "Start and stop your tasks directly from the Raycast launcher."
+  },
+  "de": {
+    "plugin.name": "Raycast Integration",
+    "plugin.summary": "Starte und stoppe deine Aufgaben direkt vom Raycast Launcher aus."
+  }
+}
