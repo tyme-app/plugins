@@ -1,0 +1,17 @@
+{
+  "id": "raycast_plugin",
+  "tymeMinVersion": "2023.1",
+  "version": "1.0",
+  "type": "export",
+  "name": "Raycast Integration",
+  "summary": "Start and stop your tasks directly from the Raycast launcher.",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.tyme-app.com/en/blog-2024-04-30-raycast/",
+  "icon": "icon.png",
+  "scriptName": "",
+  "scriptMain": "",
+  "scriptPreview": "",
+  "formName": "",
+  "localizationName": "localization.json",
+  "isBuiltIn": true
+}
