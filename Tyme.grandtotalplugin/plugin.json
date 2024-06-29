@@ -6,7 +6,7 @@
   "name": "Invoices with GrandTotal",
   "summary": "Sync your recorded times automatically to GrandTotal.",
   "author": "Unit Numberfive oHG",
-  "authorUrl": "https://www.tyme-app.com/en/grandtotal-plugin",
+  "authorUrl": "https://www.tyme-app.com/en/grandtotal-plugin/?hide_nav",
   "icon": "grandtotal_icon.png",
   "scriptName": "",
   "scriptMain": "THE INVOICE FUNCTIONALITY IS ALREADY BUILT IN INTO TYME. THIS PLUGIN IS THE GRANDTOTAL COUNTERPART.",
