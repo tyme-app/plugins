@@ -1,0 +1,149 @@
+[
+  {
+    "id": "jiraURL",
+    "type": "text",
+    "name": "input.url",
+    "placeholder": "input.url.placeholder",
+    "actionFunction": "importer.check()",
+    "persist": true
+  },
+  {
+    "id": "jiraUser",
+    "type": "text",
+    "name": "input.user",
+    "placeholder": "input.user.placeholder",
+    "actionFunction": "importer.check()",
+    "persist": true
+  },
+  {
+    "id": "jiraKey",
+    "type": "securetext",
+    "name": "input.key",
+    "placeholder": "input.key.placeholder",
+    "actionFunction": "importer.check()",
+    "persist": true
+  },
+  {
+    "id": "jiraKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.key.hint"
+  },
+  {
+    "id": "sep_1",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "durationField",
+    "type": "dropdown",
+    "name": "input.fields.plannedDuration",
+    "persist": true,
+    "valueFunction": "importer.configuration?.fieldOptions('plannedDuration')",
+    "value": "jira_import_empty",
+    "valueFunctionReloadable": false
+  },
+  {
+    "id": "startDateField",
+    "type": "dropdown",
+    "name": "input.fields.startDate",
+    "persist": true,
+    "valueFunction": "importer.configuration?.fieldOptions('startDate')",
+    "value": "jira_import_empty",
+    "valueFunctionReloadable": false
+  },
+  {
+    "id": "dueDateField",
+    "type": "dropdown",
+    "name": "input.fields.dueDate",
+    "persist": true,
+    "valueFunction": "importer.configuration?.fieldOptions('dueDate')",
+    "value": "jira_import_empty",
+    "valueFunctionReloadable": false
+  },
+  {
+    "id": "insertIssueNumberHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.fields.hint"
+  },
+  {
+    "id": "sep_2",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "excludedProjects",
+    "type": "text",
+    "name": "input.excludedProjects",
+    "persist": true
+  },
+  {
+    "id": "excludedProjectsHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.excludedProjects.hint"
+  },
+  {
+    "id": "sep_3",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "insertIssueNumber",
+    "type": "dropdown",
+    "name": "input.insertIssueNumber",
+    "persist": true,
+    "values": [
+      {
+        "no": "input.insertIssueNumber.no"
+      },
+      {
+        "prepend": "input.insertIssueNumber.prepend"
+      },
+      {
+        "append": "input.insertIssueNumber.append"
+      }
+    ]
+  },
+  {
+    "id": "insertIssueNumberHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.insertIssueNumber.hint"
+  },
+  {
+    "id": "sep_4",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "updateTasks",
+    "type": "checkbox",
+    "persist": true,
+    "name": "input.updateTasks"
+  },
+  {
+    "id": "updateTimeFrame",
+    "type": "dropdown",
+    "name": "input.updateTasksTimeFrame",
+    "persist": true,
+    "values": [
+      {
+        "14": "input.timeFrame.14"
+      },
+      {
+        "30": "input.timeFrame.30"
+      },
+      {
+        "60": "input.timeFrame.60"
+      }
+    ]
+  },
+  {
+    "id": "updateTimeFrameHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.updateTasks.hint"
+  }
+]
