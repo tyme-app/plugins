@@ -90,12 +90,13 @@ Values of all form elements are available in your script in the global variable 
 formValue.someUniqueID;
  ```
 
-You can update the hidden or enabled state of a form element (Since Tyme 2024.5):
+You can update properties of a rendered form element:
 
 ```javascript
 class FormElement {
     isHidden // bool
     enabled // bool
+    reload() // Calls the valueFunction of a dropdown to reload it. Tyme 2024.14 needed
 }
  ```
 
@@ -105,6 +106,7 @@ All form element can be accessed via the **formElement** property:
 // update a form element
 formElement.someUniqueID.isHidden = !formValue.includeNonBillable;
 formElement.someUniqueID.enabled = !formValue.markAsBilled;
+formElement.someUniqueID.reload();
  ```
 
 Each form element can have an **actionFunction** that is called whenever its value changes.
