@@ -1,6 +1,6 @@
 {
   "id": "jira_importer",
-  "tymeMinVersion": "2024.6",
+  "tymeMinVersion": "2024.14",
   "version": "1.0",
   "type": "import",
   "name": "Jira Import",
