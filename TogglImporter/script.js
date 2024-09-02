@@ -5,22 +5,22 @@ class TogglApiClient {
         this.baseURL = 'https://api.track.toggl.com';
     }
 
-    getJSON(path, params = null) {
+    request(path, params = null, method = "GET") {
         const response = utils.request(
             this.baseURL + path,
-            'GET',
+            method,
             {'Authorization': 'Basic ' + utils.base64Encode(this.apiKey + ':api_token')},
             params
         );
 
         const statusCode = response['statusCode'];
         const result = response['result'];
+        const headers = response['headers'];
 
         if (statusCode === 200) {
-            return JSON.parse(result);
+            return [JSON.parse(result), headers];
         } else {
-            tyme.showAlert('Toggl API Error', JSON.stringify(response));
-            return null;
+            return [null, headers];
         }
     }
 }
@@ -66,7 +66,10 @@ class TogglImporter {
             let tymeProject = Project.fromID(id) ?? Project.create(id);
             tymeProject.name = project["name"];
             tymeProject.isCompleted = !project["active"];
-            tymeProject.color = parseInt(project["hex_color"].replace("#", "0x"));
+
+            if (project["color"] && typeof project["color"] === 'string') {
+                tymeProject.color = parseInt(project["color"].replace("#", "0x"));
+            }
             tymeProject.defaultHourlyRate = project["rate"] ?? defaultHourlyRate;
             tymeProject.roundingMethod = rounding;
             tymeProject.roundingMinutes = roundingMinutes;
@@ -74,15 +77,17 @@ class TogglImporter {
             if (!project["auto_estimates"]) {
                 tymeProject.plannedDuration = project["estimated_hours"] * 60 * 60;
             }
+
             tymeProject.category = Category.fromID(clientID);
         }
 
         for (let taskID in this.tasks) {
             const task = this.tasks[taskID];
+
             const id = idPrefix + taskID;
-            const projectID = idPrefix + task["pid"];
+            const projectID = idPrefix + task["project_id"];
             let billable = true;
-            const togglProject = this.projects[task["pid"]]
+            const togglProject = this.projects[task["project_id"]]
 
             if (togglProject) {
                 billable = togglProject["billable"];
@@ -97,6 +102,7 @@ class TogglImporter {
             tymeTask.roundingMinutes = roundingMinutes;
 
             const project = Project.fromID(projectID);
+
             tymeTask.project = project;
 
             if (project.isCompleted) {
@@ -105,11 +111,38 @@ class TogglImporter {
         }
 
         for (const timeEntry of this.timeEntries) {
-            const timeEntryID = idPrefix + timeEntry["id"];
-            const projectID = idPrefix + (timeEntry["pid"] ?? "-default");
-            const taskID = idPrefix + (timeEntry["tid"] ?? (projectID + "-default"));
+            const projectID = idPrefix + (timeEntry["project_id"] ?? "-default");
+            const taskID = idPrefix + (timeEntry["task_id"] ?? (projectID + "-default"));
 
-            // make sure the tasks & project exists
+            /*
+            {
+                "user_id": 11238397,
+                "username": "sandbox_tester2@tyme-app.com",
+                "project_id": 205181464,
+                "task_id": null,
+                "billable": false,
+                "description": "something else",
+                "tag_ids": [],
+                "billable_amount_in_cents": null,
+                "hourly_rate_in_cents": null,
+                "currency": "USD",
+                "time_entries": [
+                    {
+                        "id": 3587874298,
+                        "seconds": 3600,
+                        "start": "2024-09-02T07:00:00+02:00",
+                        "stop": "2024-09-02T08:00:00+02:00",
+                        "at": "2024-09-02T08:25:48+00:00",
+                        "at_tz": "2024-09-02T10:25:48+02:00"
+                    }
+                ],
+                "row_number": 1
+            }
+
+            */
+
+
+            // make sure the tasks & project exists. if there is none in toggl. create a default one
 
             let tymeProject = Project.fromID(projectID);
             if (!tymeProject) {
@@ -126,18 +159,22 @@ class TogglImporter {
                 tymeTask.project = tymeProject;
             }
 
-            let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
-            tymeEntry.note = timeEntry["description"];
-            tymeEntry.timeStart = Date.parse(timeEntry["start"]);
-            tymeEntry.timeEnd = Date.parse(timeEntry["end"]);
-            tymeEntry.parentTask = TimedTask.fromID(taskID);
+            for (const subTimeEntry of timeEntry["time_entries"]) {
+                const timeEntryID = idPrefix + subTimeEntry["id"];
 
-            const userID = timeEntry["uid"];
-            const user = this.users[userID];
-            const tymeUserID = tyme.userIDForEmail(user["email"]);
+                let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
+                tymeEntry.note = timeEntry["description"];
+                tymeEntry.timeStart = Date.parse(subTimeEntry["start"]);
+                tymeEntry.timeEnd = Date.parse(subTimeEntry["stop"]);
+                tymeEntry.parentTask = TimedTask.fromID(taskID);
 
-            if (tymeUserID) {
-                tymeEntry.userID = tymeUserID;
+                const userID = timeEntry["user_id"];
+                const user = this.users[userID];
+                const tymeUserID = tyme.userIDForEmail(user["email"]);
+
+                if (tymeUserID) {
+                    tymeEntry.userID = tymeUserID;
+                }
             }
         }
     }
@@ -147,7 +184,7 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const usersResponse = this.apiClient.getJSON("/api/v8/workspaces/" + id + "/users");
+            const [usersResponse, headers] = this.apiClient.request("/api/v9/workspaces/" + id + "/users");
 
             if (!usersResponse) {
                 continue;
@@ -161,7 +198,7 @@ class TogglImporter {
     }
 
     getWorkspaces() {
-        const workspaceResponse = this.apiClient.getJSON("/api/v8/workspaces");
+        const [workspaceResponse, headers] = this.apiClient.request("/api/v9/workspaces");
         if (!workspaceResponse) {
             return false;
         }
@@ -175,7 +212,7 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const clientsResponse = this.apiClient.getJSON("/api/v8/workspaces/" + id + "/clients");
+            const [clientsResponse, headers] = this.apiClient.request("/api/v9/workspaces/" + id + "/clients");
 
             if (!clientsResponse) {
                 continue;
@@ -193,9 +230,9 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const path = "/api/v8/workspaces/" + id + "/projects";
+            const path = "/api/v9/workspaces/" + id + "/projects";
 
-            const activeProjectsResponse = this.apiClient.getJSON(path, {"active": "true"});
+            const [activeProjectsResponse, headers1] = this.apiClient.request(path, {"active": "true"});
             if (activeProjectsResponse) {
                 activeProjectsResponse.forEach(function (entry) {
                     const id = entry["id"];
@@ -203,7 +240,7 @@ class TogglImporter {
                 }.bind(this));
             }
 
-            const inactiveProjectsResponse = this.apiClient.getJSON(path, {"active": "false"});
+            const [inactiveProjectsResponse, headers2] = this.apiClient.request(path, {"active": "false"});
 
             if (inactiveProjectsResponse) {
                 inactiveProjectsResponse.forEach(function (entry) {
@@ -219,19 +256,19 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const path = "/api/v8/workspaces/" + id + "/tasks";
+            const path = "/api/v9/workspaces/" + id + "/tasks";
 
-            const activeTasksResponse = this.apiClient.getJSON(path, {"active": "true"});
-            if (activeTasksResponse) {
-                activeTasksResponse.forEach(function (entry) {
+            const [activeTasksResponse, headers1] = this.apiClient.request(path, {"active": "true"});
+            if (activeTasksResponse && Array.isArray(activeTasksResponse.data)) {
+                activeTasksResponse.data.forEach(function (entry) {
                     const id = entry["id"];
                     this.tasks[id] = entry;
                 }.bind(this));
             }
 
-            const inactiveTasksResponse = this.apiClient.getJSON(path, {"active": "false"});
-            if (inactiveTasksResponse) {
-                inactiveTasksResponse.forEach(function (entry) {
+            const [inactiveTasksResponse, headers2] = this.apiClient.request(path, {"active": "false"});
+            if (inactiveTasksResponse && Array.isArray(inactiveTasksResponse.data)) {
+                inactiveTasksResponse.data.forEach(function (entry) {
                     const id = entry["id"];
                     this.tasks[id] = entry;
                 }.bind(this));
@@ -253,34 +290,34 @@ class TogglImporter {
                 endDate.setFullYear(endDate.getFullYear() - (i - 1));
 
                 let finished = false;
-                let page = 1;
+                let firstRow = null;
 
                 do {
                     const params = {
-                        "workspace_id": id,
-                        "since": startDate.toISOString(),
-                        "until": endDate.toISOString(),
+                        "start_date": startDate.toISOString().split('T')[0],
+                        "end_date": endDate.toISOString().split('T')[0],
                         "user_agent": "tyme_toggl_import",
-                        "page": page
+                        "first_row_number": firstRow,
+                        "page_size": 2
                     };
 
-                    const timeEntriesResponse = this.apiClient.getJSON(
-                        "/reports/api/v2/details",
-                        params
+                    const [timeEntriesResponse, headers] = this.apiClient.request(
+                        "/reports/api/v3/workspace/" + id + "/search/time_entries",
+                        params,
+                        "POST"
                     );
 
-                    if (!timeEntriesResponse) {
+                    firstRow = headers["x-next-row-number"] ?? null;
+
+                    if (timeEntriesResponse && Array.isArray(timeEntriesResponse)) {
+                        this.timeEntries.push(...timeEntriesResponse);
+
+                        if (timeEntriesResponse.length === 0 || firstRow == null) {
+                            finished = true;
+                        }
+                    } else {
                         finished = true;
                     }
-
-                    const timeEntries = timeEntriesResponse["data"];
-
-                    if (timeEntries.length === 0) {
-                        finished = true;
-                    }
-
-                    this.timeEntries.push(...timeEntries);
-                    page++;
                 }
                 while (!finished);
             }
