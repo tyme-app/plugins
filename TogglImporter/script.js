@@ -2,7 +2,7 @@ class TogglApiClient {
 
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseURL = 'https://api.track.toggl.com';
+        this.baseURL = 'https://api.track.toggl.com/api/v9';
     }
 
     getJSON(path, params = null) {
@@ -66,7 +66,15 @@ class TogglImporter {
             let tymeProject = Project.fromID(id) ?? Project.create(id);
             tymeProject.name = project["name"];
             tymeProject.isCompleted = !project["active"];
-            tymeProject.color = parseInt(project["hex_color"].replace("#", "0x"));
+
+            // Überprüfen, ob hex_color existiert und gültig ist, bevor replace angewendet wird
+            if (project["hex_color"] && typeof project["hex_color"] === 'string') {
+                tymeProject.color = parseInt(project["hex_color"].replace("#", "0x"));
+            } else {
+                // Setze eine Standardfarbe, falls hex_color nicht vorhanden ist
+                tymeProject.color = 0xFFFFFF; // Weiß als Standardfarbe
+            }
+
             tymeProject.defaultHourlyRate = project["rate"] ?? defaultHourlyRate;
             tymeProject.roundingMethod = rounding;
             tymeProject.roundingMinutes = roundingMinutes;
@@ -80,7 +88,7 @@ class TogglImporter {
         for (let taskID in this.tasks) {
             const task = this.tasks[taskID];
             const id = idPrefix + taskID;
-            const projectID = idPrefix + task["pid"];
+            const projectID = idPrefix + task.project_id;
             let billable = true;
             const togglProject = this.projects[task["pid"]]
 
@@ -113,17 +121,12 @@ class TogglImporter {
 
             let tymeProject = Project.fromID(projectID);
             if (!tymeProject) {
-                tymeProject = Project.create(projectID);
-                tymeProject.name = "Default";
-                tymeProject.color = 0xFF9900;
-                tymeProject.defaultHourlyRate = defaultHourlyRate;
+                continue;
             }
 
             let tymeTask = TimedTask.fromID(taskID);
             if (!tymeTask) {
-                tymeTask = TimedTask.create(taskID);
-                tymeTask.name = "Default";
-                tymeTask.project = tymeProject;
+                continue;
             }
 
             let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
@@ -147,7 +150,7 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const usersResponse = this.apiClient.getJSON("/api/v8/workspaces/" + id + "/users");
+            const usersResponse = this.apiClient.getJSON("/workspaces/" + id + "/users");
 
             if (!usersResponse) {
                 continue;
@@ -161,7 +164,7 @@ class TogglImporter {
     }
 
     getWorkspaces() {
-        const workspaceResponse = this.apiClient.getJSON("/api/v8/workspaces");
+        const workspaceResponse = this.apiClient.getJSON("/workspaces");
         if (!workspaceResponse) {
             return false;
         }
@@ -175,7 +178,7 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const clientsResponse = this.apiClient.getJSON("/api/v8/workspaces/" + id + "/clients");
+            const clientsResponse = this.apiClient.getJSON("/workspaces/" + id + "/clients");
 
             if (!clientsResponse) {
                 continue;
@@ -193,7 +196,7 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const path = "/api/v8/workspaces/" + id + "/projects";
+            const path = "/workspaces/" + id + "/projects";
 
             const activeProjectsResponse = this.apiClient.getJSON(path, {"active": "true"});
             if (activeProjectsResponse) {
@@ -219,22 +222,29 @@ class TogglImporter {
 
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
-            const path = "/api/v8/workspaces/" + id + "/tasks";
+            const path = "/workspaces/" + id + "/tasks";
 
             const activeTasksResponse = this.apiClient.getJSON(path, {"active": "true"});
-            if (activeTasksResponse) {
-                activeTasksResponse.forEach(function (entry) {
+            if (activeTasksResponse && Array.isArray(activeTasksResponse.data)) {
+                activeTasksResponse.data.forEach(function (entry) {
                     const id = entry["id"];
                     this.tasks[id] = entry;
                 }.bind(this));
+            } else {
+                tyme.showAlert('Could not import active Tasks.', `You may have no inactive tasks in workspace ${workspace["name"]}. \n\n${JSON.stringify(activeTasksResponse)}`);
             }
 
             const inactiveTasksResponse = this.apiClient.getJSON(path, {"active": "false"});
-            if (inactiveTasksResponse) {
+            if (inactiveTasksResponse && Array.isArray(inactiveTasksResponse.data)) {
                 inactiveTasksResponse.forEach(function (entry) {
                     const id = entry["id"];
                     this.tasks[id] = entry;
                 }.bind(this));
+            } else {
+                if (inactiveTasksResponse.total_count === 0) {
+                    continue;
+                }
+                tyme.showAlert('Could not import inactive Tasks.', `You may have no inactive tasks in workspace ${workspace["name"]}. \n\n${JSON.stringify(inactiveTasksResponse)}`);
             }
         }
     }
@@ -245,45 +255,45 @@ class TogglImporter {
         for (const workspace of this.workspaces) {
             const id = workspace["id"];
 
-            for (let i = 1; i <= 2; i++) {
+            let finished = false;
+            let page = 1;
 
-                let startDate = new Date();
-                startDate.setFullYear(startDate.getFullYear() - i);
-                let endDate = new Date();
-                endDate.setFullYear(endDate.getFullYear() - (i - 1));
+            // Setze das Enddatum auf heute
+            let endDate = new Date();
 
-                let finished = false;
-                let page = 1;
+            // Startdatum ist das aktuelle Enddatum minus 2 Monate
+            let startDate = new Date();
+            startDate.setMonth(endDate.getMonth() - 2);
 
-                do {
-                    const params = {
-                        "workspace_id": id,
-                        "since": startDate.toISOString(),
-                        "until": endDate.toISOString(),
-                        "user_agent": "tyme_toggl_import",
-                        "page": page
-                    };
+            do {
+                const params = {
+                    "workspace_id": id,
+                    "since": Math.floor(startDate.getTime() / 1000),  // Unix-Zeitstempel in Sekunden
+                    "until": Math.floor(endDate.getTime() / 1000),    // Unix-Zeitstempel in Sekunden
+                    "user_agent": "tyme_toggl_import",
+                    "page": page
+                };
 
-                    const timeEntriesResponse = this.apiClient.getJSON(
-                        "/reports/api/v2/details",
-                        params
-                    );
+                const timeEntriesResponse = this.apiClient.getJSON("/me/time_entries", params);
 
-                    if (!timeEntriesResponse) {
+                // Überprüfen, ob die Antwort gültig ist und die "data" Eigenschaft enthält
+                if (timeEntriesResponse && Array.isArray(timeEntriesResponse)) {
+                    if (timeEntriesResponse.length === 0) {
                         finished = true;
+                    } else {
+                        this.timeEntries.push(...timeEntriesResponse);
+                        page++;
                     }
-
-                    const timeEntries = timeEntriesResponse["data"];
-
-                    if (timeEntries.length === 0) {
-                        finished = true;
-                    }
-
-                    this.timeEntries.push(...timeEntries);
-                    page++;
+                } else {
+                    // Handle unexpected response structure or errors
+                    finished = true;
+                    tyme.showAlert("Unexpected API response:", JSON.stringify(timeEntriesResponse));
                 }
-                while (!finished);
-            }
+
+                // Beende die Schleife nach einer erfolgreichen Anfrage
+                finished = true;
+
+            } while (!finished);
         }
     }
 }
