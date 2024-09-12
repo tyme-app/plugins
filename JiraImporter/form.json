@@ -4,7 +4,6 @@
     "type": "text",
     "name": "input.url",
     "placeholder": "input.url.placeholder",
-    "actionFunction": "importer.check()",
     "persist": true
   },
   {
@@ -12,7 +11,6 @@
     "type": "text",
     "name": "input.user",
     "placeholder": "input.user.placeholder",
-    "actionFunction": "importer.check()",
     "persist": true
   },
   {
@@ -20,7 +18,7 @@
     "type": "securetext",
     "name": "input.key",
     "placeholder": "input.key.placeholder",
-    "actionFunction": "importer.check()",
+    "actionFunction": "importer.check(true)",
     "persist": true
   },
   {
@@ -41,7 +39,7 @@
     "persist": true,
     "valueFunction": "importer.configuration?.fieldOptions('plannedDuration')",
     "value": "jira_import_empty",
-    "valueFunctionReloadable": false
+    "valueFunctionReloadable": true
   },
   {
     "id": "startDateField",
@@ -50,7 +48,7 @@
     "persist": true,
     "valueFunction": "importer.configuration?.fieldOptions('startDate')",
     "value": "jira_import_empty",
-    "valueFunctionReloadable": false
+    "valueFunctionReloadable": true
   },
   {
     "id": "dueDateField",
@@ -59,7 +57,7 @@
     "persist": true,
     "valueFunction": "importer.configuration?.fieldOptions('dueDate')",
     "value": "jira_import_empty",
-    "valueFunctionReloadable": false
+    "valueFunctionReloadable": true
   },
   {
     "id": "insertIssueNumberHint",

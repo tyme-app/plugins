@@ -393,11 +393,12 @@ class JiraImporter {
 
   /**
    * Check that the required fields are filled.
+   * @param {boolean} reload Reload fields when they are enabled.
    */
-  check() {
+  check(reload = false) {
     if (formValue.jiraURL.trim() !== '' && formValue.jiraKey.trim() !== '' && formValue.jiraUser.trim() !== '') {
       this.createClient();
-      this.enableFields();
+      this.enableFields(true, reload);
     } else {
       this.enableFields(false);
     }
@@ -414,16 +415,26 @@ class JiraImporter {
   /**
    * Enable or disable additional fields for import.
    * @param {boolean} enable Enable or disable fields. Defaults to `true`.
+   * @param {boolean} reload Reloads the fields when enabling it.
    */
-  enableFields(enable = true) {
+  enableFields(enable = true, reload = false) {
     if (formElement.durationField) {
       formElement.durationField.enabled = enable;
+      if (enable && reload) {
+        formElement.durationField.reload();
+      }
     }
     if (formElement.startDateField) {
       formElement.startDateField.enabled = enable;
+      if (enable && reload) {
+        formElement.startDateField.reload();
+      }
     }
     if (formElement.dueDateField) {
       formElement.dueDateField.enabled = enable;
+      if (enable && reload) {
+        formElement.dueDateField.reload();
+      }
     }
   }
 
