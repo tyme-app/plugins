@@ -10,5 +10,7 @@
   "scriptMain": "lexOfficeResolver.createInvoice()",
   "scriptPreview": "lexOfficeResolver.generatePreview()",
   "formName": "form.json",
-  "localizationName": "localization.json"
+  "localizationName": "localization.json",
+  "internalType": "integration",
+  "internalLink": "/partner-lexoffice/"
 }
