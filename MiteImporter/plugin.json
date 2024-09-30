@@ -1,10 +1,8 @@
 {
   "id": "mite_importer",
-  "tymeMinVersion": "2023.1",
-  "version": "1.0",
+  "tymeMinVersion": "2024.11",
+  "version": "1.1",
   "type": "import",
-  "name": "mite Data Import",
-  "summary": "Import your data from mite right into Tyme.",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com/en/plugin-built-in/?hide_nav",
   "icon": "icon.png",
