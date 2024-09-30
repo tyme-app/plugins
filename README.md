@@ -31,11 +31,9 @@ This file defines the type, version, compatibility and entry point for the plugi
   "tymeMinVersion": "2024.1", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
-  "name": "My Fancy Plugin", // deprecated v2024.9
-  "summary": "A description of what the plugin does.", // deprecated v2024.9
   "author": "John Doe",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "doc.text.magnifyingglass", // not yet used
+  "icon": "some_icon96x96.png",
   "scriptName": "script.js",
   "scriptMain": "createInvoice()", // the method to call when exporting
   "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return), only export plugins
@@ -152,7 +150,7 @@ Translation file. Current supported languages are German and English.
   },
   "de": {
     "plugin.name": "Geniales Plugin",  // required
-    "plugin.summary": "Das Plugin macht Folgendes…", // required
+    "plugin.summary": "Dieses Plugin macht Folgendes…", // required
     "input.key": "Geheimer Schlüssel",
     "input.key.placeholder": "Bitte gib deinen persönlichen Schlüssel ein",
     …

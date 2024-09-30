@@ -1,10 +1,8 @@
 {
   "id": "billomat_invoices",
-  "tymeMinVersion": "2022.16",
-  "version": "2.0",
+  "tymeMinVersion": "2024.11",
+  "version": "2.1",
   "type": "export",
-  "name": "Invoices with Billomat",
-  "summary": "Export your recorded times and notes as an invoice to Billomat. Displays a live preview of the data before you create the invoice.",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "billomat_icon.png",

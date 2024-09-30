@@ -1,10 +1,8 @@
 {
   "id": "lexoffice_invoices",
-  "tymeMinVersion": "2022.16",
-  "version": "2.7",
+  "tymeMinVersion": "2024.11",
+  "version": "2.8",
   "type": "export",
-  "name": "Invoices with lexoffice",
-  "summary": "Export your recorded times and notes to lexoffice as a draft invoice. Offers a live preview of the data before creating the invoice.",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "lexoffice_icon.png",
