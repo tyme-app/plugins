@@ -144,7 +144,7 @@ class JiraFieldConfiguration {
   /**
    * Skipped field configuration.
    */
-  static skippedField = { value: 'jira_import_skip', name: utils.localize('input.fields.skip') };
+  static skippedField = {value: 'jira_import_skip', name: utils.localize('input.fields.skip')};
 
   /**
    *
@@ -223,7 +223,7 @@ class JiraFieldConfiguration {
     // Prepend the "Skipped field" configuration
     return [JiraFieldConfiguration.skippedField].concat(
       filteredFields.map(field => {
-        return { value: field.id, name: field.name };
+        return {value: field.id, name: field.name};
       })
     );
   }
