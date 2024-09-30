@@ -1,0 +1,16 @@
+{
+  "id": "jira_importer",
+  "tymeMinVersion": "2024.14",
+  "version": "1.0",
+  "type": "import",
+  "name": "Jira Import",
+  "summary": "Import your currently assigned issues from Jira right into Tyme.",
+  "author": "Lars Malewski",
+  "authorUrl": "https://larsmalewski.de",
+  "icon": "jira_icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "importer.start()",
+  "scriptPreview": "",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}
