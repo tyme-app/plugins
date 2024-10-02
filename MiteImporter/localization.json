@@ -1,10 +1,10 @@
 {
   "en": {
-    "plugin.name": "mite Data Import",
+    "plugin.name": "mite",
     "plugin.summary": "Import your data from mite right into Tyme."
   },
   "de": {
-    "plugin.name": "mite Daten Import",
+    "plugin.name": "mite",
     "plugin.summary": "Importiere deine Daten aus mite direkt in Tyme."
   }
 }

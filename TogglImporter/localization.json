@@ -1,13 +1,13 @@
 {
   "en": {
-    "plugin.name": "toggl Data Import",
+    "plugin.name": "toggl",
     "plugin.summary": "Import your data from toggl right into Tyme.",
     "input.key": "Toggl API Key",
     "input.key.placeholder": "Please enter your API key",
     "input.key.hint": "You can find the token in your [toggl profile](https://track.toggl.com/profile).\n\nAll clients, projects, tasks and time entries of the last two years will be imported.\n\nIf there are time entries from different users in your toggl account, the importer will try to match them to your Tyme users based on the email address of the user."
   },
   "de": {
-    "plugin.name": "toggl Daten Import",
+    "plugin.name": "toggl",
     "plugin.summary": "Importiere deine Daten aus toggl direkt in Tyme.",
     "input.key": "Toggl API Key",
     "input.key.placeholder": "Bitte gib deinen API Schlüssel ein",

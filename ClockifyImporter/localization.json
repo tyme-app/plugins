@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "Clockify Data Import",
+    "plugin.name": "Clockify",
     "plugin.summary": "Import your data from Clockify right into Tyme.",
     "input.key": "Clockify API Key",
     "input.key.placeholder": "Please enter your API key",
@@ -8,7 +8,7 @@
     "input.billable.tasks": "Create separate tasks for non-billable time entries."
   },
   "de": {
-    "plugin.name": "Clockify Daten Import",
+    "plugin.name": "Clockify",
     "plugin.summary": "Importiere deine Daten aus Clockify direkt in Tyme.",
     "input.key": "Clockify API Key",
     "input.key.placeholder": "Bitte gib deinen API Schlüssel ein",

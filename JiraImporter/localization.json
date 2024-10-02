@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "Jira Data Import",
+    "plugin.name": "Jira",
     "plugin.summary": "Import your currently assigned issues from Jira right into Tyme.",
     "input.url": "Jira URL",
     "input.url.placeholder": "Please enter your Jira URL",
@@ -30,7 +30,7 @@
     "error.failedToLoadUser": "Could not load user. Check your entered URL, API Key and username."
   },
   "de": {
-    "plugin.name": "Jira Daten Import",
+    "plugin.name": "Jira",
     "plugin.summary": "Importiere deine aktuell zugewiesenen Aufgaben aus Jira direkt in Tyme.",
     "input.url": "Jira URL",
     "input.url.placeholder": "Bitte gib deine Jira URL ein",
