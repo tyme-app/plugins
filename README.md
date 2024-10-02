@@ -33,7 +33,7 @@ This file defines the type, version, compatibility and entry point for the plugi
   "type": "[export|import]",
   "author": "John Doe",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "some_icon96x96.png",
+  "icon": "some_icon92x92.png",
   "scriptName": "script.js",
   "scriptMain": "createInvoice()", // the method to call when exporting
   "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return), only export plugins
