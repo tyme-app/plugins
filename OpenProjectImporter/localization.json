@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "OpenProject Data Import",
+    "plugin.name": "OpenProject",
     "plugin.summary": "Import your currently assigned work packages from OpenProject right into Tyme.",
     "input.url": "OpenProject URL",
     "input.url.placeholder": "Please enter yout OpenProject URL",
@@ -21,7 +21,7 @@
     "error.couldNotLoadUser": "Could not load user. Check your entered API Key and URL."
   },
   "de": {
-    "plugin.name": "OpenProject Daten Import",
+    "plugin.name": "OpenProject",
     "plugin.summary": "Importiere deine aktuell zugewiesenen Arbeitspakete aus OpenProject direkt in Tyme.",
     "input.url": "OpenProject URL",
     "input.url.placeholder": "Bitte gib deine OpenProject URL ein",

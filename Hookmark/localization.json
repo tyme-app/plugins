@@ -1,10 +1,10 @@
 {
   "en": {
-    "plugin.name": "Hookmark Integration",
+    "plugin.name": "Hookmark Bookmarks",
     "plugin.summary": "Create a bookmark for Hookmark from time entries, projects or tasks."
   },
   "de": {
-    "plugin.name": "Hookmark Integration",
+    "plugin.name": "Hookmark Bookmarks",
     "plugin.summary": "Lege Lesezeichen für Hookmark aus Zeiteinträgen, Projekten oder Aufgaben an."
   }
 }

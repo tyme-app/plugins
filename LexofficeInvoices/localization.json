@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "Invoices with Lexware Office",
+    "plugin.name": "Lexware Office Invoices",
     "plugin.summary": "Export your recorded times and notes to Lexware Office as a draft invoice. Offers a live preview of the data before creating the invoice.",
     "locale.identifier": "en-US",
     "api.invoice.error.title": "Could not create invoice",
@@ -42,7 +42,7 @@
     "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
-    "plugin.name": "Rechnungen mit Lexware Office",
+    "plugin.name": "Lexware Office Rechnungen",
     "plugin.summary": "Exportiere deine erfassten Zeiten und Notizen als Rechnung nach Lexware Office. Bietet eine Live-Vorschau der Daten vor der Erstellung der Rechnung.",
     "locale.identifier": "de-DE",
     "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
