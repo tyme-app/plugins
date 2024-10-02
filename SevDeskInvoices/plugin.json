@@ -10,5 +10,7 @@
   "scriptMain": "sevdeskResolver.createNewInvoice()",
   "scriptPreview": "timeEntriesConverter.generatePreview()",
   "formName": "form.json",
-  "localizationName": "localization.json"
+  "localizationName": "localization.json",
+  "internalType": "plugin_2",
+  "internalLink": "/partner-sevdesk/"
 }

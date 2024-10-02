@@ -10,5 +10,7 @@
   "scriptMain": "billomatResolver.createNewInvoice()",
   "scriptPreview": "timeEntriesConverter.generatePreview()",
   "formName": "form.json",
-  "localizationName": "localization.json"
+  "localizationName": "localization.json",
+  "internalType": "plugin_4",
+  "internalLink": "https://www.billomat.com"
 }

@@ -11,5 +11,7 @@
   "scriptPreview": "",
   "formName": "",
   "localizationName": "localization.json",
-  "isBuiltIn": true
+  "isBuiltIn": true,
+  "internalType": "plugin_3",
+  "internalLink": "/partner-grandtotal/"
 }

@@ -10,5 +10,7 @@
   "scriptMain": "importer.start()",
   "scriptPreview": "",
   "formName": "form.json",
-  "localizationName": "localization.json"
+  "localizationName": "localization.json",
+  "internalType": "project_2",
+  "internalLink": ""
 }
