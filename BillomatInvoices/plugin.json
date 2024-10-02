@@ -11,6 +11,6 @@
   "scriptPreview": "timeEntriesConverter.generatePreview()",
   "formName": "form.json",
   "localizationName": "localization.json",
-  "internalType": "integration",
+  "internalType": "plugin_4",
   "internalLink": "https://www.billomat.com"
 }

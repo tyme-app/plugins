@@ -11,6 +11,6 @@
   "scriptPreview": "timeEntriesConverter.generatePreview()",
   "formName": "form.json",
   "localizationName": "localization.json",
-  "internalType": "integration",
+  "internalType": "plugin_2",
   "internalLink": "/partner-sevdesk/"
 }

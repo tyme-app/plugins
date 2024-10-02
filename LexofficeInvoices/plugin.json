@@ -11,6 +11,6 @@
   "scriptPreview": "lexOfficeResolver.generatePreview()",
   "formName": "form.json",
   "localizationName": "localization.json",
-  "internalType": "integration",
-  "internalLink": "/partner-lexoffice/"
+  "internalType": "plugin_1",
+  "internalLink": "/partner-lexware-office/"
 }
