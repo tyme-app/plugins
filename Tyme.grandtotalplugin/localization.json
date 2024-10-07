@@ -1,10 +1,10 @@
 {
   "en": {
     "plugin.name": "GrandTotal Invoices",
-    "plugin.summary": "Sync your recorded times automatically to GrandTotal."
+    "plugin.summary": "With the GrandTotal plugin, you can create invoices from your tracked hours in no time and keep track of the status of payments."
   },
   "de": {
     "plugin.name": "GrandTotal Rechnungen",
-    "plugin.summary": "Synchronisiert deine erfassten Zeiten automatisch mit GrandTotal."
+    "plugin.summary": "Mit dem GrandTotal Plugin erstellst du Rechnungen aus deinen erfassten Stunden und behältst den Überblick über den Status der Zahlungen."
   }
 }

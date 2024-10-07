@@ -1,7 +1,7 @@
 {
   "en": {
     "plugin.name": "Billomat Invoices",
-    "plugin.summary": "Export your recorded times and notes as an invoice to Billomat. Displays a live preview of the data before you create the invoice.",
+    "plugin.summary": "With the Billomat plugin, you can create invoices from your tracked hours in the successful accounting software.",
     "locale.identifier": "en-US",
     "input.key": "API Token",
     "input.key.placeholder": "Please enter your API-Token",
@@ -30,7 +30,7 @@
   },
   "de": {
     "plugin.name": "Billomat Rechnungen",
-    "plugin.summary": "Exportiere deine erfassten Zeiten und Notizen als Rechnung nach Billomat. Zeigt eine Live-Vorschau der Daten an, bevor du die Rechnung erstellst.",
+    "plugin.summary": "Mit dem Billomat Plugin erstellst du Rechnungen aus deinen erfassten Stunden in der erfolgreichen Buchhaltungssoftware.",
     "locale.identifier": "de-DE",
     "input.key": "API Token",
     "input.key.placeholder": "Bitte gib deinen API-Token ein",

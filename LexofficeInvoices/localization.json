@@ -1,7 +1,7 @@
 {
   "en": {
     "plugin.name": "Lexware Office Invoices",
-    "plugin.summary": "Export your recorded times and notes to Lexware Office as a draft invoice. Offers a live preview of the data before creating the invoice.",
+    "plugin.summary": "With the Lexware Office plugin, you can create invoices from your tracked hours in the successful accounting software for taxes and finances.",
     "locale.identifier": "en-US",
     "api.invoice.error.title": "Could not create invoice",
     "not.connected.message": "Tyme is not connected to Lexware Office. Please click on 'Connect with Lexware Office'.",
@@ -43,7 +43,7 @@
   },
   "de": {
     "plugin.name": "Lexware Office Rechnungen",
-    "plugin.summary": "Exportiere deine erfassten Zeiten und Notizen als Rechnung nach Lexware Office. Bietet eine Live-Vorschau der Daten vor der Erstellung der Rechnung.",
+    "plugin.summary": "Mit dem Lexware Office Plugin erstellst du Rechnungen aus deinen erfassten Stunden in der erfolgreichen Buchhaltungssoftware für Steuern & Finanzen.",
     "locale.identifier": "de-DE",
     "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
     "not.connected.message": "Tyme ist nicht mit Lexware Office verbunden. Klicke bitte auf 'Mit Lexware Office verbinden'.",
