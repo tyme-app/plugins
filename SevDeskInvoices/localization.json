@@ -1,7 +1,7 @@
 {
   "en": {
     "plugin.name": "sevdesk Invoices",
-    "plugin.summary": "Export your recorded times and notes to sevdesk as a draft invoice. Offers a live preview of the data before creating the invoice.",
+    "plugin.summary": "With the sevdesk plugin, you can create invoices from your tracked hours in the successful software for accounting and finances.",
     "locale.identifier": "en-US",
     "input.key": "API Token",
     "input.key.placeholder": "Please enter your API-Token",
@@ -31,7 +31,7 @@
   },
   "de": {
     "plugin.name": "sevdesk Rechnungen",
-    "plugin.summary": "Exportiere deine erfassten Zeiten und Notizen als Rechnung zu sevdesk. Bietet eine Live-Vorschau der Daten vor der Erstellung der Rechnung.",
+    "plugin.summary": "Mit dem sevdesk Plugin erstellst du Rechnungen aus deinen erfassten Stunden in der erfolgreichen Software für Buchhaltung & Finanzen.",
     "locale.identifier": "de-DE",
     "input.key": "API Token",
     "input.key.placeholder": "Bitte gib deinen API-Token ein",

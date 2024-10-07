@@ -1,10 +1,10 @@
 {
   "en": {
     "plugin.name": "Raycast Fast Access",
-    "plugin.summary": "Start and stop your tasks directly from the Raycast launcher."
+    "plugin.summary": "With the Raycast plugin, you can start and stop your timers directly from the Raycast launcher."
   },
   "de": {
     "plugin.name": "Raycast Schnellzugriff",
-    "plugin.summary": "Starte und stoppe deine Aufgaben direkt vom Raycast Launcher aus."
+    "plugin.summary": "Mit dem Raycast Plugin startest und stoppst du deine Timer direkt aus dem Raycast Launcher."
   }
 }
