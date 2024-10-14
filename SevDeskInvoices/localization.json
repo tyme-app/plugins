@@ -1,7 +1,7 @@
 {
   "en": {
     "plugin.name": "sevdesk Invoices",
-    "plugin.summary": "With the sevdesk plugin, you can create invoices from your tracked hours in the successful software for accounting and finances.",
+    "plugin.summary": "With the sevdesk plugin, you can create invoices from the hours you have tracked in the successful accounting and finance software. The partnership with time tracking in Tyme enables seamless integration. This simplifies invoicing and optimizes your billing process.",
     "locale.identifier": "en-US",
     "input.key": "API Token",
     "input.key.placeholder": "Please enter your API-Token",
@@ -31,7 +31,7 @@
   },
   "de": {
     "plugin.name": "sevdesk Rechnungen",
-    "plugin.summary": "Mit dem sevdesk Plugin erstellst du Rechnungen aus deinen erfassten Stunden in der erfolgreichen Software für Buchhaltung & Finanzen.",
+    "plugin.summary": "Mit dem sevdesk Plugin erstellst du Rechnungen aus deinen erfassten Stunden in der erfolgreichen Software für Buchhaltung & Finanzen. Die Partnerschaft mit Zeiterfassung in Tyme ermöglicht eine nahtlose Integration. Dies vereinfacht die Rechnungserstellung und optimiert deinen Abrechnungsprozess.",
     "locale.identifier": "de-DE",
     "input.key": "API Token",
     "input.key.placeholder": "Bitte gib deinen API-Token ein",

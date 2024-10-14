@@ -1,10 +1,10 @@
 {
   "en": {
     "plugin.name": "Hookmark Bookmarks",
-    "plugin.summary": "With the Hookmark plugin, you can create bookmarks from time entries, projects and tasks."
+    "plugin.summary": "The Hookmark plugin lets you create bookmarks from time entries, projects and tasks in Tyme. You can access these bookmarks directly, making it easier to organise and control your work."
   },
   "de": {
     "plugin.name": "Hookmark Bookmarks",
-    "plugin.summary": "Mit dem Hookmark Plugin erstellst du Bookmarks aus Zeiteinträgen, Projekten und Aufgaben."
+    "plugin.summary": "Mit dem Hookmark Plugin erstellst du Bookmarks aus Zeiteinträgen, Projekten und Aufgaben in Tyme. Die Integration ermöglicht es dir, auf diese Bookmarks direkt zuzugreifen, was die Organisation und Kontrolle deiner eigenen Arbeit erheblich erleichtern kann."
   }
 }

@@ -1,10 +1,10 @@
 {
   "en": {
     "plugin.name": "Raycast Fast Access",
-    "plugin.summary": "With the Raycast plugin, you can start and stop your timers directly from the Raycast launcher."
+    "plugin.summary": "With the Raycast Plugin, you can start and stop your tasks in Tyme directly from the Raycast Launcher. The seamless integration makes it even easier for you to track your times and make your workflow smoother."
   },
   "de": {
     "plugin.name": "Raycast Schnellzugriff",
-    "plugin.summary": "Mit dem Raycast Plugin startest und stoppst du deine Timer direkt aus dem Raycast Launcher."
+    "plugin.summary": "Mit dem Raycast Plugin startest und stoppst du deine Aufgaben in Tyme direkt aus dem Raycast Launcher. Die nahtlose Integration ermöglicht es dir, deine Zeiten noch einfacher zu erfassen und deinen Workflow noch effizienter zu gestalten."
   }
 }
