@@ -1,10 +1,10 @@
 {
   "en": {
     "plugin.name": "GrandTotal Invoices",
-    "plugin.summary": "With the GrandTotal plugin, you can create invoices from your tracked hours in no time and keep track of the status of payments."
+    "plugin.summary": "With the GrandTotal plugin, you can create invoices from your tracked hours and keep track of the payment status. The integration with time tracking in Tyme enables seamless integration. This simplifies invoicing and optimizes your billing process."
   },
   "de": {
     "plugin.name": "GrandTotal Rechnungen",
-    "plugin.summary": "Mit dem GrandTotal Plugin erstellst du Rechnungen aus deinen erfassten Stunden und behältst den Überblick über den Status der Zahlungen."
+    "plugin.summary": "Mit dem GrandTotal Plugin erstellst du Rechnungen aus deinen erfassten Stunden und behältst den Überblick über den Status der Zahlungen. Die Integration mit Zeiterfassung in Tyme ermöglicht eine nahtlose Integration. Dies vereinfacht die Rechnungserstellung und optimiert deinen Abrechnungsprozess."
   }
 }

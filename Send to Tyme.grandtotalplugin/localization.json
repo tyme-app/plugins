@@ -1,10 +1,10 @@
 {
   "en": {
     "plugin.name": "GrandTotal Tasks From Offers",
-    "plugin.summary": "With this plugin, you can generate projects and tasks from GrandTotal offers."
+    "plugin.summary": "With this plugin you can use GrandTotal quotes to generate projects and tasks for your time tracking in Tyme. This allows you to make the most of the synergies between the two tools, saving time and avoiding errors between quote and invoice."
   },
   "de": {
     "plugin.name": "GrandTotal Aufgaben aus Angeboten",
-    "plugin.summary": "Mit diesem Plugin generierst du Projekte und Aufgaben aus GrandTotal-Angeboten."
+    "plugin.summary": "Mit diesem Plugin nutzt du GrandTotal-Angebote, um Projekte und Aufgaben für die Zeiterfassung in Tyme zu generieren. So sparst du Zeit, vermeidest Fehler zwischen Angebot und Abrechnung und nutzt die Synergien der beiden Tools optimal."
   }
 }
