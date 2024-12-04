@@ -1,0 +1,10 @@
+{
+  "en": {
+    "plugin.name": "Zapier",
+    "plugin.summary": "Integrate Tyme into your workflows using actions and triggers for Zapier."
+  },
+  "de": {
+    "plugin.name": "Zapier",
+    "plugin.summary": "Integriere Tyme in deine Workflows mittels Aktionen und Triggern für Zapier."
+  }
+}
