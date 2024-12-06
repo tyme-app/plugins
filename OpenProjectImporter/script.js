@@ -239,7 +239,6 @@ class OpenProjectWorkPackage {
     tymeTask.name = this.createTaskName();
     tymeTask.project = Project.fromID(this.project.tymeProjectId);
     tymeTask.isCompleted = this.isCompleted;
-    tymeTask.isCompleted = this.isCompleted ?? false;
     tymeTask.startDate = this.startDate;
     tymeTask.dueDate = this.dueDate;
     tymeTask.plannedDuration = this.plannedDuration;
@@ -367,7 +366,7 @@ class OpenProjectApiClient {
       this.loadStatuses();
     }
 
-    return this.statuses.find(status => status._links.self.href == statusHref).isClosed;
+    return this.statuses.find(status => status._links.self.href === statusHref)?.isClosed ?? false;
   }
 
   /**
