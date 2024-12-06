@@ -165,7 +165,7 @@ class OpenProjectProject {
   createOrUpdateProject() {
     let tymeProject = this.getProject();
     tymeProject.name = this.name;
-    tymeProject.isCompleted = !this.active;
+    tymeProject.isCompleted = this.isCompleted;
     tymeProject.category = this.category ? Category.fromID(this.category.tymeCategoryId) : null;
   }
 }
