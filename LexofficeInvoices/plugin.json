@@ -1,7 +1,7 @@
 {
   "id": "lexoffice_invoices",
-  "tymeMinVersion": "2024.11",
-  "version": "2.9",
+  "tymeMinVersion": "2024.21",
+  "version": "3.0",
   "type": "export",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",

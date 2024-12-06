@@ -59,6 +59,20 @@
     "persist": true
   },
   {
+    "id": "clusterOption",
+    "type": "dropdown",
+    "name": "input.cluster",
+    "values": [
+      {
+        "false": "input.cluster.none"
+      },
+      {
+        "true": "input.cluster.dayTask"
+      }
+    ],
+    "persist": true
+  },
+  {
     "id": "separator2",
     "type": "separator",
     "name": ""
