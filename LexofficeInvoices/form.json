@@ -67,6 +67,9 @@
       },
       {
         "1": "input.cluster.dayTask"
+      },
+      {
+        "2": "input.cluster.dayTaskNoSub"
       }
     ],
     "persist": true
