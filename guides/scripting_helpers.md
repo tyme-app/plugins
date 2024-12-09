@@ -5,11 +5,12 @@ The following calls are available in your plugin scripts.
 ```javascript
 /* 
     start & end: Date, mandatory
-    taskIDs: [string], can be null
-    limit: int, can be null
+    taskIDs: [string] or null
+    limit: int or null
     billingState unbilled = 0, billed = 1, paid = 2
-    billable: boolean, can be null
-    userID: string, can be null
+    billable: boolean or null
+    userID: string or null
+    clusterOption: 0 = none, 1 = cluster by task & day
     
     returns: A list of time entries with the following properties:
         [
