@@ -1,3 +1,7 @@
+# 1.5
+
+- Introduces unique IDs for category and project.
+
 # 1.2
 
 - Deeply nested projects are now imported correctly. The topmost project is always used as the category.
