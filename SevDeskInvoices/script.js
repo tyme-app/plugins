@@ -32,6 +32,7 @@ class TimeEntriesConverter {
 
                     if (data[key] == null) {
                         let entry = {
+                            'project': '',
                             'name': '',
                             'quantity': 0.0,
                             'unit': '',
@@ -53,6 +54,7 @@ class TimeEntriesConverter {
                             entry.unitID = 1;
                         }
 
+                        entry.project = timeEntry.project;
                         entry.name = timeEntry.task;
 
                         if (timeEntry.subtask.length > 0) {
@@ -150,6 +152,10 @@ class TimeEntriesConverter {
             if (formValue.showNotes) {
                 name = '**' + entry.name + '**';
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
+            }
+
+            if (formValue.prefixProject) {
+                name = '**' + entry.project + ':** ' + name;
             }
 
             let price = this.roundNumber(entry.price, 2);
@@ -316,6 +322,7 @@ class SevDeskResolver {
         let invoicePosSave = [];
 
         data.forEach((entry) => {
+            const name = formValue.prefixProject ? entry.project + ": " + entry.name : entry.name;
             const note = formValue.showNotes ? entry.note : '';
             const quantity = this.timeEntriesConverter.roundNumber(entry.quantity, 2);
 
@@ -323,7 +330,7 @@ class SevDeskResolver {
                 "objectName": "InvoicePos",
                 "quantity": quantity,
                 "price": entry.price,
-                "name": entry.name,
+                "name": name,
                 "unity": {
                     "id": entry.unitID,
                     "objectName": "Unity"
