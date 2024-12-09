@@ -63,10 +63,10 @@
     "name": "input.cluster",
     "values": [
       {
-        "false": "input.cluster.none"
+        "0": "input.cluster.none"
       },
       {
-        "true": "input.cluster.dayTask"
+        "1": "input.cluster.dayTask"
       }
     ],
     "persist": true
