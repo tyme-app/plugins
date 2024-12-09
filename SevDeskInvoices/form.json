@@ -38,6 +38,13 @@
     "name": ""
   },
   {
+    "id": "prefixProject",
+    "type": "checkbox",
+    "name": "input.prefixProject",
+    "value": "false",
+    "persist": true
+  },
+  {
     "id": "showNotes",
     "type": "checkbox",
     "name": "input.notes",
