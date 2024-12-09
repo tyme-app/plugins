@@ -1,10 +1,10 @@
 {
   "id": "jira_importer",
   "tymeMinVersion": "2024.11",
-  "version": "1.1",
+  "version": "1.2",
   "type": "import",
   "author": "Lars Malewski",
-  "authorUrl": "https://larsmalewski.de",
+  "authorUrl": "https://github.com/tyme-app/plugins/tree/main/JiraImporter",
   "icon": "jira_icon.png",
   "scriptName": "script.js",
   "scriptMain": "importer.start()",

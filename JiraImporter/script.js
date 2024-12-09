@@ -1,4 +1,24 @@
 /**
+ * Tyme Project object.
+ * @typedef {Object} Project
+ * @property {string} id
+ * @property {string} name
+ * @property {boolean} isCompleted
+ */
+
+/**
+ * Tyme TimedTask object.
+ * @typedef {Object} TimedTask
+ * @property {string} id
+ * @property {string} name
+ * @property {boolean} isCompleted
+ * @property {number|null} [plannedDuration]
+ * @property {Date|null} [startDate]
+ * @property {Date|null} [dueDate]
+ * @property {Project} project
+ */
+
+/**
  * Jira project.
  */
 class JiraProject {
@@ -19,14 +39,43 @@ class JiraProject {
    * @returns {string}
    */
   get projectId() {
+    return 'jira-p' + this.id;
+  }
+
+  /**
+   * Tyme project id of the project.
+   * @deprecated This is the old format. Use `projectId` instead.
+   * @returns {string}
+   */
+  get oldProjectId() {
     return 'jira-' + this.id;
+  }
+
+  /**
+   * Tyme project object for this Jira project.
+   * @returns {Project} Tyme `Project` object.
+   */
+  getProject() {
+    const project = Project.fromID(this.projectId);
+    if (project) {
+      return project;
+    }
+
+    // Check for an old existing project and update (can be removed in the future)
+    const oldProject = Project.fromID(this.oldProjectId);
+    if (oldProject) {
+      oldProject.id = this.projectId;
+      return oldProject;
+    }
+
+    return Project.create(this.projectId);
   }
 
   /**
    * Create or update an existing Tyme project with the data from the Jira project.
    */
   createOrUpdateTymeProject() {
-    const tymeProject = Project.fromID(this.projectId) ?? Project.create(this.projectId);
+    const tymeProject = this.getProject();
     tymeProject.name = this.name;
   }
 }
@@ -113,6 +162,7 @@ class JiraIssue {
    * @param {Project} project Tyme project for this issue.
    */
   createOrUpdateTymeTask(project) {
+    /** @type {TimedTask} */
     let tymeTask = TimedTask.fromID(this.issueId) ?? TimedTask.create(this.issueId);
     tymeTask.name = this.taskName;
     tymeTask.isCompleted = this.isCompleted;
@@ -144,7 +194,7 @@ class JiraFieldConfiguration {
   /**
    * Skipped field configuration.
    */
-  static skippedField = {value: 'jira_import_skip', name: utils.localize('input.fields.skip')};
+  static skippedField = { value: 'jira_import_skip', name: utils.localize('input.fields.skip') };
 
   /**
    *
@@ -223,7 +273,7 @@ class JiraFieldConfiguration {
     // Prepend the "Skipped field" configuration
     return [JiraFieldConfiguration.skippedField].concat(
       filteredFields.map(field => {
-        return {value: field.id, name: field.name};
+        return { value: field.id, name: field.name };
       })
     );
   }
@@ -275,7 +325,6 @@ class JiraApiClient {
    * @returns {object} Parsed JSON response, or `null`.
    */
   fetch(path, params = null) {
-    utils.log(`${this.baseURL}${path}`);
     const headers = {
       Authorization: 'Basic ' + utils.base64Encode(this.user + ':' + this.apiKey),
     };
