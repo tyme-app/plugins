@@ -1,4 +1,32 @@
 /**
+ * Tyme Project object.
+ * @typedef {Object} Category
+ * @property {string} id
+ * @property {string} name
+ * @property {boolean} isCompleted
+ */
+
+/**
+ * Tyme Project object.
+ * @typedef {Object} Project
+ * @property {string} id
+ * @property {string} name
+ * @property {boolean} isCompleted
+ */
+
+/**
+ * Tyme TimedTask object.
+ * @typedef {Object} TimedTask
+ * @property {string} id
+ * @property {string} name
+ * @property {boolean} isCompleted
+ * @property {number|null} [plannedDuration]
+ * @property {Date|null} [startDate]
+ * @property {Date|null} [dueDate]
+ * @property {Project} project
+ */
+
+/**
  * OpenProject category.
  */
 class OpenProjectCategory {
@@ -13,17 +41,47 @@ class OpenProjectCategory {
   }
 
   /**
-   * Tyme category ID of this project.
+   * Tyme category ID of this category.
+   * @returns {string}
    */
   get tymeCategoryId() {
+    return 'openproject-c' + this.id;
+  }
+
+  /**
+   * Tyme category ID of this category.
+   * @deprecated This is the old format. Use the `tymeCategoryId` instead.
+   * @returns {string}
+   */
+  get oldTymeCategoryId() {
     return 'openproject-' + this.id;
+  }
+
+  /**
+   * Tyme category object for this category.
+   * @returns {Category} Tyme `Category` object.
+   */
+  getCategory() {
+    const category = Category.fromID(this.tymeCategoryId);
+    if (category) {
+      return category;
+    }
+
+    // Check for old category and update (can be removed in the future)
+    const oldCategory = Category.fromID(this.oldTymeCategoryId);
+    if (oldCategory) {
+      oldCategory.id = this.tymeCategoryId;
+      return oldCategory;
+    }
+
+    return Category.create(this.tymeCategoryId);
   }
 
   /**
    * Create or update an existing category in Tyme.
    */
   createOrUpdateCategory() {
-    let tymeCategory = Category.fromID(this.tymeCategoryId) ?? Category.create(this.tymeCategoryId);
+    let tymeCategory = this.getCategory();
     tymeCategory.name = this.name;
   }
 }
@@ -69,16 +127,45 @@ class OpenProjectProject {
    * @returns {string}
    */
   get tymeProjectId() {
+    return 'openproject-p' + this.projectId;
+  }
+
+  /**
+   * Tyme project ID of this project.
+   * @deprecated This is the old format. Use the `tymeProjectId` instead.
+   * @returns {string}
+   */
+  get oldTymeProjectId() {
     return 'openproject-' + this.projectId;
+  }
+
+  /**
+   * Tyme project object for this project.
+   * @returns {Project} Tyme `Project` object.
+   */
+  getProject() {
+    const project = Project.fromID(this.tymeProjectId);
+    if (project) {
+      return project;
+    }
+
+    // Check for old project and update (can be removed in the future)
+    const oldProject = Project.fromID(this.oldTymeProjectId);
+    if (oldProject) {
+      oldProject.id = this.tymeProjectId;
+      return oldProject;
+    }
+
+    return Project.create(this.tymeProjectId);
   }
 
   /**
    * Create or update an existing project in Tyme.
    */
   createOrUpdateProject() {
-    let tymeProject = Project.fromID(this.tymeProjectId) ?? Project.create(this.tymeProjectId);
+    let tymeProject = this.getProject();
     tymeProject.name = this.name;
-    tymeProject.isCompleted = !this.active;
+    tymeProject.isCompleted = this.isCompleted;
     tymeProject.category = this.category ? Category.fromID(this.category.tymeCategoryId) : null;
   }
 }
@@ -88,9 +175,12 @@ class OpenProjectProject {
  */
 class OpenProjectWorkPackage {
   /**
-   *
+   * Create an OpenProject work package.
    * @param {number} id Work package ID.
    * @param {string} name Name of the work package.
+   * @param {string} start Start date of the work package.
+   * @param {string} due Due date of the work package.
+   * @param {string} estimatedTime Estimated time of the work package.
    * @param {boolean} isCompleted Indicates if this work package is completed.
    * @param {OpenProjectProject} project Project of this work package.
    */
@@ -144,11 +234,11 @@ class OpenProjectWorkPackage {
    * Create or update an existing task in Tyme with the data from the work package.
    */
   createOrUpdateTask() {
+    /** @type {TimedTask} */
     let tymeTask = TimedTask.fromID(this.workPackageId) ?? TimedTask.create(this.workPackageId);
     tymeTask.name = this.createTaskName();
     tymeTask.project = Project.fromID(this.project.tymeProjectId);
     tymeTask.isCompleted = this.isCompleted;
-    tymeTask.isCompleted = this.isCompleted ?? false;
     tymeTask.startDate = this.startDate;
     tymeTask.dueDate = this.dueDate;
     tymeTask.plannedDuration = this.plannedDuration;
@@ -276,7 +366,7 @@ class OpenProjectApiClient {
       this.loadStatuses();
     }
 
-    return this.statuses.find(status => status._links.self.href == statusHref).isClosed;
+    return this.statuses.find(status => status._links.self.href === statusHref)?.isClosed ?? false;
   }
 
   /**
