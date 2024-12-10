@@ -1,7 +1,7 @@
 {
   "id": "openproject_importer",
   "tymeMinVersion": "2024.11",
-  "version": "1.4",
+  "version": "1.5",
   "type": "import",
   "author": "Lars Malewski",
   "authorUrl": "https://github.com/tyme-app/plugins/tree/main/OpenProjectImporter",
