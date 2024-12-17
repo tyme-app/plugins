@@ -11,7 +11,8 @@ class TimeEntriesConverter {
             null,
             formValue.onlyUnbilled ? 0 : null,
             formValue.includeNonBillable ? null : true,
-            formValue.teamMemberID
+            formValue.teamMemberID,
+            formValue.clusterOption
         ).filter(function (timeEntry) {
             return parseFloat(timeEntry.sum) > 0;
         })
@@ -74,18 +75,21 @@ class TimeEntriesConverter {
 
                     data[key].sum += timeEntry.sum;
 
-                    if (formValue.showTimesInNotes
-                        && timeEntry.hasOwnProperty("start")
-                        && timeEntry.hasOwnProperty("end")
-                        && timeEntry.type !== "fixed") {
+                    if (formValue.showTimesInNotes && timeEntry.type !== "fixed") {
 
                         if (data[key].note.length > 0) {
                             data[key].note += '<br/>';
                         }
-                        data[key].note += this.formatDate(timeEntry.start, false) + " ";
-                        data[key].note += this.formatDate(timeEntry.start, true) + " - ";
-                        data[key].note += this.formatDate(timeEntry.end, true) + " (";
-                        data[key].note += this.roundNumber(currentQuantity, 1) + " " + data[key].unit + ")";
+
+                        if (timeEntry.hasOwnProperty("start") && timeEntry.hasOwnProperty("end")) {
+                            data[key].note += this.formatDate(timeEntry.start, false) + " ";
+                            data[key].note += this.formatDate(timeEntry.start, true) + " - ";
+                            data[key].note += this.formatDate(timeEntry.end, true);
+                        } else if (timeEntry.hasOwnProperty("date")) {
+                            data[key].note += this.formatDate(timeEntry.date, false);
+                        }
+
+                        data[key].note += " (" + this.roundNumber(currentQuantity, 1) + " " + data[key].unit + ")";
 
                         if (timeEntry.note.length > 0) {
                             data[key].note += "<br/>";
