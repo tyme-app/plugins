@@ -39,9 +39,14 @@
   {
     "id": "prefixProject",
     "type": "checkbox",
-    "name": "input.prefixPoject",
+    "name": "input.prefixProject",
     "value": "false",
     "persist": true
+  },
+  {
+    "id": "separator2",
+    "type": "separator",
+    "name": ""
   },
   {
     "id": "showNotes",
@@ -75,7 +80,7 @@
     "persist": true
   },
   {
-    "id": "separator2",
+    "id": "separator3",
     "type": "separator",
     "name": ""
   },
@@ -154,7 +159,7 @@
     "persist": true
   },
   {
-    "id": "separator3",
+    "id": "separator4",
     "type": "separator",
     "name": ""
   },

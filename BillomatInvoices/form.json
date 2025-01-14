@@ -45,6 +45,18 @@
     "name": ""
   },
   {
+    "id": "prefixProject",
+    "type": "checkbox",
+    "name": "input.prefixProject",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "separator2",
+    "type": "separator",
+    "name": ""
+  },
+  {
     "id": "showNotes",
     "type": "checkbox",
     "name": "input.notes",
@@ -76,7 +88,7 @@
     "persist": true
   },
   {
-    "id": "separator2",
+    "id": "separator3",
     "type": "separator",
     "name": ""
   },
@@ -95,7 +107,7 @@
     "value": "input.unit.hint"
   },
   {
-    "id": "separator3",
+    "id": "separator4",
     "type": "separator",
     "name": ""
   },
