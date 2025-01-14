@@ -33,6 +33,7 @@ class TimeEntriesConverter {
 
                     if (data[key] == null) {
                         let entry = {
+                            'project': '',
                             'name': '',
                             'quantity': 0.0,
                             'unit': '',
@@ -51,6 +52,7 @@ class TimeEntriesConverter {
                             entry.unit = utils.localize('unit.quantity')
                         }
 
+                        entry.project = timeEntry.project;
                         entry.name = timeEntry.task;
 
                         if (timeEntry.subtask.length > 0) {
@@ -158,6 +160,10 @@ class TimeEntriesConverter {
                 name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
             }
 
+            if (formValue.prefixProject) {
+                name = '**' + entry.project + ':** ' + name;
+            }
+
             str += '|' + name;
             str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
             str += '|' + entry.quantity.toFixed(2);
@@ -249,6 +255,7 @@ class BillomatResolver {
         let invoiceItems = [];
 
         data.forEach((entry) => {
+            const name = formValue.prefixProject ? entry.project + ": " + entry.name : entry.name;
             const note = formValue.showNotes ? entry.note.replaceAll('<br/>', '\n') : '';
 
             invoiceItems.push({
@@ -256,7 +263,7 @@ class BillomatResolver {
                     "unit": entry.unit,
                     "unit_price": entry.price.toFixed(2),
                     "quantity": entry.quantity.toFixed(2),
-                    "title": entry.name,
+                    "title": name,
                     "description": note
                 }
             })

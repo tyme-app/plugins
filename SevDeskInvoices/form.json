@@ -45,6 +45,11 @@
     "persist": true
   },
   {
+    "id": "separator2",
+    "type": "separator",
+    "name": ""
+  },
+  {
     "id": "showNotes",
     "type": "checkbox",
     "name": "input.notes",
@@ -76,7 +81,7 @@
     "persist": true
   },
   {
-    "id": "separator2",
+    "id": "separator3",
     "type": "separator",
     "name": ""
   },
@@ -138,7 +143,7 @@
     "persist": true
   },
   {
-    "id": "separator3",
+    "id": "separator4",
     "type": "separator",
     "name": ""
   },
