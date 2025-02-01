@@ -3,7 +3,7 @@ class TimeEntriesConverter {
 
     }
 
-    timeEntriesFromFormValues() {
+    timeEntriesFromFormValues(useClusterOption) {
         return tyme.timeEntries(
             formValue.startDate,
             formValue.endDate,
@@ -12,14 +12,14 @@ class TimeEntriesConverter {
             formValue.onlyUnbilled ? 0 : null,
             formValue.includeNonBillable ? null : true,
             formValue.teamMemberID,
-            formValue.clusterOption
+            useClusterOption ? formValue.clusterOption : null
         ).filter(function (timeEntry) {
             return parseFloat(timeEntry.sum) > 0;
         })
     }
 
     timeEntryIDs() {
-        return this.timeEntriesFromFormValues()
+        return this.timeEntriesFromFormValues(false)
             .map(function (entry) {
                 return entry.id;
             });
@@ -27,7 +27,7 @@ class TimeEntriesConverter {
 
     aggregatedTimeEntryData() {
         let data =
-            this.timeEntriesFromFormValues()
+            this.timeEntriesFromFormValues(true)
                 .reduce(function (data, timeEntry) {
                     const key = timeEntry.task_id + timeEntry.subtask_id;
 
