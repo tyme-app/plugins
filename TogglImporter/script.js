@@ -298,7 +298,7 @@ class TogglImporter {
                         "end_date": endDate.toISOString().split('T')[0],
                         "user_agent": "tyme_toggl_import",
                         "first_row_number": firstRow,
-                        "page_size": 2
+                        "page_size": 50
                     };
 
                     const [timeEntriesResponse, headers] = this.apiClient.request(
@@ -307,7 +307,7 @@ class TogglImporter {
                         "POST"
                     );
 
-                    firstRow = headers["x-next-row-number"] ?? null;
+                    firstRow = parseInt(headers["x-next-row-number"]) || null;
 
                     if (timeEntriesResponse && Array.isArray(timeEntriesResponse)) {
                         this.timeEntries.push(...timeEntriesResponse);

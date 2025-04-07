@@ -1,7 +1,7 @@
 {
   "id": "toggl_importer",
   "tymeMinVersion": "2024.11",
-  "version": "1.5",
+  "version": "1.6",
   "type": "import",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
