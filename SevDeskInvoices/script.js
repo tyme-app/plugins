@@ -92,7 +92,7 @@ class TimeEntriesConverter {
                             data[key].note += this.formatDate(timeEntry.date, false);
                         }
 
-                        data[key].note += " (" + this.roundNumber(currentQuantity, 1) + " " + data[key].unit + ")";
+                        data[key].note += " (" + this.roundNumber(currentQuantity, 2) + " " + data[key].unit + ")";
 
                         if (timeEntry.note.length > 0) {
                             data[key].note += "<br/>";
