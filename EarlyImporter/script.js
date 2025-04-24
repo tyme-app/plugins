@@ -25,7 +25,6 @@ class EarlyApiClient {
             }
         );
 
-
         const statusCode = response['statusCode'];
         let result = response['result'];
 
@@ -50,7 +49,6 @@ class EarlyApiClient {
         const result = response['result'];
 
         if (statusCode === 200) {
-            tyme.showAlert('Early API Response', JSON.stringify(result));
             return JSON.parse(result);
         } else {
             tyme.showAlert('Early API Error', JSON.stringify(response));
@@ -65,10 +63,11 @@ class EarlyImporter {
     }
 
     start() {
-        this.getReport();
+        this.getReportData();
+        this.parseData();
     }
 
-    getReport() {
+    getReportData() {
         this.timeEntries = [];
 
         for (let i = 1; i <= 2; i++) {
@@ -93,6 +92,58 @@ class EarlyImporter {
 
             if (response) {
                 this.timeEntries.push(...response["timeEntries"]);
+            }
+        }
+    }
+
+    parseData() {
+        for (const timeEntry of this.timeEntries) {
+            const idPrefix = "early-";
+
+            const timeEntryID = idPrefix + timeEntry["id"];
+            const activityID = idPrefix + timeEntry["activity"]["id"];
+            const activityName = timeEntry["activity"]["name"];
+            const activityColor = timeEntry["activity"]["color"];
+            const folderID = idPrefix + timeEntry["folder"]["id"];
+            const folderName = timeEntry["folder"]["name"];
+            const userEmail = timeEntry["user"]["email"];
+            const start = Date.parse(timeEntry["duration"]["startedAt"]);
+            const end = Date.parse(timeEntry["duration"]["stoppedAt"]);
+            const note = timeEntry["note"]["text"] ?? "";
+            const taskID = activityID + "_task";
+
+            let tymeCategory = Category.fromID(folderID);
+            if (!tymeCategory) {
+                tymeCategory = Category.create(folderID);
+                tymeCategory.name = folderName;
+                tymeCategory.color = parseInt(activityColor.replace("#", "0x"));
+            }
+
+            let tymeProject = Project.fromID(activityID);
+            if (!tymeProject) {
+                tymeProject = Project.create(activityID);
+                tymeProject.name = activityName;
+                tymeProject.color = parseInt(activityColor.replace("#", "0x"));
+                tymeProject.category = tymeCategory;
+            }
+
+            let tymeTask = TimedTask.fromID(taskID);
+            if (!tymeTask) {
+                tymeTask = TimedTask.create(taskID);
+                tymeTask.name = "Default";
+                tymeTask.project = tymeProject;
+            }
+
+            let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
+            tymeEntry.note = note;
+            tymeEntry.timeStart = start;
+            tymeEntry.timeEnd = end;
+            tymeEntry.parentTask = tymeTask;
+
+            const tymeUserID = tyme.userIDForEmail(userEmail);
+
+            if (tymeUserID) {
+                tymeEntry.userID = tymeUserID;
             }
         }
 
@@ -121,6 +172,7 @@ class EarlyImporter {
                 "stoppedAt": "2025-04-24T10:45:00.000"
             },
             "note": {
+                "text": "hello from early",
                 "tags": [],
                 "mentions": []
             },
