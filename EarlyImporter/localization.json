@@ -1,0 +1,14 @@
+{
+  "en": {
+    "plugin.name": "Early (formerly Timeular)",
+    "plugin.summary": "Import your activities & time entries from Early right into Tyme.",
+    "input.key": "API Key",
+    "input.secret": "API Secret"
+  },
+  "de": {
+    "plugin.name": "Early (formerly Timeular)",
+    "plugin.summary": "Importiere deine Aktivitäten und Zeiteinträge aus Early direkt in Tyme.",
+    "input.key": "API Key",
+    "input.secret": "API Secret"
+  }
+}
