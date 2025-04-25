@@ -1,0 +1,16 @@
+{
+  "id": "early_importer",
+  "tymeMinVersion": "2025.3",
+  "version": "1.0",
+  "type": "import",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "importer.start()",
+  "scriptPreview": "",
+  "formName": "form.json",
+  "localizationName": "localization.json",
+  "internalType": "time_4",
+  "internalLink": ""
+}

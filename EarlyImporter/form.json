@@ -1,0 +1,20 @@
+[
+  {
+    "id": "apiKey",
+    "type": "securetext",
+    "name": "input.key",
+    "persist": true
+  },
+  {
+    "id": "apiSecret",
+    "type": "securetext",
+    "name": "input.secret",
+    "persist": true
+  },
+  {
+    "id": "apiKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.hint"
+  }
+]
