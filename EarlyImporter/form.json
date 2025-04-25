@@ -12,8 +12,9 @@
     "persist": true
   },
   {
-    "id": "separator",
-    "type": "separator",
-    "name": ""
+    "id": "apiKeyHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.hint"
   }
 ]
