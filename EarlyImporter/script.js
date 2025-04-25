@@ -49,6 +49,7 @@ class EarlyApiClient {
         const result = response['result'];
 
         if (statusCode === 200) {
+            utils.log(result);
             return JSON.parse(result);
         } else {
             tyme.showAlert('Early API Error', JSON.stringify(response));
@@ -63,12 +64,24 @@ class EarlyImporter {
     }
 
     start() {
+        this.timeEntries = [];
         this.getReportData();
+        this.getCurrentTracking();
         this.parseData();
     }
 
+    getCurrentTracking() {
+        const response = this.apiClient.getJSON(
+            "GET",
+            "tracking"
+        );
+
+        if (response) {
+            this.timeEntries.push(response);
+        }
+    }
+
     getReportData() {
-        this.timeEntries = [];
 
         for (let i = 1; i <= 2; i++) {
             let startDate = new Date();
@@ -104,11 +117,30 @@ class EarlyImporter {
             const activityID = idPrefix + timeEntry["activity"]["id"];
             const activityName = timeEntry["activity"]["name"];
             const activityColor = timeEntry["activity"]["color"];
-            const folderID = idPrefix + timeEntry["folder"]["id"];
-            const folderName = timeEntry["folder"]["name"];
-            const userEmail = timeEntry["user"]["email"];
-            const start = Date.parse(timeEntry["duration"]["startedAt"]);
-            const end = Date.parse(timeEntry["duration"]["stoppedAt"]);
+
+            let folderID = idPrefix + timeEntry["activity"]["folderId"];
+            let folderName = "Default";
+
+            if (timeEntry["folder"]) {
+                folderName = timeEntry["folder"]["name"];
+            }
+
+            let userEmail = "";
+
+            if (timeEntry["folder"]) {
+                userEmail = timeEntry["user"]["email"];
+            }
+
+            let start = Date();
+            let end = null;
+
+            if (timeEntry["duration"]) {
+                start = Date.parse(timeEntry["duration"]["startedAt"]);
+                end = Date.parse(timeEntry["duration"]["stoppedAt"]);
+            } else if (timeEntry["startedAt"]) {
+                start = Date.parse(timeEntry["startedAt"]);
+            }
+
             const note = timeEntry["note"]["text"] ?? "";
             const taskID = activityID + "_task";
 
