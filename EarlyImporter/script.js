@@ -132,13 +132,14 @@ class EarlyImporter {
             }
 
             let start = Date();
-            let end = null;
+            let end = Date();
 
             if (timeEntry["duration"]) {
                 start = Date.parse(timeEntry["duration"]["startedAt"]);
                 end = Date.parse(timeEntry["duration"]["stoppedAt"]);
             } else if (timeEntry["startedAt"]) {
                 start = Date.parse(timeEntry["startedAt"]);
+                end = 0;
             }
 
             const note = timeEntry["note"]["text"] ?? "";
@@ -171,6 +172,11 @@ class EarlyImporter {
             tymeEntry.timeStart = start;
             tymeEntry.timeEnd = end;
             tymeEntry.parentTask = tymeTask;
+
+            utils.log(timeEntryID);
+            utils.log(start);
+            utils.log(end);
+            utils.log(note);
 
             const tymeUserID = tyme.userIDForEmail(userEmail);
 
