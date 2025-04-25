@@ -36,7 +36,7 @@ class EarlyApiClient {
         return this.accessToken;
     }
 
-    getJSON(method, path, params = null) {
+    getJSON(method, path, params = {}) {
         const accessToken = this.getAccessToken();
 
         if (!accessToken) {
@@ -49,7 +49,6 @@ class EarlyApiClient {
         const result = response['result'];
 
         if (statusCode === 200) {
-            utils.log(result);
             return JSON.parse(result);
         } else {
             tyme.showAlert('Early API Error', JSON.stringify(response));
@@ -68,6 +67,29 @@ class EarlyImporter {
         this.getReportData();
         this.getCurrentTracking();
         this.parseData();
+    }
+
+    getLeavesData() {
+        // to be implemented later, when Tyme supports importing absence data
+
+        for (let i = 1; i <= 2; i++) {
+            let startDate = new Date();
+            startDate.setFullYear(startDate.getFullYear() - i);
+            let endDate = new Date();
+            endDate.setFullYear(endDate.getFullYear() - (i - 1));
+
+            const startString = startDate.toISOString().split('T')[0]
+            const endString = endDate.toISOString().split('T')[0]
+
+            const response = this.apiClient.getJSON(
+                "GET",
+                "leaves",
+                {
+                    "start": startString,
+                    "end": endString
+                }
+            );
+        }
     }
 
     getCurrentTracking() {
@@ -142,27 +164,28 @@ class EarlyImporter {
             }
 
             const note = timeEntry["note"]["text"] ?? "";
-            const taskID = activityID + "_task";
 
-            let tymeCategory = Category.fromID(folderID);
-            if (!tymeCategory) {
-                tymeCategory = Category.create(folderID);
-                tymeCategory.name = folderName;
-                tymeCategory.color = parseInt(activityColor.replace("#", "0x"));
-            }
+            /*
+                        const taskID = activityID + "_task";
+                        let tymeCategory = Category.fromID(folderID);
+                        if (!tymeCategory) {
+                            tymeCategory = Category.create(folderID);
+                            tymeCategory.name = folderName;
+                            tymeCategory.color = parseInt(activityColor.replace("#", "0x"));
+                        }
+            */
 
-            let tymeProject = Project.fromID(activityID);
+            let tymeProject = Project.fromID(folderID);
             if (!tymeProject) {
-                tymeProject = Project.create(activityID);
-                tymeProject.name = activityName;
+                tymeProject = Project.create(folderID);
+                tymeProject.name = folderName;
                 tymeProject.color = parseInt(activityColor.replace("#", "0x"));
-                tymeProject.category = tymeCategory;
             }
 
-            let tymeTask = TimedTask.fromID(taskID);
+            let tymeTask = TimedTask.fromID(activityID);
             if (!tymeTask) {
-                tymeTask = TimedTask.create(taskID);
-                tymeTask.name = "Default";
+                tymeTask = TimedTask.create(activityID);
+                tymeTask.name = activityName;
                 tymeTask.project = tymeProject;
             }
 
@@ -172,79 +195,12 @@ class EarlyImporter {
             tymeEntry.timeEnd = end;
             tymeEntry.parentTask = tymeTask;
 
-            utils.log(timeEntryID);
-            utils.log(start);
-            utils.log(end);
-            utils.log(note);
-
             const tymeUserID = tyme.userIDForEmail(userEmail);
 
             if (tymeUserID) {
                 tymeEntry.userID = tymeUserID;
             }
         }
-
-        /*
-        {
-    "timeEntries": [
-        {
-            "id": "102379995",
-            "activity": {
-                "id": "2050941",
-                "name": "Design",
-                "color": "#22b1ee",
-                "folderId": "299831"
-            },
-            "user": {
-                "id": "218275",
-                "name": "Lars Gerckens",
-                "email": "pwtz9tz8sr@privaterelay.appleid.com"
-            },
-            "folder": {
-                "id": "299831",
-                "name": "My Activities"
-            },
-            "duration": {
-                "startedAt": "2025-04-24T09:45:00.000",
-                "stoppedAt": "2025-04-24T10:45:00.000"
-            },
-            "note": {
-                "text": "hello from early",
-                "tags": [],
-                "mentions": []
-            },
-            "timezone": "Z"
-        },
-        {
-            "id": "102380006",
-            "activity": {
-                "id": "2050940",
-                "name": "Development",
-                "color": "#00bbaa",
-                "folderId": "299831"
-            },
-            "user": {
-                "id": "218275",
-                "name": "Lars Gerckens",
-                "email": "pwtz9tz8sr@privaterelay.appleid.com"
-            },
-            "folder": {
-                "id": "299831",
-                "name": "My Activities"
-            },
-            "duration": {
-                "startedAt": "2025-04-24T11:45:00.000",
-                "stoppedAt": "2025-04-24T14:00:00.000"
-            },
-            "note": {
-                "tags": [],
-                "mentions": []
-            },
-            "timezone": "Z"
-        }
-    ]
-}
-        */
     }
 }
 
