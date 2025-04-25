@@ -131,15 +131,14 @@ class EarlyImporter {
                 userEmail = timeEntry["user"]["email"];
             }
 
-            let start = Date();
-            let end = Date();
+            let start = 0;
+            let end = 0;
 
             if (timeEntry["duration"]) {
                 start = Date.parse(timeEntry["duration"]["startedAt"]);
                 end = Date.parse(timeEntry["duration"]["stoppedAt"]);
             } else if (timeEntry["startedAt"]) {
                 start = Date.parse(timeEntry["startedAt"]);
-                end = 0;
             }
 
             const note = timeEntry["note"]["text"] ?? "";
