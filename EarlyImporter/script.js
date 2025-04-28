@@ -165,29 +165,13 @@ class EarlyImporter {
 
             const note = timeEntry["note"]["text"] ?? "";
 
-            /*
-                        const taskID = activityID + "_task";
-                        let tymeCategory = Category.fromID(folderID);
-                        if (!tymeCategory) {
-                            tymeCategory = Category.create(folderID);
-                            tymeCategory.name = folderName;
-                            tymeCategory.color = parseInt(activityColor.replace("#", "0x"));
-                        }
-            */
+            let tymeProject = Project.fromID(folderID) ?? Project.create(folderID);
+            tymeProject.name = folderName;
+            tymeProject.color = parseInt(activityColor.replace("#", "0x"));
 
-            let tymeProject = Project.fromID(folderID);
-            if (!tymeProject) {
-                tymeProject = Project.create(folderID);
-                tymeProject.name = folderName;
-                tymeProject.color = parseInt(activityColor.replace("#", "0x"));
-            }
-
-            let tymeTask = TimedTask.fromID(activityID);
-            if (!tymeTask) {
-                tymeTask = TimedTask.create(activityID);
-                tymeTask.name = activityName;
-                tymeTask.project = tymeProject;
-            }
+            let tymeTask = TimedTask.fromID(activityID) ?? TimedTask.create(activityID);
+            tymeTask.name = activityName;
+            tymeTask.project = tymeProject;
 
             let tymeEntry = TimeEntry.fromID(timeEntryID) ?? TimeEntry.create(timeEntryID);
             tymeEntry.note = note;
