@@ -165,9 +165,17 @@ class EarlyImporter {
 
             const note = timeEntry["note"]["text"] ?? "";
 
+            const categoryID = idPrefix + "default-category";
+            let tymeCategory = Category.fromID(categoryID)
+            if(!tymeCategory) {
+                tymeCategory = Category.create(categoryID);
+                tymeCategory.name = "Early Import";
+            }
+
             let tymeProject = Project.fromID(folderID) ?? Project.create(folderID);
             tymeProject.name = folderName;
             tymeProject.color = parseInt(activityColor.replace("#", "0x"));
+            tymeProject.category = tymeCategory;
 
             let tymeTask = TimedTask.fromID(activityID) ?? TimedTask.create(activityID);
             tymeTask.name = activityName;
