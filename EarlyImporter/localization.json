@@ -4,13 +4,15 @@
     "plugin.summary": "Import your activities & time entries from Early right into Tyme.",
     "input.key": "API Key",
     "input.secret": "API Secret",
-    "input.hint": "You can find the API key & secret in your [Early Account](https://product.early.app/#/settings/account).\n\nAll data of the last two years will be imported. A folder will become a project and an activity a task. Note that Early currently does not expose billing states.\n\nTyme tries to match users based on their email. So be sure to use the same email address in Early and in Tyme for all users. If you have only one user in Early or no team in Tyme, everything will be automatically matched to you."
+    "input.hint": "You can find the API key & secret in your [Early Account](https://product.early.app/#/settings/account).\n\nAll data in the set date range is imported, up to a maximum of two years in the past. A folder will become a project and an activity a task. Note that Early currently does not expose billing states.\n\nTyme tries to match users based on their email. So be sure to use the same email address in Early and in Tyme for all users. If you have only one user in Early or no team in Tyme, everything will be automatically matched to you.",
+    "input.daterange": "Date Range"
   },
   "de": {
     "plugin.name": "Early (formerly Timeular)",
     "plugin.summary": "Importiere deine Aktivitäten und Zeiteinträge aus Early direkt in Tyme.",
     "input.key": "API Key",
     "input.secret": "API Secret",
-    "input.hint": "Den API-Key & Secret findest du in deinem [Early-Konto](https://product.early.app/#/settings/account).\n\nAlle Daten der letzten zwei Jahre werden importiert. Ein Ordner wird zu einem Projekt und eine Aktivität zu einer Aufgabe. Hinweis: Early stellt derzeit keinen Abrechnungsstatus über die API zur Verfügung.\n\nTyme versucht, Benutzer anhand ihrer E-Mail-Adresse zuzuordnen. Achte daher darauf, dass alle Benutzer in Early und Tyme dieselbe E-Mail-Adresse verwenden. Wenn du nur einen Benutzer in Early oder kein Team in Tyme hast, wird alles automatisch dir zugeordnet."
+    "input.hint": "Den API-Key & Secret findest du in deinem [Early-Konto](https://product.early.app/#/settings/account).\n\nAlle Daten des eingestellten Datumsbereiches werden importiert, maximal zwei Jahre in die Vergangenheit. Ein Ordner wird zu einem Projekt und eine Aktivität zu einer Aufgabe. Hinweis: Early stellt derzeit keinen Abrechnungsstatus über die API zur Verfügung.\n\nTyme versucht, Benutzer anhand ihrer E-Mail-Adresse zuzuordnen. Achte daher darauf, dass alle Benutzer in Early und Tyme dieselbe E-Mail-Adresse verwenden. Wenn du nur einen Benutzer in Early oder kein Team in Tyme hast, wird alles automatisch dir zugeordnet.",
+    "input.daterange": "Zeitraum"
   }
 }
