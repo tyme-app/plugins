@@ -1,10 +1,5 @@
 [
   {
-    "id": "dateRange",
-    "type": "daterange",
-    "name": "input.daterange"
-  },
-  {
     "id": "separator",
     "type": "separator",
     "name": ""
@@ -26,5 +21,10 @@
     "type": "hint",
     "name": "",
     "value": "input.hint"
+  },
+  {
+    "id": "dateRange",
+    "type": "daterange",
+    "name": "input.daterange"
   }
 ]
