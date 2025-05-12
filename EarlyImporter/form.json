@@ -1,5 +1,10 @@
 [
   {
+    "id": "separator",
+    "type": "separator",
+    "name": ""
+  },
+  {
     "id": "apiKey",
     "type": "securetext",
     "name": "input.key",
@@ -16,5 +21,10 @@
     "type": "hint",
     "name": "",
     "value": "input.hint"
+  },
+  {
+    "id": "dateRange",
+    "type": "daterange",
+    "name": "input.daterange"
   }
 ]

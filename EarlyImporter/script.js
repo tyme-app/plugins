@@ -111,6 +111,15 @@ class EarlyImporter {
             let endDate = new Date();
             endDate.setFullYear(endDate.getFullYear() - (i - 1));
 
+            startDate = startDate > formValue.dateRange[0] ? startDate : formValue.dateRange[0];
+            startDate.setUTCHours(0,0,0,0);
+            endDate = endDate < formValue.dateRange[1] ? endDate : formValue.dateRange[1];
+            endDate.setUTCHours(23,59,59,999);
+
+            if (endDate - startDate < 0) {
+                continue;
+            }
+
             const startString = startDate.toISOString().split('T')[0]
             const endString = endDate.toISOString().split('T')[0]
             const response = this.apiClient.getJSON(
@@ -165,9 +174,17 @@ class EarlyImporter {
 
             const note = timeEntry["note"]["text"] ?? "";
 
+            const categoryID = idPrefix + "default-category";
+            let tymeCategory = Category.fromID(categoryID)
+            if (!tymeCategory) {
+                tymeCategory = Category.create(categoryID);
+                tymeCategory.name = "Early Import";
+            }
+
             let tymeProject = Project.fromID(folderID) ?? Project.create(folderID);
             tymeProject.name = folderName;
             tymeProject.color = parseInt(activityColor.replace("#", "0x"));
+            tymeProject.category = tymeCategory;
 
             let tymeTask = TimedTask.fromID(activityID) ?? TimedTask.create(activityID);
             tymeTask.name = activityName;
