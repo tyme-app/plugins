@@ -51,7 +51,6 @@ class EarlyApiClient {
         if (statusCode === 200) {
             return JSON.parse(result);
         } else {
-            tyme.showAlert('Early API Error', JSON.stringify(response));
             return null;
         }
     }
