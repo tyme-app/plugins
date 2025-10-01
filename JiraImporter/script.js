@@ -192,11 +192,6 @@ class JiraIssue {
  */
 class JiraFieldConfiguration {
   /**
-   * Skipped field configuration.
-   */
-  static skippedField = { value: 'jira_import_skip', name: utils.localize('input.fields.skip') };
-
-  /**
    *
    * @param {JiraApiClient} client
    * @returns
@@ -204,39 +199,6 @@ class JiraFieldConfiguration {
   constructor(client) {
     this.client = client;
     this.fields = undefined;
-  }
-
-  /**
-   * Planned duration field.
-   * @returns {string|undefined} Returns the field name or `undefined` if field should be skipped.
-   */
-  get plannedDurationField() {
-    return this.skipField(formValue.durationField) ? undefined : formValue.durationField;
-  }
-
-  /**
-   * Start date field.
-   * @returns {string|undefined} Returns the field name or `undefined` if field should be skipped.
-   */
-  get startDateField() {
-    return this.skipField(formValue.startDateField) ? undefined : formValue.startDateField;
-  }
-
-  /**
-   * Due date field.
-   * @returns {string|undefined} Returns the field name or `undefined` if field should be skipped.
-   */
-  get dueDateField() {
-    return this.skipField(formValue.dueDateField) ? undefined : formValue.dueDateField;
-  }
-
-  /**
-   * Check if field should be skipped for the import.
-   * @param {string} field The field value.
-   * @returns {boolean} Returns `true` if the field should be skipped.
-   */
-  skipField(field) {
-    field === JiraFieldConfiguration.skippedField.value;
   }
 
   /**
@@ -271,7 +233,7 @@ class JiraFieldConfiguration {
     });
 
     // Prepend the "Skipped field" configuration
-    return [JiraFieldConfiguration.skippedField].concat(
+    return [Form.skippedField].concat(
       filteredFields.map(field => {
         return { value: field.id, name: field.name };
       })
@@ -304,6 +266,27 @@ class JiraApiClient {
     }
 
     return 'assignee = currentUser() AND statuscategory != done' + excludedProjects;
+  }
+
+  /**
+   * Get a comma separated string with fields to fetch.
+   */
+  get fieldsToFetch() {
+    // Base fields
+    const fields = ['key', 'summary', 'project'];
+
+    // Add user selected fields, if selected
+    if (Form.startDateField) {
+      fields.push(Form.startDateField);
+    }
+    if (Form.dueDateField) {
+      fields.push(Form.dueDateField);
+    }
+    if (Form.plannedDurationField) {
+      fields.push(Form.plannedDurationField);
+    }
+
+    return fields.join(',');
   }
 
   /**
@@ -351,18 +334,22 @@ class JiraApiClient {
    */
   loadIssues(issueIds) {
     const issues = {};
-    let startAt = 0;
+    let nextPageToken = null;
     let finished = false;
 
     do {
       const params = {
         jql: issueIds ? this.updateJql(issueIds) : this.importJql,
         maxResults: 50,
-        startAt: startAt,
+        fields: this.fieldsToFetch,
       };
-      const response = this.fetch('search', params);
+      if (nextPageToken) {
+        params['nextPageToken'] = nextPageToken;
+      }
 
-      if (!response || response.issues.length === 0) {
+      const response = this.fetch('search/jql', params);
+
+      if (!response || response.isLast === true || !response.nextPageToken) {
         finished = true;
       }
 
@@ -370,7 +357,7 @@ class JiraApiClient {
         issues[issue.key] = issue;
       });
 
-      startAt += 50;
+      nextPageToken = response.nextPageToken;
     } while (!finished);
 
     utils.log(`Loaded ${Object.keys(issues).length} issues`);
@@ -562,12 +549,10 @@ class JiraImporter {
         issue.key,
         issue.fields.summary,
         this.isClosed(issue?.fields?.status?.statusCategory?.key),
-        this.configuration.startDateField ? issue?.fields?.[this.configuration.startDateField] : null,
-        this.configuration.dueDateField ? issue?.fields?.[this.configuration.dueDateField] : null,
-        this.configuration.plannedDurationField ? issue.fields?.[this.configuration.plannedDurationField] : null
+        Form.startDateField ? issue?.fields?.[Form.startDateField] : null,
+        Form.dueDateField ? issue?.fields?.[Form.dueDateField] : null,
+        Form.plannedDurationField ? issue.fields?.[Form.plannedDurationField] : null
       );
-
-      utils.log(JSON.stringify(jiraIssue));
 
       jiraIssue.createOrUpdateTymeTask(Project.fromID(project.projectId));
     }
@@ -612,6 +597,49 @@ class JiraImporter {
     }
 
     return Array.from(issues);
+  }
+}
+
+/**
+ * Form class for accessing form values.
+ */
+class Form {
+  /**
+   * Skipped field configuration.
+   */
+  static skippedField = { value: 'jira_import_skip', name: utils.localize('input.fields.skip') };
+
+  /**
+   * Planned duration field.
+   * @returns {string|undefined} Returns the field name or `undefined` if field should be skipped.
+   */
+  static get plannedDurationField() {
+    return Form.skipField(formValue.durationField) ? undefined : formValue.durationField;
+  }
+
+  /**
+   * Start date field.
+   * @returns {string|undefined} Returns the field name or `undefined` if field should be skipped.
+   */
+  static get startDateField() {
+    return Form.skipField(formValue.startDateField) ? undefined : formValue.startDateField;
+  }
+
+  /**
+   * Due date field.
+   * @returns {string|undefined} Returns the field name or `undefined` if field should be skipped.
+   */
+  static get dueDateField() {
+    return Form.skipField(formValue.dueDateField) ? undefined : formValue.dueDateField;
+  }
+
+  /**
+   * Check if field should be skipped for the import.
+   * @param {string} field The field value.
+   * @returns {boolean} Returns `true` if the field should be skipped.
+   */
+  static skipField(field) {
+    field === Form.skippedField.value;
   }
 }
 
