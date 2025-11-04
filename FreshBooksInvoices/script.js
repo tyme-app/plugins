@@ -1,6 +1,8 @@
 class FreshBooksAPIClient {
     constructor() {
-        this.baseURL = 'https://api.freshbooks.com/';
+        // this.pluginAuthURL = "https://staging.tyme-app.com/plugins/oauth/";
+        this.pluginAuthURL = "http://localhost:8888/plugins/auth/";
+        this.freshBooksBaseURL = 'https://api.freshbooks.com/';
         this.authCodeKey = 'code';
     }
 
@@ -9,8 +11,25 @@ class FreshBooksAPIClient {
     }
 
     startAuthFlow() {
-        tyme.openURL("https://auth.freshbooks.com/oauth/authorize?client_id=1ebc88ccee2f960a9f6ac08d34435e115dc876ef1adecb17e44384ae5c568e9a&response_type=code&redirect_uri=tyme%3A%2F%2Fexport%2Fredirect%2Ffreshbooks&scope=user%3Aprofile%3Aread%20user%3Aclients%3Aread%20user%3Ainvoices%3Awrite");
-        // tyme.openURL("https://auth.freshbooks.com/oauth/authorize?client_id=1ebc88ccee2f960a9f6ac08d34435e115dc876ef1adecb17e44384ae5c568e9a&response_type=code&redirect_uri=tyme%3A%2F%2Fexport%2Fredirect%2Ffreshbooks&scope=user%3Aprofile%3Aread%20user%3Aclients%3Aread%20user%3Ainvoices%3Awrite&_gl=1*rr36xx*_gcl_au*MjkwNDE2OTQ4LjE3NjIyNjQzMDA.*_ga*NDk0NzE1OTYzLjE3NTk3MzA5NDM.*_ga_LNDHWTHSMK*czE3NjIyNjQzMDIkbzEkZzEkdDE3NjIyNjcwMjUkajYkbDAkaDE5NjE2MDU1Mjg.*_fplc*emhFQXUxMXVrZk5uWVcwZGliRzB4UTlnMVl3blRDNm1xeW1JMmsyVGlXeVJDRGI3YzZiTDM3RjBLckFyZ2RKNFdIdW1uUE56R3BqTkcycThkYUtaS3VSRFAxOER3WkN0Z29qbHRGREliQUhNeUQwb2Z2V0NaazhINGZuUEV3JTNEJTNE");
+        tyme.openURL(this.pluginAuthURL + 'new/freshbooks');
+    }
+
+    fetchTokens() {
+        const url = this.pluginAuthURL + 'code/freshbooks';
+        const code = tyme.getSecureValue(this.authCodeKey);
+        const response = utils.request(url, 'POST', {'code': code}, params);
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        // tyme.setSecureValue(this.authCodeKey, null);
+
+        if (statusCode === 200) {
+            const json = JSON.parse(result);
+            return true;
+        } else {
+            utils.log('FreshBooks Auth Error ' + JSON.stringify(response));
+            return false;
+        }
     }
 }
 
