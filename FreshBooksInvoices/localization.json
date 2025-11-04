@@ -1,0 +1,12 @@
+{
+  "en": {
+    "plugin.name": "FreshBooks Invoices",
+    "plugin.summary": "TBD.",
+    "locale.identifier": "en-US"
+  },
+  "de": {
+    "plugin.name": "FreshBooks Rechnungen",
+    "plugin.summary": "TBD.",
+    "locale.identifier": "de-DE"
+  }
+}

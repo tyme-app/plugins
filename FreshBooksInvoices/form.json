@@ -1,0 +1,34 @@
+[
+  {
+    "id": "authButton",
+    "type": "button",
+    "name": "button.auth",
+    "actionFunction": "freshBooks.startAuthFlow()"
+  },
+  {
+    "id": "separator4",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "onlyUnbilled",
+    "type": "checkbox",
+    "name": "input.unbilled",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "markAsBilled",
+    "type": "checkbox",
+    "name": "input.billed",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "includeNonBillable",
+    "type": "checkbox",
+    "name": "input.nonbillable",
+    "value": "false",
+    "persist": true
+  }
+]
