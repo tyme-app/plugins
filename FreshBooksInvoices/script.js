@@ -11,11 +11,29 @@ class FreshBooksAPIClient {
     }
 
     startAuthFlow() {
-        tyme.openURL(this.pluginAuthURL + 'new/freshbooks');
+        tyme.openURL(this.pluginAuthURL + 'auth_start/freshbooks');
     }
 
     fetchTokens() {
-        const url = this.pluginAuthURL + 'code/freshbooks';
+        const url = this.pluginAuthURL + 'auth_code/freshbooks';
+        const code = tyme.getSecureValue(this.authCodeKey);
+        const response = utils.request(url, 'POST', {'code': code}, params);
+        const statusCode = response['statusCode'];
+        const result = response['result'];
+
+        // tyme.setSecureValue(this.authCodeKey, null);
+
+        if (statusCode === 200) {
+            const json = JSON.parse(result);
+            return true;
+        } else {
+            utils.log('FreshBooks Auth Error ' + JSON.stringify(response));
+            return false;
+        }
+    }
+
+    refreshTokens() {
+        const url = this.pluginAuthURL + 'refresh_token/freshbooks';
         const code = tyme.getSecureValue(this.authCodeKey);
         const response = utils.request(url, 'POST', {'code': code}, params);
         const statusCode = response['statusCode'];
