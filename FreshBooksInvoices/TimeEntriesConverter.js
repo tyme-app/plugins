@@ -1,15 +1,12 @@
 class TimeEntriesConverter {
-    constructor(locale, unitHours, unitKilometer, unitQuantity) {
-        this.locale = locale;
-        this.unitHours = unitHours;
-        this.unitKilometer = unitKilometer;
-        this.unitQuantity = unitQuantity;
+    constructor() {
+
     }
 
     timeEntriesFromFormValues(useClusterOption) {
         return tyme.timeEntries(
-            formValue.startDate,
-            formValue.endDate,
+            formValue.dateRange[0],
+            formValue.dateRange[1],
             formValue.taskIDs,
             null,
             formValue.onlyUnbilled ? 0 : null,
@@ -45,11 +42,11 @@ class TimeEntriesConverter {
                         };
 
                         if (timeEntry.type === 'timed') {
-                            entry.unit = this.unitHours;
+                            entry.unit = utils.localize('unit.hours')
                         } else if (timeEntry.type === 'mileage') {
-                            entry.unit = this.unitKilometer;
+                            entry.unit = utils.localize('unit.kilometer')
                         } else if (timeEntry.type === 'fixed') {
-                            entry.unit = this.unitQuantity;
+                            entry.unit = utils.localize('unit.quantity')
                         }
 
                         entry.project = timeEntry.project;
@@ -125,10 +122,11 @@ class TimeEntriesConverter {
     }
 
     formatDate(dateString, timeOnly) {
+        let locale = utils.localize('locale.identifier');
         if (timeOnly) {
-            return (new Date(dateString)).toLocaleTimeString(this.locale, {hour: '2-digit', minute: '2-digit'});
+            return (new Date(dateString)).toLocaleTimeString(locale, {hour: '2-digit', minute: '2-digit'});
         } else {
-            return (new Date(dateString)).toLocaleDateString(this.locale);
+            return (new Date(dateString)).toLocaleDateString(locale);
         }
     }
 
@@ -136,7 +134,7 @@ class TimeEntriesConverter {
         return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
     }
 
-    generatePreview(logoPath, authMessage, header, position, price, quantity, unit, net) {
+    generatePreview(logoPath, authMessage) {
         const data = this.aggregatedTimeEntryData()
 
         let total = 0.0;
@@ -148,12 +146,12 @@ class TimeEntriesConverter {
             str += "#### <span style='color: darkred; font-size: 16px;'>" + authMessage + "</span>\n";
         }
 
-        str += '## ' + header + '\n';
-        str += '|' + position;
-        str += '|' + price;
-        str += '|' + quantity;
-        str += '|' + unit;
-        str += '|' + net;
+        str += '## ' + utils.localize('invoice.header') + '\n';
+        str += '|' + utils.localize('invoice.position');
+        str += '|' + utils.localize('invoice.price');
+        str += '|' + utils.localize('invoice.quantity');
+        str += '|' + utils.localize('invoice.unit');
+        str += '|' + utils.localize('invoice.net');
         str += '|\n';
 
         str += '|-|-:|-:|-|-:|\n';
@@ -171,7 +169,7 @@ class TimeEntriesConverter {
             }
 
             let price = this.roundNumber(entry.price, 2);
-            let quantity = this.roundNumber(entry.quantity, formValue.roundingOption);
+            let quantity = this.roundNumber(entry.quantity, 2);
             let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
 
             total += parseFloat(sum);

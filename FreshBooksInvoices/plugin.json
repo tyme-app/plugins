@@ -10,7 +10,8 @@
   "scriptMain": "freshBooks.createInvoice()",
   "scriptPreview": "freshBooks.generatePreview()",
   "scriptDependencies": [
-    "TimeEntriesConverter.js"
+    "TimeEntriesConverter.js",
+    "OAuthAPIClient.js"
   ],
   "formName": "form.json",
   "localizationName": "localization.json",
