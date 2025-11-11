@@ -99,8 +99,9 @@ class OAuthAPIClient {
 
 
 class FreshBooks {
-    constructor(oAuthAPIClient) {
+    constructor(oAuthAPIClient, timeEntriesConverter) {
         this.oAuthAPIClient = oAuthAPIClient;
+        this.timeEntriesConverter = timeEntriesConverter;
         this.accountID = null;
     }
 
@@ -132,13 +133,21 @@ class FreshBooks {
             }
         }
 
-        const blah = new Blah();
+        timeEntriesConverter.generatePreview(
+            "logo",
+            "authmessage",
+            utils.localize('invoice.header'),
+            utils.localize('invoice.position'),
+            utils.localize('invoice.price'),
+            utils.localize('invoice.quantity'),
+            utils.localize('invoice.unit'),
+            utils.localize('invoice.net')
+        );
 
         return "authcode: " + tyme.getSecureValue("auth_code") +
             "<br/>access: " + tyme.getSecureValue("access_token") +
             "<br/>refresh: " + tyme.getSecureValue("refresh_token") +
-            "<br/>accountID: " + this.accountID +
-            "<br/>blah: " + blah.hello();
+            "<br/>accountID: " + this.accountID;
     }
 
     startAuthFlow() {
@@ -150,5 +159,15 @@ class FreshBooks {
     }
 }
 
-const oAuthAPIClient = new OAuthAPIClient("freshbooks");
-const freshBooks = new FreshBooks(oAuthAPIClient);
+const timeEntriesConverter = new TimeEntriesConverter(
+    utils.localize('locale.identifier'),
+    utils.localize('unit.hours'),
+    utils.localize('unit.kilometer'),
+    utils.localize('unit.quantity')
+);
+
+const oAuthAPIClient = new OAuthAPIClient(
+    "freshbooks"
+);
+
+const freshBooks = new FreshBooks(oAuthAPIClient, timeEntriesConverter);
