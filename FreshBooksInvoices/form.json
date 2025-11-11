@@ -6,10 +6,10 @@
     "actionFunction": "freshBooks.startAuthFlow()"
   },
   {
-    "id": "authButton2",
+    "id": "logoutButton",
     "type": "button",
-    "name": "button.kill",
-    "actionFunction": "freshBooks.killAuth()"
+    "name": "button.logout",
+    "actionFunction": "freshBooks.logout()"
   },
   {
     "id": "authHint",
@@ -86,11 +86,11 @@
     "name": ""
   },
   {
-    "id": "contactID",
+    "id": "clientID",
     "type": "dropdown",
-    "name": "input.contact",
+    "name": "input.client",
     "valueFunction": "freshBooks.getClients()",
-    "valueFunctionReloadable": false,
+    "valueFunctionReloadable": true,
     "persist": true
   },
   {

@@ -77,6 +77,10 @@ class FreshBooks {
     }
 
     generatePreview() {
+        formElement.authButton.isHidden = this.oAuthAPIClient.hasAccessToken();
+        formElement.authHint.isHidden = this.oAuthAPIClient.hasAccessToken();
+        formElement.logoutButton.isHidden = !this.oAuthAPIClient.hasAccessToken();
+
         return this.timeEntriesConverter.generatePreview(
             "logo",
             "authmessage"
@@ -92,9 +96,10 @@ class FreshBooks {
         this.oAuthAPIClient.startAuthFlow();
     }
 
-    killAuth() {
-        tyme.setSecureValue('access_token', null);
-        tyme.setSecureValue('refresh_token', null);
+    logout() {
+        this.oAuthAPIClient.logout();
+        this.clients = [];
+        formElement.clientID.reload();
     }
 }
 

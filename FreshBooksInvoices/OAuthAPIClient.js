@@ -21,10 +21,14 @@ class OAuthAPIClient {
     }
 
     startAuthFlow() {
+        this.logout();
+        tyme.openURL(this.pluginAuthURL + 'auth_start/' + this.pluginID);
+    }
+
+    logout() {
         tyme.setSecureValue(this.authCodeKey, null);
         tyme.setSecureValue(this.accessTokenKey, null);
         tyme.setSecureValue(this.refreshTokenKey, null);
-        tyme.openURL(this.pluginAuthURL + 'auth_start/' + this.pluginID);
     }
 
     fetchTokensFromCode() {
@@ -43,8 +47,7 @@ class OAuthAPIClient {
             return true;
         } else {
             utils.log('Code Exchange Error ' + JSON.stringify(response));
-            tyme.setSecureValue(this.accessTokenKey, null);
-            tyme.setSecureValue(this.refreshTokenKey, null);
+            this.logout();
             return false;
         }
     }
@@ -63,8 +66,7 @@ class OAuthAPIClient {
             return true;
         } else {
             utils.log('Token Refresh Error ' + JSON.stringify(response));
-            tyme.setSecureValue(this.accessTokenKey, null);
-            tyme.setSecureValue(this.refreshTokenKey, null);
+            this.logout();
             return false;
         }
     }

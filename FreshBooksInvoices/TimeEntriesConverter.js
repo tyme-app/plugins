@@ -1,3 +1,34 @@
+/*
+
+    The TimeEntriesConverter assumes that the following values are set in the form and localization files:
+
+    Form:
+
+    formValue.dateRange[0],
+    formValue.dateRange[1],
+    formValue.taskIDs,
+    formValue.onlyUnbilled
+    formValue.includeNonBillable,
+    formValue.teamMemberID,
+    formValue.clusterOption
+    formValue.showTimesInNotes
+    formValue.showNotes
+    formValue.prefixProject
+
+    Localization:
+
+    unit.hours
+    unit.kilometer
+    unit.quantity
+    locale.identifier
+    invoice.header
+    invoice.position
+    invoice.price
+    invoice.quantity
+    invoice.unit
+    invoice.net
+*/
+
 class TimeEntriesConverter {
     constructor() {
 
@@ -135,7 +166,7 @@ class TimeEntriesConverter {
     }
 
     generatePreview(logoPath, authMessage) {
-        const data = this.aggregatedTimeEntryData()
+        const data = this.aggregatedTimeEntryData();
 
         let total = 0.0;
         let str = '';
