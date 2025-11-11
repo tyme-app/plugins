@@ -24,7 +24,26 @@ class FreshBooks {
     }
 
     createInvoice() {
+        let now = new Date();
+        let params = {
+            "invoice": {
+                "create_date": now.toISOString().split('T')[0],
+                "customerid": formValue.clientID,
+                "lines": []
+            }
+        };
 
+        const response = oAuthAPIClient.callResource(
+            "https://api.freshbooks.com/accounting/account/" + this.accountID + "/invoices/invoices",
+            "POST",
+            params,
+        );
+
+        utils.log(JSON.stringify(response, null, 2));
+
+        if (response) {
+
+        }
     }
 
     getClients() {
