@@ -2,6 +2,7 @@ class OAuthAPIClient {
     constructor(pluginID) {
         this.pluginID = pluginID;
         this.pluginAuthURL = "http://localhost:8888/plugins/";
+        // this.pluginAuthURL = "https://api.tyme-app.com/plugins/";
         this.authCodeKey = 'auth_code';
         this.accessTokenKey = 'access_token';
         this.refreshTokenKey = 'refresh_token';
@@ -11,8 +12,12 @@ class OAuthAPIClient {
         return tyme.getSecureValue(this.authCodeKey) != null;
     }
 
-    hasTokens() {
+    hasAccessToken() {
         return tyme.getSecureValue(this.accessTokenKey) != null;
+    }
+
+    hasRefreshToken() {
+        return tyme.getSecureValue(this.refreshTokenKey) != null;
     }
 
     startAuthFlow() {
@@ -26,9 +31,7 @@ class OAuthAPIClient {
         const statusCode = response['statusCode'];
         const result = response['result'];
 
-        tyme.showAlert("codeexchange", JSON.stringify(response));
-
-        // tyme.setSecureValue(this.authCodeKey, null);
+        tyme.setSecureValue(this.authCodeKey, null);
 
         if (statusCode === 200) {
             const json = JSON.parse(result);
@@ -62,26 +65,88 @@ class OAuthAPIClient {
             return false;
         }
     }
+
+    callResource(url, method, params) {
+        if (!this.hasAccessToken()) {
+            if (this.hasAuthCode()) {
+                this.fetchTokensFromCode();
+                return this.callResource(url, method, params);
+            } else {
+                return null;
+            }
+        }
+
+        const response = utils.request(
+            url,
+            method,
+            {
+                "Authorization": "Bearer " + tyme.getSecureValue(this.accessTokenKey)
+            },
+            params
+        );
+
+        if (response['statusCode'] === 401 && this.hasRefreshToken()) {
+            if (this.refreshTokens()) {
+                return this.callResource(url, method, params);
+            } else {
+                return null;
+            }
+        }
+
+        return response['result'];
+    }
 }
 
 
 class FreshBooks {
     constructor(oAuthAPIClient) {
         this.oAuthAPIClient = oAuthAPIClient;
+        this.accountID = null;
+    }
+
+    getAccountID() {
+        const response = oAuthAPIClient.callResource(
+            "https://api.freshbooks.com/auth/api/v1/users/me",
+            "GET",
+            {}
+        );
+
+        if (response) {
+            const json = JSON.parse(response);
+
+            if (json.response && json.response.roles && json.response.roles.length > 0) {
+                this.accountID = json.response.roles[0].accountid;
+            }
+        }
+    }
+
+    createInvoice() {
+
     }
 
     generatePreview() {
-
-        if(oAuthAPIClient.hasAuthCode()) {
-            oAuthAPIClient.fetchTokensFromCode();
+        if (!this.accountID) {
+            this.getAccountID();
+            if (!this.accountID) {
+                return "Failed to get account ID";
+            }
         }
 
-        return "hasAuthCode: " + oAuthAPIClient.hasAuthCode() +
-            ", hasTokens: " + oAuthAPIClient.hasTokens();
+        const blah = new Blah();
+
+        return "authcode: " + tyme.getSecureValue("auth_code") +
+            "<br/>access: " + tyme.getSecureValue("access_token") +
+            "<br/>refresh: " + tyme.getSecureValue("refresh_token") +
+            "<br/>accountID: " + this.accountID +
+            "<br/>blah: " + blah.hello();
     }
 
     startAuthFlow() {
         this.oAuthAPIClient.startAuthFlow();
+    }
+
+    destroyAuth() {
+        tyme.setSecureValue("access_token");
     }
 }
 

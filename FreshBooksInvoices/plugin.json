@@ -9,6 +9,9 @@
   "scriptName": "script.js",
   "scriptMain": "freshBooks.createInvoice()",
   "scriptPreview": "freshBooks.generatePreview()",
+  "scriptDependencies": [
+    "TimeEntriesConverter.js"
+  ],
   "formName": "form.json",
   "localizationName": "localization.json",
   "internalType": "plugin_9",

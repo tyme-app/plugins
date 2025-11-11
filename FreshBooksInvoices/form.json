@@ -6,6 +6,12 @@
     "actionFunction": "freshBooks.startAuthFlow()"
   },
   {
+    "id": "authDeleteButton",
+    "type": "button",
+    "name": "button.auth.delete",
+    "actionFunction": "freshBooks.destroyAuth()"
+  },
+  {
     "id": "separator4",
     "type": "separator",
     "name": ""

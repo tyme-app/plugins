@@ -28,7 +28,7 @@ This file defines the type, version, compatibility and entry point for the plugi
 ```javascript
 {
   "id": "unique_id_of_your_plugin",
-  "tymeMinVersion": "2024.1", // the minimum compatible version of Tyme for this plugin
+  "tymeMinVersion": "2025.12", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
   "author": "John Doe",
@@ -37,9 +37,15 @@ This file defines the type, version, compatibility and entry point for the plugi
   "scriptName": "script.js",
   "scriptMain": "createInvoice()", // the method to call when exporting
   "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return), only export plugins
+  "scriptDependencies": ["library.js"], // optional, useful to split your code into separate files (introduced in Tyme 2025.12)
   "formName": "form.json",
   "localizationName": "localization.json"
 }
+
+// 2025.12: 'scriptDependencies' property added
+
+// Please set the tymeMinVersion to 2025.12 if you plan to use the above features.
+
 ```
 
 ### Plugin JavaScript File
