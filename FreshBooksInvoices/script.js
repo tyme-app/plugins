@@ -5,6 +5,9 @@ class FreshBooks {
         this.accountIDKey = "account_id";
         this.clients = [];
         this.getAccountID();
+
+        formElement.authButton.isHidden = this.oAuthAPIClient.hasAccessToken();
+        formElement.logoutButton.isHidden = !this.oAuthAPIClient.hasAccessToken();
     }
 
     getAccountID() {
@@ -165,9 +168,6 @@ class FreshBooks {
     }
 
     generatePreview() {
-        formElement.authButton.isHidden = this.oAuthAPIClient.hasAccessToken();
-        formElement.logoutButton.isHidden = !this.oAuthAPIClient.hasAccessToken();
-
         return this.timeEntriesConverter.generatePreview(
             "plugins/FreshBooksInvoices/logo.png",
             this.oAuthAPIClient.hasAccessToken() ? null : utils.localize("not.connected.message")
