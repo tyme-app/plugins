@@ -24,12 +24,32 @@ class FreshBooks {
     }
 
     createInvoice() {
+
+        let lines = [
+            {
+                "type": 0,
+                "qty": 1.5,
+                "unit_cost": {
+                    "amount": 123.45,
+                    "code": "EUR"
+                },
+                "name": "Name of Item",
+                "description": "Test Line Item"
+            }
+        ];
+
+        let taxValue = formValue.taxID.split("#");
+        let taxName = taxValue[0];
+        let taxNumber = taxValue[1];
+
         let now = new Date();
         let params = {
             "invoice": {
                 "create_date": now.toISOString().split('T')[0],
                 "customerid": formValue.clientID,
-                "lines": []
+                "vat_name": taxName,
+                "vat_number": taxNumber,
+                "lines": lines
             }
         };
 
@@ -44,6 +64,34 @@ class FreshBooks {
         if (response) {
 
         }
+    }
+
+    getTaxes() {
+        this.taxes = [];
+
+        const response = oAuthAPIClient.callResource(
+            "https://api.freshbooks.com/accounting/account/" + this.accountID + "/taxes/taxes",
+            "GET",
+            {}
+        );
+
+        if (response) {
+            const json = JSON.parse(response);
+            json.response.result.taxes.forEach(tax => {
+                let name = tax.name;
+
+                if (tax.number != null) {
+                    name += ", " + tax.number;
+                }
+
+                this.taxes.push({
+                    'name': String(name),
+                    'value': String(tax.name + "#" + tax.number)
+                });
+            });
+        }
+
+        return this.taxes;
     }
 
     getClients() {
@@ -101,8 +149,8 @@ class FreshBooks {
         formElement.logoutButton.isHidden = !this.oAuthAPIClient.hasAccessToken();
 
         return this.timeEntriesConverter.generatePreview(
-            "logo",
-            "authmessage"
+            null,
+            this.oAuthAPIClient.hasAccessToken() ? null : "authmessage"
         );
 
         // return "authcode: " + tyme.getSecureValue("auth_code") +

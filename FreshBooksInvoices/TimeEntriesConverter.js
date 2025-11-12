@@ -171,7 +171,9 @@ class TimeEntriesConverter {
         let total = 0.0;
         let str = '';
 
-        str += '![](logoPath)\n';
+        if (logoPath) {
+            str += '![](logoPath)\n';
+        }
 
         if (authMessage) {
             str += "#### <span style='color: darkred; font-size: 16px;'>" + authMessage + "</span>\n";

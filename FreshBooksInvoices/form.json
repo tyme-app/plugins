@@ -94,6 +94,14 @@
     "persist": true
   },
   {
+    "id": "taxID",
+    "type": "dropdown",
+    "name": "input.tax",
+    "valueFunction": "freshBooks.getTaxes()",
+    "valueFunctionReloadable": true,
+    "persist": true
+  },
+  {
     "id": "separator4",
     "type": "separator",
     "name": ""
