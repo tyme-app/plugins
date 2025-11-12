@@ -170,7 +170,7 @@ class FreshBooks {
 
         return this.timeEntriesConverter.generatePreview(
             null,
-            this.oAuthAPIClient.hasAccessToken() ? null : "authmessage"
+            this.oAuthAPIClient.hasAccessToken() ? null : utils.localize("not.connected.message")
         );
     }
 
