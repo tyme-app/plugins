@@ -169,7 +169,7 @@ class FreshBooks {
         formElement.logoutButton.isHidden = !this.oAuthAPIClient.hasAccessToken();
 
         return this.timeEntriesConverter.generatePreview(
-            null,
+            "plugins/FreshBooksInvoices/logo.png",
             this.oAuthAPIClient.hasAccessToken() ? null : utils.localize("not.connected.message")
         );
     }

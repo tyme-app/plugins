@@ -5,7 +5,7 @@
   "type": "export",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "freshbooks_icon.png",
+  "icon": "icon.png",
   "scriptName": "script.js",
   "scriptMain": "freshBooks.createInvoice()",
   "scriptPreview": "freshBooks.generatePreview()",

@@ -172,7 +172,7 @@ class TimeEntriesConverter {
         let str = '';
 
         if (logoPath) {
-            str += '![](logoPath)\n';
+            str += "![](" + logoPath + ")\n";
         }
 
         if (authMessage) {
