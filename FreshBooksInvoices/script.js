@@ -27,21 +27,28 @@ class FreshBooks {
         let taxValue = formValue.taxID.split("#");
         let taxName = taxValue[0];
         let taxAmount = taxValue[1];
+        let lines = [];
 
-        let lines = [
-            {
+        const data = this.timeEntriesConverter.aggregatedTimeEntryData();
+        data.forEach((entry) => {
+            const name = formValue.prefixProject ? entry.project + ": " + entry.name : entry.name;
+            const note = formValue.showNotes ? entry.note : '';
+
+            const lineItem = {
                 "type": 0,
-                "qty": 1.5,
+                "qty": this.timeEntriesConverter.roundNumber(entry.quantity, 2),
                 "unit_cost": {
-                    "amount": 123.45,
-                    "code": "EUR"
+                    "amount": entry.price,
+                    "code": tyme.currencyCode()
                 },
-                "name": "Name of Item",
-                "description": "Test Line Item",
+                "name": name.length > 255 ? (name.substring(0, 254) + "…") : name,
+                "description": note,
                 "taxName1": taxName,
                 "taxAmount1": taxAmount
-            }
-        ];
+            };
+
+            lines.push(lineItem);
+        });
 
         let now = new Date();
         let params = {
@@ -51,6 +58,8 @@ class FreshBooks {
                 "lines": lines
             }
         };
+
+        utils.log("FreshBooks createInvoice params: " + JSON.stringify(params, null, 2));
 
         const response = oAuthAPIClient.callResource(
             "https://api.freshbooks.com/accounting/account/" + this.accountID + "/invoices/invoices",

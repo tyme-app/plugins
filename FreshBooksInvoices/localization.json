@@ -1,12 +1,44 @@
 {
   "en": {
     "plugin.name": "FreshBooks Invoices",
-    "plugin.summary": "TBD.",
-    "locale.identifier": "en-US"
+    "plugin.summary": "Create Invoices from your recorded hours with the FreshBooks plugin. The integration with time tracking in Tyme allows you to automatically transfer your hours without any friction.",
+    "locale.identifier": "en-US",
+    "button.auth": "",
+    "button.logout": "",
+    "button.auth.hin": "",
+    "input.daterange": "",
+    "input.prefixProject": "",
+    "input.notes": "",
+    "input.note.times": "",
+    "input.cluster": "",
+    "input.cluster.none": "",
+    "input.cluster.dayTask": "",
+    "input.cluster.dayTaskNoSub": "",
+    "input.client": "",
+    "input.tax": "",
+    "input.unbilled": "",
+    "input.billed": "",
+    "input.nonbillable": ""
   },
   "de": {
     "plugin.name": "FreshBooks Rechnungen",
-    "plugin.summary": "TBD.",
-    "locale.identifier": "de-DE"
+    "plugin.summary": "Erstelle Rechnungen aus deinen erfassten Stunden mit dem FreshBooks-Plugin. Durch die Integration mit der Zeiterfassung in Tyme kannst du deine Stunden automatisch und reibungslos übertragen.",
+    "locale.identifier": "de-DE",
+    "button.auth": "",
+    "button.logout": "",
+    "button.auth.hin": "",
+    "input.daterange": "",
+    "input.prefixProject": "",
+    "input.notes": "",
+    "input.note.times": "",
+    "input.cluster": "",
+    "input.cluster.none": "",
+    "input.cluster.dayTask": "",
+    "input.cluster.dayTaskNoSub": "",
+    "input.client": "",
+    "input.tax": "",
+    "input.unbilled": "",
+    "input.billed": "",
+    "input.nonbillable": ""
   }
 }
