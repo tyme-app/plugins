@@ -12,12 +12,6 @@
     "actionFunction": "freshBooks.logout()"
   },
   {
-    "id": "authHint",
-    "type": "hint",
-    "name": "",
-    "value": "button.auth.hint"
-  },
-  {
     "id": "separator1",
     "type": "separator",
     "name": ""

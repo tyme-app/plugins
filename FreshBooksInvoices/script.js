@@ -2,12 +2,18 @@ class FreshBooks {
     constructor(oAuthAPIClient, timeEntriesConverter) {
         this.oAuthAPIClient = oAuthAPIClient;
         this.timeEntriesConverter = timeEntriesConverter;
-        this.accountID = null;
+        this.accountIDKey = "account_id";
         this.clients = [];
         this.getAccountID();
     }
 
     getAccountID() {
+        let accountID = tyme.getSecureValue(this.accountIDKey);
+
+        if (accountID) {
+            return accountID;
+        }
+
         const response = oAuthAPIClient.callResource(
             "https://api.freshbooks.com/auth/api/v1/users/me",
             "GET",
@@ -18,9 +24,12 @@ class FreshBooks {
             const json = JSON.parse(response);
 
             if (json.response && json.response.roles && json.response.roles.length > 0) {
-                this.accountID = json.response.roles[0].accountid;
+                accountID = json.response.roles[0].accountid;
+                tyme.setSecureValue(this.accountIDKey, accountID);
             }
         }
+
+        return accountID;
     }
 
     createInvoice() {
@@ -59,10 +68,8 @@ class FreshBooks {
             }
         };
 
-        utils.log("FreshBooks createInvoice params: " + JSON.stringify(params, null, 2));
-
         const response = oAuthAPIClient.callResource(
-            "https://api.freshbooks.com/accounting/account/" + this.accountID + "/invoices/invoices",
+            "https://api.freshbooks.com/accounting/account/" + this.getAccountID() + "/invoices/invoices",
             "POST",
             params,
         );
@@ -70,7 +77,7 @@ class FreshBooks {
         if (response) {
             const json = JSON.parse(response);
             const invoiceID = json.response.result.invoice.invoiceid;
-            const invoiceURL = "https://my.freshbooks.com/#/invoice/" + this.accountID + "-" + invoiceID;
+            const invoiceURL = "https://my.freshbooks.com/#/invoice/" + this.getAccountID() + "-" + invoiceID;
             tyme.openURL(invoiceURL);
         }
     }
@@ -78,8 +85,13 @@ class FreshBooks {
     getTaxes() {
         this.taxes = [];
 
+        this.taxes.push({
+            'name': utils.localize('input.tax.empty'),
+            'value': '#'
+        });
+
         const response = oAuthAPIClient.callResource(
-            "https://api.freshbooks.com/accounting/account/" + this.accountID + "/taxes/taxes",
+            "https://api.freshbooks.com/accounting/account/" + this.getAccountID() + "/taxes/taxes",
             "GET",
             {}
         );
@@ -129,7 +141,7 @@ class FreshBooks {
 
     getClientPage(page) {
         const response = oAuthAPIClient.callResource(
-            "https://api.freshbooks.com/accounting/account/" + this.accountID + "/users/clients",
+            "https://api.freshbooks.com/accounting/account/" + this.getAccountID() + "/users/clients",
             "GET",
             {'page': page, 'per_page': 10},
         );
@@ -154,18 +166,12 @@ class FreshBooks {
 
     generatePreview() {
         formElement.authButton.isHidden = this.oAuthAPIClient.hasAccessToken();
-        formElement.authHint.isHidden = this.oAuthAPIClient.hasAccessToken();
         formElement.logoutButton.isHidden = !this.oAuthAPIClient.hasAccessToken();
 
         return this.timeEntriesConverter.generatePreview(
             null,
             this.oAuthAPIClient.hasAccessToken() ? null : "authmessage"
         );
-
-        // return "authcode: " + tyme.getSecureValue("auth_code") +
-        //     "<br/>access: " + tyme.getSecureValue("access_token") +
-        //     "<br/>refresh: " + tyme.getSecureValue("refresh_token") +
-        //     "<br/>accountID: " + this.accountID;
     }
 
     startAuthFlow() {
@@ -175,7 +181,10 @@ class FreshBooks {
     logout() {
         this.oAuthAPIClient.logout();
         this.clients = [];
+        this.taxes = [];
+        tyme.setSecureValue(this.accountIDKey, null);
         formElement.clientID.reload();
+        formElement.taxID.reload();
     }
 }
 
