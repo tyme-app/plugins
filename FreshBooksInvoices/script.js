@@ -24,6 +24,9 @@ class FreshBooks {
     }
 
     createInvoice() {
+        let taxValue = formValue.taxID.split("#");
+        let taxName = taxValue[0];
+        let taxAmount = taxValue[1];
 
         let lines = [
             {
@@ -34,21 +37,17 @@ class FreshBooks {
                     "code": "EUR"
                 },
                 "name": "Name of Item",
-                "description": "Test Line Item"
+                "description": "Test Line Item",
+                "taxName1": taxName,
+                "taxAmount1": taxAmount
             }
         ];
-
-        let taxValue = formValue.taxID.split("#");
-        let taxName = taxValue[0];
-        let taxNumber = taxValue[1];
 
         let now = new Date();
         let params = {
             "invoice": {
                 "create_date": now.toISOString().split('T')[0],
                 "customerid": formValue.clientID,
-                "vat_name": taxName,
-                "vat_number": taxNumber,
                 "lines": lines
             }
         };
@@ -59,10 +58,11 @@ class FreshBooks {
             params,
         );
 
-        utils.log(JSON.stringify(response, null, 2));
-
         if (response) {
-
+            const json = JSON.parse(response);
+            const invoiceID = json.response.result.invoice.invoiceid;
+            const invoiceURL = "https://my.freshbooks.com/#/invoice/" + this.accountID + "-" + invoiceID;
+            tyme.openURL(invoiceURL);
         }
     }
 
@@ -86,7 +86,7 @@ class FreshBooks {
 
                 this.taxes.push({
                     'name': String(name),
-                    'value': String(tax.name + "#" + tax.number)
+                    'value': String(tax.name + "#" + tax.amount)
                 });
             });
         }
