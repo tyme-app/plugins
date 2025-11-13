@@ -152,6 +152,10 @@ class TimeEntriesConverter {
         return sortedData;
     }
 
+    roundNumber(num) {
+        return (+(Math.round(num + "e+" + this.fractionDigits) + "e-" + this.fractionDigits)).toFixed(this.fractionDigits);
+    }
+
     formatDate(dateString, timeOnly) {
         let locale = utils.localize('locale.identifier');
         if (timeOnly) {
@@ -219,7 +223,7 @@ class TimeEntriesConverter {
 
             let formattedPrice = this.formatCurrency(entry.price);
             let formattedQuantity = this.formatNumber(entry.quantity);
-            let rawSum = entry.price * entry.quantity;
+            let rawSum = this.roundNumber(entry.price) * this.roundNumber(entry.quantity);
             let formattedSum = this.formatCurrency(rawSum);
 
             total += rawSum;
