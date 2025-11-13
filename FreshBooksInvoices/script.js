@@ -81,6 +81,12 @@ class FreshBooks {
             const json = JSON.parse(response);
             const invoiceID = json.response.result.invoice.invoiceid;
             const invoiceURL = "https://my.freshbooks.com/#/invoice/" + this.getAccountID() + "-" + invoiceID;
+
+            if (formValue.markAsBilled) {
+                const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
+                tyme.setBillingState(timeEntryIDs, 1);
+            }
+
             tyme.openURL(invoiceURL);
         }
     }
