@@ -188,7 +188,7 @@ class FreshBooks {
     }
 }
 
-const timeEntriesConverter = new TimeEntriesConverter();
+const timeEntriesConverter = new TimeEntriesConverter(2);
 
 const oAuthAPIClient = new OAuthAPIClient(
     "freshbooks"

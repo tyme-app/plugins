@@ -30,8 +30,8 @@
 */
 
 class TimeEntriesConverter {
-    constructor() {
-
+    constructor(fractionDigits) {
+        this.fractionDigits = fractionDigits;
     }
 
     timeEntriesFromFormValues(useClusterOption) {
@@ -117,7 +117,7 @@ class TimeEntriesConverter {
                             data[key].note += this.formatDate(timeEntry.date, false);
                         }
 
-                        data[key].note += " (" + this.roundNumber(currentQuantity, 2) + " " + data[key].unit + ")";
+                        data[key].note += " (" + this.formatNumber(currentQuantity) + " " + data[key].unit + ")";
 
                         if (timeEntry.note.length > 0) {
                             data[key].note += "\n";
@@ -161,8 +161,24 @@ class TimeEntriesConverter {
         }
     }
 
-    roundNumber(num, places) {
-        return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
+    formatNumber(num) {
+        let locale = utils.localize('locale.identifier');
+        let nf = new Intl.NumberFormat(locale, {
+            minimumFractionDigits: this.fractionDigits,
+            maximumFractionDigits: this.fractionDigits
+        });
+
+        return nf.format(num);
+    }
+
+    formatCurrency(num) {
+        let locale = utils.localize('locale.identifier');
+        let nf = new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: tyme.currencyCode(),
+        });
+
+        return nf.format(num);
     }
 
     generatePreview(logoPath, authMessage) {
@@ -201,21 +217,22 @@ class TimeEntriesConverter {
                 name = '**' + entry.project + ':** ' + name;
             }
 
-            let price = this.roundNumber(entry.price, 2);
-            let quantity = this.roundNumber(entry.quantity, 2);
-            let sum = this.roundNumber(parseFloat(price) * parseFloat(quantity), 2);
+            let formattedPrice = this.formatCurrency(entry.price);
+            let formattedQuantity = this.formatNumber(entry.quantity);
+            let rawSum = entry.price * entry.quantity;
+            let formattedSum = this.formatCurrency(rawSum);
 
-            total += parseFloat(sum);
+            total += rawSum;
 
             str += '|' + name;
-            str += '|' + price + ' ' + tyme.currencySymbol();
-            str += '|' + quantity;
+            str += '|' + formattedPrice;
+            str += '|' + formattedQuantity;
             str += '|' + entry.unit;
-            str += '|' + this.roundNumber(sum, 2) + ' ' + tyme.currencySymbol();
+            str += '|' + formattedSum;
             str += '|\n';
         });
 
-        str += '|||||**' + this.roundNumber(total, 2) + ' ' + tyme.currencySymbol() + '**|\n';
+        str += '|||||**' + this.formatCurrency(total) + '**|\n';
         return utils.markdownToHTML(str);
     }
 }
