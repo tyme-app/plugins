@@ -1,8 +1,7 @@
 class OAuthAPIClient {
     constructor(pluginID) {
         this.pluginID = pluginID;
-        this.pluginAuthURL = "http://localhost:8888/plugins/";
-        // this.pluginAuthURL = "https://api.tyme-app.com/plugins/";
+        this.pluginAuthURL = "https://api.tyme-app.com/plugins/";
         this.authCodeKey = 'auth_code';
         this.accessTokenKey = 'access_token';
         this.refreshTokenKey = 'refresh_token';
