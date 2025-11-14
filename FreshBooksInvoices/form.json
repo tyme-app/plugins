@@ -1,0 +1,124 @@
+[
+  {
+    "id": "authButton",
+    "type": "button",
+    "name": "button.auth",
+    "actionFunction": "freshBooks.startAuthFlow()"
+  },
+  {
+    "id": "logoutButton",
+    "type": "button",
+    "name": "button.logout",
+    "actionFunction": "freshBooks.logout()"
+  },
+  {
+    "id": "separator1",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "dateRange",
+    "type": "daterange",
+    "name": "input.daterange"
+  },
+  {
+    "id": "teamMemberID",
+    "type": "teammembers",
+    "name": ""
+  },
+  {
+    "id": "taskIDs",
+    "type": "tasks",
+    "name": ""
+  },
+  {
+    "id": "prefixProject",
+    "type": "checkbox",
+    "name": "input.prefixProject",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "separator2",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "showNotes",
+    "type": "checkbox",
+    "name": "input.notes",
+    "value": "true",
+    "persist": true
+  },
+  {
+    "id": "showTimesInNotes",
+    "type": "checkbox",
+    "name": "input.note.times",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "clusterOption",
+    "type": "dropdown",
+    "name": "input.cluster",
+    "values": [
+      {
+        "0": "input.cluster.none"
+      },
+      {
+        "1": "input.cluster.dayTask"
+      },
+      {
+        "2": "input.cluster.dayTaskNoSub"
+      }
+    ],
+    "persist": true
+  },
+  {
+    "id": "separator3",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "clientID",
+    "type": "dropdown",
+    "name": "input.client",
+    "valueFunction": "freshBooks.getClients()",
+    "valueFunctionReloadable": true,
+    "persist": true
+  },
+  {
+    "id": "taxID",
+    "type": "dropdown",
+    "name": "input.tax",
+    "valueFunction": "freshBooks.getTaxes()",
+    "valueFunctionReloadable": true,
+    "persist": true
+  },
+  {
+    "id": "separator4",
+    "type": "separator",
+    "name": ""
+  },
+  {
+    "id": "onlyUnbilled",
+    "type": "checkbox",
+    "name": "input.unbilled",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "markAsBilled",
+    "type": "checkbox",
+    "name": "input.billed",
+    "value": "false",
+    "persist": true
+  },
+  {
+    "id": "includeNonBillable",
+    "type": "checkbox",
+    "name": "input.nonbillable",
+    "value": "false",
+    "persist": true
+  }
+]

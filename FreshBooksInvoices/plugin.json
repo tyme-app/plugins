@@ -1,0 +1,20 @@
+{
+  "id": "freshbooks_invoices",
+  "tymeMinVersion": "2025.11",
+  "version": "1.0",
+  "type": "export",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "freshBooks.createInvoice()",
+  "scriptPreview": "freshBooks.generatePreview()",
+  "scriptDependencies": [
+    "TimeEntriesConverter.js",
+    "OAuthAPIClient.js"
+  ],
+  "formName": "form.json",
+  "localizationName": "localization.json",
+  "internalType": "plugin_6",
+  "internalLink": "https://www.freshbooks.com"
+}

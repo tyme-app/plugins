@@ -21,14 +21,14 @@ Please [let us know](https://www.tyme-app.com/en/contact/) of your plugin or fil
 
 A plugin consists of at least these components:
 
-### plugin.json
+### 1. plugin.json
 
 This file defines the type, version, compatibility and entry point for the plugin:
 
 ```javascript
 {
   "id": "unique_id_of_your_plugin",
-  "tymeMinVersion": "2024.1", // the minimum compatible version of Tyme for this plugin
+  "tymeMinVersion": "2025.12", // the minimum compatible version of Tyme for this plugin
   "version": "1.0",
   "type": "[export|import]",
   "author": "John Doe",
@@ -37,17 +37,23 @@ This file defines the type, version, compatibility and entry point for the plugi
   "scriptName": "script.js",
   "scriptMain": "createInvoice()", // the method to call when exporting
   "scriptPreview": "generatePreview()", // the method to call when generating a preview (HTML is expected in return), only export plugins
+  "scriptDependencies": ["library.js"], // optional, useful to split your code into separate files (introduced in Tyme 2025.12)
   "formName": "form.json",
   "localizationName": "localization.json"
 }
+
+// 2025.12: 'scriptDependencies' property added
+
+// Please set the tymeMinVersion to 2025.12 if you plan to use the above features.
+
 ```
 
-### Plugin JavaScript File
+### 2. Plugin JavaScript File
 
 This is where your logic resides in. Note that you can not use browser specific calls.
 See **Scripting with JavaScript** below for more details.
 
-### Plugin Form
+### 3. Plugin Form
 
 If your plugin needs options the user can choose from. This is the place to define them.
 
@@ -88,7 +94,7 @@ Values of all form elements are available in your script in the global variable 
 formValue.someUniqueID;
  ```
 
-You can update properties of a rendered form element:
+You can also update properties of a form element:
 
 ```javascript
 class FormElement {
@@ -98,7 +104,7 @@ class FormElement {
 }
  ```
 
-All form element can be accessed via the **formElement** property:
+All form elements can be accessed via the **formElement** property:
 
 ```javascript
 // update a form element
@@ -116,7 +122,7 @@ billableCheckboxClicked() {
 }
  ```
 
-Using the property **persist** you can define, if the users entered values should be remembered next time the form is opened.
+Using the property **persist** you can define if the users entered values should be remembered next time the form is opened.
 For example you can use **persist: true** to save an API token. Values from the securetext are saved in the users local keychain, all other values are saved in a plain text document.
 
 The property **valueFunction** is a special property. Tyme will call the method defined by the value function and
@@ -135,7 +141,7 @@ getClients()
  ```
 
 
-### Localization File
+### 4. Localization File
 
 Translation file. Current supported languages are German and English.
 
