@@ -1,3 +1,3 @@
 # Freshbooks Invoices
 
-[Freshbooks API](https://developers.lexware.io/partner/docs/)
+[Freshbooks API](https://www.freshbooks.com/api)
