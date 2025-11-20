@@ -68,6 +68,7 @@ class TimeEntriesConverter {
                             'name': '',
                             'quantity': 0.0,
                             'unit': '',
+                            'type': timeEntry.type,
                             'price': parseFloat(timeEntry.rate),
                             'note': ''
                         };

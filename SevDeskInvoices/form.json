@@ -18,14 +18,9 @@
     "name": ""
   },
   {
-    "id": "startDate",
-    "type": "date",
-    "name": "input.startdate"
-  },
-  {
-    "id": "endDate",
-    "type": "date",
-    "name": "input.enddate"
+    "id": "dateRange",
+    "type": "daterange",
+    "name": "input.daterange"
   },
   {
     "id": "teamMemberID",

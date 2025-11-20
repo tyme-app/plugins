@@ -1,14 +1,17 @@
 {
   "id": "sevdesk_invoices",
-  "tymeMinVersion": "2024.21",
-  "version": "3.2",
+  "tymeMinVersion": "2025.12",
+  "version": "3.3",
   "type": "export",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
   "icon": "sevdesk_icon.png",
   "scriptName": "script.js",
   "scriptMain": "sevdeskResolver.createNewInvoice()",
-  "scriptPreview": "timeEntriesConverter.generatePreview()",
+  "scriptPreview": "sevdeskResolver.generatePreview()",
+  "scriptDependencies": [
+    "TimeEntriesConverter.js"
+  ],
   "formName": "form.json",
   "localizationName": "localization.json",
   "internalType": "plugin_2",
