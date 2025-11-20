@@ -1,7 +1,7 @@
 {
   "id": "lexoffice_invoices",
-  "tymeMinVersion": "2024.21",
-  "version": "3.3",
+  "tymeMinVersion": "2025.12",
+  "version": "3.4",
   "type": "export",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
@@ -9,6 +9,9 @@
   "scriptName": "script.js",
   "scriptMain": "lexOfficeResolver.createInvoice()",
   "scriptPreview": "lexOfficeResolver.generatePreview()",
+  "scriptDependencies": [
+    "TimeEntriesConverter.js"
+  ],
   "formName": "form.json",
   "localizationName": "localization.json",
   "internalType": "plugin_1",
