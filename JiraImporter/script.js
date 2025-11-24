@@ -273,7 +273,7 @@ class JiraApiClient {
    */
   get fieldsToFetch() {
     // Base fields
-    const fields = ['key', 'summary', 'project'];
+    const fields = ['key', 'summary', 'project', 'status'];
 
     // Add user selected fields, if selected
     if (Form.startDateField) {

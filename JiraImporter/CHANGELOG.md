@@ -1,3 +1,7 @@
+# 1.4
+
+- Fixed an issue that prevented closed work items from being marked as completed.
+
 # 1.3
 
 - Switched to new Jira API endpoint.
