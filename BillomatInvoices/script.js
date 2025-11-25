@@ -1,182 +1,3 @@
-class TimeEntriesConverter {
-    constructor() {
-
-    }
-
-    timeEntriesFromFormValues(useClusterOption) {
-        return tyme.timeEntries(
-            formValue.startDate,
-            formValue.endDate,
-            formValue.taskIDs,
-            null,
-            formValue.onlyUnbilled ? 0 : null,
-            formValue.includeNonBillable ? null : true,
-            formValue.teamMemberID,
-            useClusterOption ? formValue.clusterOption : null
-        ).filter(function (timeEntry) {
-            return parseFloat(timeEntry.sum) > 0;
-        })
-    }
-
-    timeEntryIDs() {
-        return this.timeEntriesFromFormValues(false)
-            .map(function (entry) {
-                return entry.id;
-            });
-    }
-
-    aggregatedTimeEntryData() {
-        let data =
-            this.timeEntriesFromFormValues(true)
-                .reduce(function (data, timeEntry) {
-                    const key = timeEntry.task_id + timeEntry.subtask_id;
-
-                    if (data[key] == null) {
-                        let entry = {
-                            'project': '',
-                            'name': '',
-                            'quantity': 0.0,
-                            'unit': '',
-                            'price': parseFloat(timeEntry.rate),
-                            'note': '',
-                            'sum': 0.0
-                        };
-
-                        // unit: Stk=1, Std=9, km=10
-
-                        if (timeEntry.type === 'timed') {
-                            entry.unit = utils.localize('unit.hours')
-                        } else if (timeEntry.type === 'mileage') {
-                            entry.unit = utils.localize('unit.kilometer')
-                        } else if (timeEntry.type === 'fixed') {
-                            entry.unit = utils.localize('unit.quantity')
-                        }
-
-                        entry.project = timeEntry.project;
-                        entry.name = timeEntry.task;
-
-                        if (timeEntry.subtask.length > 0) {
-                            entry.name += ': ' + timeEntry.subtask
-                        }
-
-                        data[key] = entry;
-                    }
-
-                    let currentQuantity = 0;
-
-                    if (timeEntry.type === 'timed') {
-                        currentQuantity = parseFloat(timeEntry.duration) / 60.0
-                        data[key].quantity += currentQuantity;
-                    } else if (timeEntry.type === 'mileage') {
-                        currentQuantity = parseFloat(timeEntry.distance)
-                        data[key].quantity += currentQuantity;
-                    } else if (timeEntry.type === 'fixed') {
-                        currentQuantity = parseFloat(timeEntry.quantity)
-                        data[key].quantity += currentQuantity;
-                    }
-
-                    data[key].sum += timeEntry.sum;
-
-                    if (formValue.showTimesInNotes && timeEntry.type !== "fixed") {
-
-                        if (data[key].note.length > 0) {
-                            data[key].note += '<br/>';
-                        }
-
-                        if (timeEntry.hasOwnProperty("start") && timeEntry.hasOwnProperty("end")) {
-                            data[key].note += this.formatDate(timeEntry.start, false) + " ";
-                            data[key].note += this.formatDate(timeEntry.start, true) + " - ";
-                            data[key].note += this.formatDate(timeEntry.end, true);
-                        } else if (timeEntry.hasOwnProperty("date")) {
-                            data[key].note += this.formatDate(timeEntry.date, false);
-                        }
-
-                        data[key].note += " (" + this.roundNumber(currentQuantity, 2) + " " + data[key].unit + ")";
-
-                        if (timeEntry.note.length > 0) {
-                            data[key].note += "<br/>";
-                            data[key].note += timeEntry.note;
-                        }
-
-                    } else if (timeEntry.note.length > 0) {
-                        if (data[key].note.length > 0) {
-                            data[key].note += '<br/>';
-                        }
-                        data[key].note += timeEntry.note;
-                    }
-
-                    return data;
-
-                }.bind(this), {});
-
-        return Object.keys(data)
-            .map(function (key) {
-                return data[key];
-            })
-            .sort(function (a, b) {
-                return a.name > b.name;
-            });
-    }
-
-    formatDate(dateString, timeOnly) {
-        let locale = utils.localize('locale.identifier');
-        if (timeOnly) {
-            return (new Date(dateString)).toLocaleTimeString(locale, {hour: '2-digit', minute: '2-digit'});
-        } else {
-            return (new Date(dateString)).toLocaleDateString(locale);
-        }
-    }
-
-    roundNumber(num, places) {
-        return (+(Math.round(num + "e+" + places) + "e-" + places)).toFixed(places);
-    }
-
-    generatePreview() {
-        const data = this.aggregatedTimeEntryData()
-        const total = data.reduce(function (sum, timeEntry) {
-            sum += timeEntry.sum;
-            return sum;
-        }, 0.0);
-
-        let str = '';
-        str += '![](plugins/BillomatInvoices/billomat_logo.png)\n';
-        str += '## ' + utils.localize('invoice.header') + '\n';
-
-        str += '|' + utils.localize('invoice.position');
-        str += '|' + utils.localize('invoice.price');
-        str += '|' + utils.localize('invoice.quantity');
-        str += '|' + utils.localize('invoice.unit');
-        str += '|' + utils.localize('invoice.net');
-        str += '|\n';
-
-        str += '|-|-:|-:|-|-:|\n';
-
-        data.forEach((entry) => {
-
-            var name = entry.name;
-
-            if (formValue.showNotes) {
-                name = '**' + entry.name + '**';
-                name += '<br/>' + entry.note.replace(/\n/g, '<br/>');
-            }
-
-            if (formValue.prefixProject) {
-                name = '**' + entry.project + ':** ' + name;
-            }
-
-            str += '|' + name;
-            str += '|' + entry.price.toFixed(2) + ' ' + tyme.currencySymbol();
-            str += '|' + entry.quantity.toFixed(2);
-            str += '|' + entry.unit;
-            str += '|' + entry.sum.toFixed(2) + ' ' + tyme.currencySymbol();
-            str += '|\n';
-        });
-
-        str += '|||||**' + total.toFixed(2) + ' ' + tyme.currencySymbol() + '**|\n';
-        return utils.markdownToHTML(str);
-    }
-}
-
 class BillomatResolver {
     constructor(billomatID, apiKey, timeEntriesConverter) {
         this.apiKey = apiKey;
@@ -236,6 +57,13 @@ class BillomatResolver {
         }
     }
 
+    generatePreview() {
+        return this.timeEntriesConverter.generatePreview(
+            "plugins/BillomatInvoices/billomat_logo.png",
+            null
+        );
+    }
+
     createNewInvoice() {
         const invoiceID = this.makeCreateInvoiceCall();
 
@@ -273,7 +101,7 @@ class BillomatResolver {
             "invoice": {
                 "client_id": clientID,
                 "supply_date_type": "SUPPLY_TEXT",
-                "supply_date": formValue.startDate.toLocaleDateString() + " - " + formValue.endDate.toLocaleDateString(),
+                "supply_date": formValue.dateRange[0].toLocaleDateString() + " - " + formValue.dateRange[1].toLocaleDateString(),
                 "net_gross": "NET",
                 "invoice-items": invoiceItems
             }
@@ -294,5 +122,5 @@ class BillomatResolver {
     }
 }
 
-const timeEntriesConverter = new TimeEntriesConverter();
+const timeEntriesConverter = new TimeEntriesConverter(2);
 const billomatResolver = new BillomatResolver(formValue.billomatID, formValue.apiKey, timeEntriesConverter);
