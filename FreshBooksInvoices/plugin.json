@@ -1,7 +1,7 @@
 {
   "id": "freshbooks_invoices",
   "tymeMinVersion": "2025.11",
-  "version": "1.0",
+  "version": "1.1",
   "type": "export",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",

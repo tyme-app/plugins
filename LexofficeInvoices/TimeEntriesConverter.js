@@ -229,7 +229,7 @@ class TimeEntriesConverter {
 
             total += rawSum;
 
-            str += '|' + name;
+            str += '|' + name.replace(/\|/g, '\\|');
             str += '|' + formattedPrice;
             str += '|' + formattedQuantity;
             str += '|' + entry.unit;
