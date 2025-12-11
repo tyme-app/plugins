@@ -156,9 +156,9 @@ class SevDeskResolver {
 
             if (entry.type === 'timed') {
                 entry.unitID = 9;
-            } else if (timeEntry.type === 'mileage') {
+            } else if (entry.type === 'mileage') {
                 entry.unitID = 10;
-            } else if (timeEntry.type === 'fixed') {
+            } else if (entry.type === 'fixed') {
                 entry.unitID = 1;
             }
 
