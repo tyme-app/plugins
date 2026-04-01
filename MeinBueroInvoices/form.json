@@ -3,7 +3,7 @@
     "id": "authButton",
     "type": "button",
     "name": "button.auth",
-    "actionFunction": "meinBuero.startAuthFlow()"
+    "actionFunction": "meinBuero.login()"
   },
   {
     "id": "logoutButton",
@@ -76,27 +76,6 @@
   },
   {
     "id": "separator3",
-    "type": "separator",
-    "name": ""
-  },
-  {
-    "id": "clientID",
-    "type": "dropdown",
-    "name": "input.client",
-    "valueFunction": "meinBuero.getClients()",
-    "valueFunctionReloadable": true,
-    "persist": true
-  },
-  {
-    "id": "taxID",
-    "type": "dropdown",
-    "name": "input.tax",
-    "valueFunction": "meinBuero.getTaxes()",
-    "valueFunctionReloadable": true,
-    "persist": true
-  },
-  {
-    "id": "separator4",
     "type": "separator",
     "name": ""
   },

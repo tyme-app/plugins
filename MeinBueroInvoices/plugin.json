@@ -11,7 +11,7 @@
   "scriptPreview": "meinBuero.generatePreview()",
   "scriptDependencies": [
     "TimeEntriesConverter.js",
-    "OAuthAPIClient.js"
+    "APIClient.js"
   ],
   "formName": "form.json",
   "localizationName": "localization.json",
