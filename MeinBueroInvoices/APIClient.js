@@ -2,16 +2,9 @@ class APIClient {
     constructor(pluginID) {
         this.pluginID = pluginID;
         this.pluginAuthURL = "https://staging.tyme-app.com/plugins/";
+        this.meinBueroAPIURL = "https://api.meinbuero.de/openapi/";
         this.authCodeKey = 'auth_code';
         this.accessTokenKey = 'access_token';
-
-        utils.log(this.pluginID);
-        utils.log(tyme.getSecureValue(this.authCodeKey));
-        utils.log(tyme.getSecureValue(this.accessTokenKey));
-
-        if(this.hasAuthCode() && !this.hasAccessToken()) {
-            this.fetchTokensFromCode();
-        }
     }
 
     hasAuthCode() {
@@ -61,5 +54,21 @@ class APIClient {
                 return null;
             }
         }
+
+        const response = utils.request(
+            this.meinBueroAPIURL + url,
+            method,
+            {
+                "Authorization": "Bearer " + tyme.getSecureValue(this.accessTokenKey)
+            },
+            params
+        );
+
+        if (response['statusCode'] === 401) {
+            this.logout();
+            return null;
+        }
+
+        return response['result'];
     }
 }

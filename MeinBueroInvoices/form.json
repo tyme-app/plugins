@@ -80,6 +80,19 @@
     "name": ""
   },
   {
+    "id": "customerID",
+    "type": "dropdown",
+    "name": "input.customer",
+    "valueFunction": "meinBuero.getCustomers()",
+    "valueFunctionReloadable": true,
+    "persist": true
+  },
+  {
+    "id": "separator4",
+    "type": "separator",
+    "name": ""
+  },
+  {
     "id": "onlyUnbilled",
     "type": "checkbox",
     "name": "input.unbilled",
