@@ -17,7 +17,8 @@ class APIClient {
 
     startAuthFlow() {
         this.logout();
-        tyme.openURL("https://app.meinbuero.de/apps/edit/69c280f77b39d64a2d14d824/1");
+        const url = this.pluginAuthURL + 'auth_start/' + this.pluginID;
+        tyme.openURL(url);
     }
 
     fetchTokensFromCode() {
