@@ -34,14 +34,11 @@ class MeinBuero {
             {'offset': offset, 'limit': limit},
         );
 
-        utils.log("offset " + offset + " limit: " + limit);
-
         if (response) {
             const json = JSON.parse(response);
             const totalCount = json.meta.totalCount;
 
             json.data.forEach(customer => {
-                utils.log(JSON.stringify(customer));
                 this.customers.push({
                     'name': String(customer.name),
                     'value': String(customer.id)
