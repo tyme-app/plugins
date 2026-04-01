@@ -1,0 +1,20 @@
+{
+  "id": "mein_buero_invoices",
+  "tymeMinVersion": "2026.3",
+  "version": "1.0",
+  "type": "export",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "meinBuero.createInvoice()",
+  "scriptPreview": "meinBuero.generatePreview()",
+  "scriptDependencies": [
+    "TimeEntriesConverter.js",
+    "OAuthAPIClient.js"
+  ],
+  "formName": "form.json",
+  "localizationName": "localization.json",
+  "internalType": "plugin_4",
+  "internalLink": "https://www.meinbuero.de"
+}
