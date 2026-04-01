@@ -88,6 +88,23 @@
     "persist": true
   },
   {
+    "id": "taxRate",
+    "type": "dropdown",
+    "name": "input.taxrate",
+    "values": [
+      {
+        "19": "19%"
+      },
+      {
+        "7": "7%"
+      },
+      {
+        "0": "0%"
+      }
+    ],
+    "persist": true
+  },
+  {
     "id": "separator4",
     "type": "separator",
     "name": ""

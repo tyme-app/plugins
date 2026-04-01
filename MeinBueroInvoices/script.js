@@ -48,7 +48,58 @@ class MeinBuero {
     }
 
     createInvoice() {
+        const data = this.timeEntriesConverter.aggregatedTimeEntryData();
+        const taxRate = Number(formValue.taxRate);
+        const taxPercentage = 1.0 + taxRate / 100.0;
+        let positions = [];
 
+        data.forEach((entry) => {
+            const name = formValue.prefixProject ? entry.project + ": " + entry.name : entry.name;
+            const note = formValue.showNotes ? entry.note : '';
+            const priceNet = Number(entry.price.toFixed(2));
+            const priceGross = Number((entry.price * taxPercentage).toFixed(2));
+
+            const position = {
+                "discountPercent": 0,
+                "amount": entry.quantity,
+                "priceNet": priceNet,
+                "priceGross": priceGross,
+                "vatPercent": taxRate,
+                "unit": entry.unit,
+                "title": name.length > 255 ? (name.substring(0, 254) + "…") : name,
+                "description": note,
+                "showDescription": formValue.showNotes,
+                "metaData": {
+                    "type": "custom",
+                }
+            };
+
+            positions.push(position);
+        });
+
+        let params = {
+            "customerId": formValue.customerID,
+            "positions": positions
+        };
+
+        utils.log(JSON.stringify(params));
+
+        const response = this.apiClient.callResource("order", "POST", params);
+
+        utils.log(JSON.stringify(response));
+
+        if (response) {
+            const json = JSON.parse(response);
+            const orderID = json.data.id;
+
+            if (formValue.markAsBilled) {
+                const timeEntryIDs = this.timeEntriesConverter.timeEntryIDs();
+                tyme.setBillingState(timeEntryIDs, 1);
+            }
+
+            const orderURL = "https://app.meinbuero.de/orders/" + orderID;
+            tyme.openURL(orderURL);
+        }
     }
 
     generatePreview() {

@@ -1,7 +1,7 @@
 class APIClient {
     constructor(pluginID) {
         this.pluginID = pluginID;
-        this.pluginAuthURL = "https://staging.tyme-app.com/plugins/";
+        this.pluginAuthURL = "https://api.tyme-app.com/plugins/";
         this.meinBueroAPIURL = "https://api.meinbuero.de/openapi/";
         this.authCodeKey = 'auth_code';
         this.accessTokenKey = 'access_token';
