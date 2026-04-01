@@ -104,7 +104,7 @@ class MeinBuero {
 
     generatePreview() {
         return this.timeEntriesConverter.generatePreview(
-            null,
+            "plugins/MeinBueroInvoices/icon.png",
             this.apiClient.hasAccessToken() ? null : utils.localize("not.connected.message")
         );
     }
