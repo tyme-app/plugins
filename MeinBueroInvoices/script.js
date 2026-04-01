@@ -17,6 +17,13 @@ class MeinBuero {
             this.getCustomerPage(i * limit, limit);
         }
 
+        if (this.customers.length === 0) {
+            this.customers.push({
+                'name': utils.localize('input.customer.empty'),
+                'value': ''
+            });
+        }
+
         return this.customers;
     }
 
@@ -82,11 +89,7 @@ class MeinBuero {
             "positions": positions
         };
 
-        utils.log(JSON.stringify(params));
-
         const response = this.apiClient.callResource("order", "POST", params);
-
-        utils.log(JSON.stringify(response));
 
         if (response) {
             const json = JSON.parse(response);
