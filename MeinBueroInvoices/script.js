@@ -71,7 +71,7 @@ class MeinBuero {
                 "vatPercent": taxRate,
                 "unit": entry.unit,
                 "title": name.length > 255 ? (name.substring(0, 254) + "…") : name,
-                "description": note,
+                "description": note.replace(/\n/g, '</br>'),
                 "showDescription": formValue.showNotes,
                 "metaData": {
                     "type": "custom",
