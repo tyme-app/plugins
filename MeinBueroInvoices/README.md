@@ -1,3 +1,3 @@
-# WISO Mein Büro Invoices
+# WISO MeinBüro Invoices
 
-[WISO Mein Büro API](https://api.meinbuero.de/openapi/documentation/)
+[WISO MeinBüro API](https://api.meinbuero.de/openapi/documentation/)
