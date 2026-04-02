@@ -29,7 +29,8 @@
     "invoice.price": "Price",
     "invoice.quantity": "Quantity",
     "invoice.unit": "Unit",
-    "invoice.net": "Net"
+    "invoice.net": "Net",
+    "account.inactive": "This account is not active."
   },
   "de": {
     "plugin.name": "FreshBooks Rechnungen",
@@ -61,6 +62,7 @@
     "invoice.price": "Preis",
     "invoice.quantity": "Anzahl",
     "invoice.unit": "Einheit",
-    "invoice.net": "Netto"
+    "invoice.net": "Netto",
+    "account.inactive": "Dieser Account ist nicht aktiv."
   }
 }

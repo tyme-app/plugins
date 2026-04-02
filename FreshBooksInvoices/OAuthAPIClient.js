@@ -89,6 +89,11 @@ class OAuthAPIClient {
             params
         );
 
+        if (response['statusCode'] === 402) {
+            tyme.showAlert("FreshBooks", utils.localize("account.inactive"));
+            return null;
+        }
+
         if (response['statusCode'] === 401 && this.hasRefreshToken()) {
             if (this.refreshTokens()) {
                 return this.callResource(url, method, params);
