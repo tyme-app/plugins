@@ -140,7 +140,7 @@ class FreshBooks {
 
         if (this.clients.length === 0) {
             this.clients.push({
-                'name': utils.localize('input.clients.empty'),
+                'name': utils.localize('input.client.empty'),
                 'value': ''
             });
         }
@@ -195,9 +195,5 @@ class FreshBooks {
 }
 
 const timeEntriesConverter = new TimeEntriesConverter(2);
-
-const oAuthAPIClient = new OAuthAPIClient(
-    "freshbooks"
-);
-
+const oAuthAPIClient = new OAuthAPIClient("freshbooks_invoices");
 const freshBooks = new FreshBooks(oAuthAPIClient, timeEntriesConverter);
