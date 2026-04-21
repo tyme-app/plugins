@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "Billomat Invoices",
+    "plugin.name": "Billomat - Invoices",
     "plugin.summary": "With the Billomat plugin, you can create invoices from the hours recorded in the successful accounting software. The integration with time tracking in Tyme allows you to automatically transfer these hours to Billomat. This way, you can optimize your billing process.",
     "locale.identifier": "en-US",
     "input.key": "API Token",
@@ -33,7 +33,7 @@
     "invoice.net": "Net"
   },
   "de": {
-    "plugin.name": "Billomat Rechnungen",
+    "plugin.name": "Billomat - Rechnungen",
     "plugin.summary": "Mit dem Billomat Plugin erstellst du Rechnungen aus deinen mit Tyme erfassten Stunden in der erfolgreichen Buchhaltungssoftware. Die Integration mit Zeiterfassung in Tyme ermöglicht es dir, diese Stunden automatisch in Billomat zu übertragen. So behältst du den Überblick und optimierst deinen Abrechnungsprozess.",
     "locale.identifier": "de-DE",
     "input.key": "API Token",

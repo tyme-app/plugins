@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "WISO MeinBüro Invoices",
+    "plugin.name": "WISO MeinBüro - Invoices",
     "plugin.summary": "Create Invoices from your recorded hours with the WISO MeinBüro plugin. The integration with time tracking in Tyme allows you to automatically transfer your hours without any friction.",
     "locale.identifier": "en-US",
     "not.connected.message": "Tyme is not connected to WISO MeinBüro. Please connect first.",
@@ -31,7 +31,7 @@
     "invoice.net": "Net"
   },
   "de": {
-    "plugin.name": "WISO MeinBüro Rechnungen",
+    "plugin.name": "WISO MeinBüro - Rechnungen",
     "plugin.summary": "Erstelle Rechnungen aus deinen erfassten Stunden mit dem WISO MeinBüro-Plugin. Durch die Integration mit der Zeiterfassung in Tyme kannst du deine Stunden automatisch und reibungslos übertragen.",
     "locale.identifier": "de-DE",
     "not.connected.message": "Tyme ist nicht mit WISO MeinBüro verbunden. Bitte stelle zuerst eine Verbindung her.",

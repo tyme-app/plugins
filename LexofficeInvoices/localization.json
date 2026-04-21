@@ -1,6 +1,6 @@
 {
   "en": {
-    "plugin.name": "Lexware Office Invoices",
+    "plugin.name": "Lexware Office - Invoices",
     "plugin.summary": "With the Lexware Office Plugin, you can create invoices from your recorded hours in the top accounting software for taxes and finances. The partnership with time tracking in Tyme enables seamless integration. This simplifies invoicing and optimizes your billing process.",
     "locale.identifier": "en-US",
     "api.invoice.error.title": "Could not create invoice",
@@ -45,7 +45,7 @@
     "taxtype.thirdPartyCountryDelivery": "Export deliveries to third countries"
   },
   "de": {
-    "plugin.name": "Lexware Office Rechnungen",
+    "plugin.name": "Lexware Office - Rechnungen",
     "plugin.summary": "Mit dem Lexware Office Plugin erstellst du Rechnungen aus deinen erfassten Stunden in der Top Buchhaltungssoftware für Steuern & Finanzen. Die Partnerschaft mit Zeiterfassung in Tyme ermöglicht eine nahtlose Integration. Dies vereinfacht die Rechnungserstellung und optimiert deinen Abrechnungsprozess",
     "locale.identifier": "de-DE",
     "api.invoice.error.title": "Die Rechnung konnte nicht erstellt werden",
