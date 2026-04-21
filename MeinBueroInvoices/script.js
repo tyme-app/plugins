@@ -97,8 +97,16 @@ class MeinBuero {
                 tyme.setBillingState(timeEntryIDs, 1);
             }
 
-            const orderURL = "https://app.meinbuero.de/orders/" + orderID;
-            tyme.openURL(orderURL);
+            const invoiceResponse = this.apiClient.callResource("order/" + orderID + "/invoice", "POST", params);
+            if (invoiceResponse) {
+                const invoiceJson = JSON.parse(invoiceResponse);
+                const invoiceID = invoiceJson.data.invoice.file.invoiceId;
+                tyme.openURL("https://app.meinbuero.de/invoices/" + invoiceID);
+            } else {
+                tyme.showAlert('WISO MeinBüro API Error', JSON.stringify(response));
+            }
+        } else {
+            tyme.showAlert('WISO MeinBüro API Error', JSON.stringify(response));
         }
     }
 
