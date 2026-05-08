@@ -182,6 +182,10 @@ class ClockodoImporter {
                 proj.note = project['note'];
             }
 
+            if (project['hourly_rate']) {
+                proj.defaultHourlyRate = project['hourly_rate'];
+            }
+
             // budget_is_hours == true means budget_money stores an hours value
             if (project['budget_is_hours'] && project['budget_money']) {
                 proj.plannedDuration = project['budget_money'] * 3600;
@@ -259,6 +263,10 @@ class ClockodoImporter {
                 parentTask.project = tymeProj;
                 if (tymeProj.isCompleted) {
                     parentTask.isCompleted = true;
+                }
+
+                if (entry['hourly_rate']) {
+                    parentTask.hourlyRate = entry['hourly_rate'];
                 }
             }
 
