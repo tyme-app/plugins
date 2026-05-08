@@ -1,0 +1,22 @@
+[
+  {
+    "id": "harvestToken",
+    "type": "securetext",
+    "name": "input.token",
+    "placeholder": "input.token.placeholder",
+    "persist": true
+  },
+  {
+    "id": "harvestAccountId",
+    "type": "text",
+    "name": "input.account_id",
+    "placeholder": "input.account_id.placeholder",
+    "persist": true
+  },
+  {
+    "id": "harvestHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.hint"
+  }
+]

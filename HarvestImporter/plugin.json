@@ -1,0 +1,14 @@
+{
+  "id": "harvest_importer",
+  "tymeMinVersion": "2026.1",
+  "version": "1.0",
+  "type": "import",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.tyme-app.com",
+  "icon": "harvest_icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "importer.start()",
+  "scriptPreview": "",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}

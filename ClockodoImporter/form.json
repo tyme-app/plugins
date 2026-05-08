@@ -1,0 +1,22 @@
+[
+  {
+    "id": "clockodoEmail",
+    "type": "text",
+    "name": "input.email",
+    "placeholder": "input.email.placeholder",
+    "persist": true
+  },
+  {
+    "id": "clockodoApiKey",
+    "type": "securetext",
+    "name": "input.api_key",
+    "placeholder": "input.api_key.placeholder",
+    "persist": true
+  },
+  {
+    "id": "clockodoHint",
+    "type": "hint",
+    "name": "",
+    "value": "input.hint"
+  }
+]
