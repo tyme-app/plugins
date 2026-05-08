@@ -212,13 +212,13 @@ class ClockodoImporter {
             }
 
             // Skip running (unclosed) entries
-            if (!entry['timeUntil']) {
+            if (!entry['time_until']) {
                 continue;
             }
 
-            var entryProjectsId = entry['projectsId'];
-            var entryServicesId = entry['servicesId'];
-            var entryCustomersId = entry['customersId'];
+            var entryProjectsId = entry['projects_id'];
+            var entryServicesId = entry['services_id'];
+            var entryCustomersId = entry['customers_id'];
 
             // Build a stable task ID scoped to the project (or the customer when no project)
             var taskTymeId;
@@ -265,12 +265,12 @@ class ClockodoImporter {
             var entryTymeId = prefix + entry['id'];
             var tymeEntry = TimeEntry.fromID(entryTymeId) ?? TimeEntry.create(entryTymeId);
             tymeEntry.note = entry['text'] || '';
-            tymeEntry.timeStart = Date.parse(entry['timeSince']);
-            tymeEntry.timeEnd = Date.parse(entry['timeUntil']);
+            tymeEntry.timeStart = Date.parse(entry['time_since']);
+            tymeEntry.timeEnd = Date.parse(entry['time_until']);
             tymeEntry.parentTask = parentTask;
 
-            if (entry['usersId']) {
-                var clockodoUser = this.users[entry['usersId']];
+            if (entry['users_id']) {
+                var clockodoUser = this.users[entry['users_id']];
                 if (clockodoUser && clockodoUser['email']) {
                     var tymeUserId = tyme.userIDForEmail(clockodoUser['email']);
                     if (tymeUserId) {
