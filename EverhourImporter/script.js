@@ -142,10 +142,20 @@ class EverhourImporter {
             var proj = Project.fromID(projTymeId) ?? Project.create(projTymeId);
             proj.name = project['name'];
 
-            var billing = project['billing'];
-            if (billing && billing['type'] === 'project-rate' && billing['rate']) {
+            var rate = project['rate'];
+            if (rate && rate['rate']) {
                 // Everhour stores rates in cents
-                proj.defaultHourlyRate = billing['rate'] / 100;
+                proj.defaultHourlyRate = rate['rate'] / 100;
+            }
+
+            var budget = project['budget'];
+            if (budget && budget['budget']) {
+                if (budget['type'] === 'time') {
+                    proj.plannedDuration = budget['budget'];
+                } else if (budget['type'] === 'money' && rate && rate['rate']) {
+                    // Convert money budget to hours using the project rate, both in cents
+                    proj.plannedDuration = (budget['budget'] / rate['rate']) * 3600;
+                }
             }
 
             if (project['client']) {
@@ -177,7 +187,7 @@ class EverhourImporter {
                     tymeTask.isCompleted = true;
                 }
             }
-            
+
             if (task['estimate'] && task['estimate']['total']) {
                 tymeTask.plannedDuration = task['estimate']['total'];
             }
