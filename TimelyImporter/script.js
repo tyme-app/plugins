@@ -84,17 +84,18 @@ class TimelyCSVImporter {
 
     detectColumns(headers) {
         return {
-            date:       this.findColumn(headers, ['hour date', 'date', 'day']),
-            timestamps: this.findColumn(headers, ['hour timestamps', 'timestamps', 'time range']),
-            startTime:  this.findColumn(headers, ['start time', 'start']),
-            endTime:    this.findColumn(headers, ['end time', 'end']),
-            duration:   this.findColumn(headers, ['logged hours', 'duration', 'hours']),
-            note:       this.findColumn(headers, ['hour note', 'note', 'description', 'notes']),
-            billed:     this.findColumn(headers, ['billed status', 'billable', 'billed']),
-            project:    this.findColumn(headers, ['project name', 'project']),
-            client:     this.findColumn(headers, ['client name', 'client']),
-            userEmail:  this.findColumn(headers, ['user email', 'email']),
-            userName:   this.findColumn(headers, ['user name', 'user'])
+            date:         this.findColumn(headers, ['hour date', 'date', 'day']),
+            timestamps:   this.findColumn(headers, ['hour timestamps', 'timestamps', 'time range']),
+            startTime:    this.findColumn(headers, ['start time', 'start']),
+            endTime:      this.findColumn(headers, ['end time', 'end']),
+            duration:     this.findColumn(headers, ['logged hours', 'duration', 'hours']),
+            plannedHours: this.findColumn(headers, ['planned hours', 'planned']),
+            loggedMoney:  this.findColumn(headers, ['logged money', 'logged amount']),
+            note:         this.findColumn(headers, ['hour note', 'note', 'description', 'notes']),
+            billed:       this.findColumn(headers, ['billed status', 'billable', 'billed']),
+            project:      this.findColumn(headers, ['project name', 'project']),
+            client:       this.findColumn(headers, ['client name', 'client']),
+            userName:     this.findColumn(headers, ['user name', 'user', 'name'])
         };
     }
 
@@ -257,13 +258,29 @@ class TimelyCSVImporter {
         // project set before any time entry tries to reference them
         for (var i = 0; i < dataRows.length; i++) {
             var row = dataRows[i];
-            var projectName = columns.project >= 0 ? row[columns.project] : '';
-            var clientName  = columns.client  >= 0 ? row[columns.client]  : '';
+            var projectName  = columns.project >= 0 ? row[columns.project] : '';
+            var clientName   = columns.client  >= 0 ? row[columns.client]  : '';
+            var plannedHours = columns.plannedHours >= 0 ? row[columns.plannedHours] : '';
+            var loggedMoney  = columns.loggedMoney  >= 0 ? row[columns.loggedMoney]  : '';
+            var durationStr  = columns.duration >= 0 ? row[columns.duration] : '';
 
             if (!projectName) { continue; }
 
             this.getOrCreateProject(projectName, clientName);
-            this.getOrCreateTask(projectName);
+            var task = this.getOrCreateTask(projectName);
+
+            if (plannedHours) {
+                var plannedSecs = this.parseDecimalHours(plannedHours);
+                if (plannedSecs > 0) { task.plannedDuration = plannedSecs; }
+            }
+
+            if (loggedMoney && durationStr) {
+                var money = parseFloat(loggedMoney.replace(',', '.'));
+                var hours = parseFloat(durationStr.replace(',', '.'));
+                if (!isNaN(money) && !isNaN(hours) && hours > 0 && money > 0) {
+                    task.hourlyRate = Math.round((money / hours) * 100) / 100;
+                }
+            }
         }
 
         // Second pass: create time entries
@@ -279,14 +296,14 @@ class TimelyCSVImporter {
             var times = this.resolveTimestamps(row, columns, dateBase);
             if (times.end <= times.start) { continue; }
 
-            var clientName  = columns.client >= 0 ? row[columns.client] : '';
-            var note        = columns.note   >= 0 ? row[columns.note]   : '';
-            var billable    = columns.billed >= 0 ? this.isBillable(row[columns.billed]) : true;
-            var userEmail   = columns.userEmail >= 0 ? row[columns.userEmail] : '';
+            var clientName = columns.client   >= 0 ? row[columns.client]   : '';
+            var note       = columns.note     >= 0 ? row[columns.note]     : '';
+            var billable   = columns.billed   >= 0 ? this.isBillable(row[columns.billed]) : true;
+            var userName   = columns.userName >= 0 ? row[columns.userName] : '';
 
-            // Stable entry ID: date + project + start time + user email
+            // Stable entry ID: date + project + start time + user name
             var entryId = 'timely-csv-entry-' + this.makeSlug(
-                dateStr + '|' + projectName + '|' + times.start + '|' + userEmail
+                dateStr + '|' + projectName + '|' + times.start + '|' + userName
             );
 
             var task = this.getOrCreateTask(projectName);
@@ -297,13 +314,6 @@ class TimelyCSVImporter {
             tymeEntry.timeStart = times.start;
             tymeEntry.timeEnd = times.end;
             tymeEntry.parentTask = task;
-
-            if (userEmail) {
-                var tymeUserId = tyme.userIDForEmail(userEmail);
-                if (tymeUserId) {
-                    tymeEntry.userID = tymeUserId;
-                }
-            }
         }
     }
 }
