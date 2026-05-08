@@ -74,6 +74,7 @@ class HarvestImporter {
         this.fetchClients();
         this.fetchProjects();
         this.fetchUsers();
+        this.fetchTasks();
         this.fetchTaskAssignments();
         this.fetchTimeEntries();
         this.processData();
@@ -104,6 +105,13 @@ class HarvestImporter {
         this.users = {};
         this.apiClient.getAllPages('/users', 'users').forEach(function(user) {
             this.users[user['id']] = user;
+        }.bind(this));
+    }
+
+    fetchTasks() {
+        this.tasks = {};
+        this.apiClient.getAllPages('/tasks', 'tasks').forEach(function(task) {
+            this.tasks[task['id']] = task;
         }.bind(this));
     }
 
@@ -156,7 +164,7 @@ class HarvestImporter {
     }
 
     processData() {
-        var prefix = 'harvest-';
+        const prefix = 'harvest-';
 
         // Clients → Tyme Categories
         for (const clientId in this.clients) {
@@ -200,52 +208,55 @@ class HarvestImporter {
 
         // Task assignments → Tyme Tasks (scoped per project)
         for (var taKey in this.taskAssignments) {
-            var taEntry = this.taskAssignments[taKey];
-            var assignment = taEntry['assignment'];
-            var taProjId = taEntry['projectId'];
-            var task = assignment['task'];
+            const taEntry = this.taskAssignments[taKey];
+            const assignment = taEntry['assignment'];
+            const taProjId = taEntry['projectId'];
+            const task = assignment['task'];
 
-            var taskTymeId = prefix + taProjId + '-' + task['id'];
-            var projTymeRef = prefix + taProjId;
+            const taskTymeId = prefix + taProjId + '-' + task['id'];
+            const projTymeRef = prefix + taProjId;
 
-            var tymeTask = TimedTask.fromID(taskTymeId) ?? TimedTask.create(taskTymeId);
+            const tymeTask = TimedTask.fromID(taskTymeId) ?? TimedTask.create(taskTymeId);
             tymeTask.name = task['name'];
             tymeTask.isCompleted = !assignment['is_active'];
             tymeTask.billable = assignment['billable'];
 
-            if (assignment['hourly_rate']) {
-                tymeTask.hourlyRate = assignment['hourly_rate'];
-            }
-
-            utils.log(JSON.stringify(assignment));
-
-            // budget_by === 'task' on the project means per-task hour budget
-            if (assignment['budget']) {
-                tymeTask.plannedDuration = assignment['budget'] * 3600;
-            }
-
-            var tymeProj = Project.fromID(projTymeRef);
+            const tymeProj = Project.fromID(projTymeRef);
             if (tymeProj) {
                 tymeTask.project = tymeProj;
                 if (tymeProj.isCompleted) {
                     tymeTask.isCompleted = true;
                 }
             }
+
+            let hourlyRate = assignment['hourly_rate'];
+            if (!hourlyRate) {
+                const globalTask = this.tasks[task['id']];
+                if (globalTask) { hourlyRate = globalTask['default_hourly_rate']; }
+            }
+            if (hourlyRate) {
+                tymeTask.hourlyRate = hourlyRate;
+            }
+
+            // budget_by === 'task' on the project means per-task hour budget
+            if (assignment['budget']) {
+                tymeTask.plannedDuration = assignment['budget'] * 3600;
+            }
         }
 
         // Time entries → Tyme TimeEntries
-        for (var i = 0; i < this.timeEntries.length; i++) {
-            var entry = this.timeEntries[i];
+        for (let i = 0; i < this.timeEntries.length; i++) {
+            const entry = this.timeEntries[i];
 
             if (entry['is_running']) {
                 continue;
             }
 
-            var entryTymeId = prefix + entry['id'];
-            var entryProjectId = entry['project'] ? entry['project']['id'] : null;
-            var entryTaskId = entry['task'] ? entry['task']['id'] : null;
+            const entryTymeId = prefix + entry['id'];
+            const entryProjectId = entry['project'] ? entry['project']['id'] : null;
+            const entryTaskId = entry['task'] ? entry['task']['id'] : null;
 
-            var parentTask = null;
+            let parentTask = null;
 
             if (entryProjectId && entryTaskId) {
                 parentTask = TimedTask.fromID(prefix + entryProjectId + '-' + entryTaskId);
@@ -253,7 +264,7 @@ class HarvestImporter {
 
             // Task assignment may have been deleted after time was logged; create a fallback task
             if (!parentTask) {
-                var fallbackTaskId = entryProjectId
+                const fallbackTaskId = entryProjectId
                     ? prefix + entryProjectId + '-default'
                     : prefix + 'default-task';
 
@@ -263,12 +274,12 @@ class HarvestImporter {
                     parentTask = TimedTask.create(fallbackTaskId);
                     parentTask.name = 'Default Task';
 
-                    var fallbackProj = entryProjectId
+                    let fallbackProj = entryProjectId
                         ? Project.fromID(prefix + entryProjectId)
                         : null;
 
                     if (!fallbackProj) {
-                        var defaultProjId = prefix + 'default';
+                        const defaultProjId = prefix + 'default';
                         fallbackProj = Project.fromID(defaultProjId) ?? Project.create(defaultProjId);
                         fallbackProj.name = 'Default';
                     }
@@ -277,8 +288,8 @@ class HarvestImporter {
                 }
             }
 
-            var timeStart = null;
-            var timeEnd = null;
+            let timeStart = null;
+            let timeEnd = null;
 
             if (entry['started_time'] && entry['ended_time']) {
                 timeStart = this.parseHarvestTime(entry['spent_date'], entry['started_time']);
@@ -291,16 +302,16 @@ class HarvestImporter {
                 timeEnd = timeStart + Math.round(entry['hours'] * 3600 * 1000);
             }
 
-            var tymeEntry = TimeEntry.fromID(entryTymeId) ?? TimeEntry.create(entryTymeId);
+            const tymeEntry = TimeEntry.fromID(entryTymeId) ?? TimeEntry.create(entryTymeId);
             tymeEntry.note = entry['notes'] || '';
             tymeEntry.timeStart = timeStart;
             tymeEntry.timeEnd = timeEnd;
             tymeEntry.parentTask = parentTask;
 
             if (entry['user']) {
-                var harvestUser = this.users[entry['user']['id']];
+                const harvestUser = this.users[entry['user']['id']];
                 if (harvestUser && harvestUser['email']) {
-                    var tymeUserId = tyme.userIDForEmail(harvestUser['email']);
+                    const tymeUserId = tyme.userIDForEmail(harvestUser['email']);
                     if (tymeUserId) {
                         tymeEntry.userID = tymeUserId;
                     }
