@@ -178,7 +178,10 @@ class EverhourImporter {
             var tymeTask = TimedTask.fromID(taskTymeId) ?? TimedTask.create(taskTymeId);
             tymeTask.name = task['name'];
             tymeTask.isCompleted = task['status'] === 'closed' || !!task['completed'];
-            tymeTask.billable = !task['unbillable'];
+            var taskProject = this.projects[taProjId];
+            var projectBilling = taskProject && taskProject['billing'];
+            var projectBillable = !projectBilling || projectBilling['type'] !== 'non-billable';
+            tymeTask.billable = projectBillable && !task['unbillable'];
 
             var tymeProj = Project.fromID(projTymeId);
             if (tymeProj) {
