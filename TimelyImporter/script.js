@@ -201,35 +201,31 @@ class TimelyCSVImporter {
 
     // --- Entity creation ---
 
-    getOrCreateCategory(clientName) {
-        if (!clientName) { return null; }
-        var id = 'timely-csv-cat-' + this.makeSlug(clientName);
-        var cat = Category.fromID(id) ?? Category.create(id);
-        cat.name = clientName;
+    getOrCreateTimelyCategory() {
+        var cat = Category.fromID('timely-csv-category') ?? Category.create('timely-csv-category');
+        cat.name = 'Timely';
         return cat;
     }
 
-    getOrCreateProject(projectName, clientName) {
-        var id = 'timely-csv-proj-' + this.makeSlug(projectName);
+    // Timely client → Tyme project. No client falls back to a catch-all project.
+    getOrCreateProject(clientName) {
+        var slug = clientName ? this.makeSlug(clientName) : 'no-client';
+        var id = 'timely-csv-proj-' + slug;
         var proj = Project.fromID(id) ?? Project.create(id);
-        proj.name = projectName;
-
-        if (clientName) {
-            var cat = this.getOrCreateCategory(clientName);
-            if (cat) { proj.category = cat; }
-        }
-
+        proj.name = clientName || 'Timely Import';
+        proj.category = this.getOrCreateTimelyCategory();
         return proj;
     }
 
-    // Timely has no task layer — one default task per project
-    getOrCreateTask(projectName) {
-        var id = 'timely-csv-task-' + this.makeSlug(projectName);
+    // Timely project → Tyme task, nested under the client project.
+    getOrCreateTask(projectName, clientName) {
+        var clientSlug = clientName ? this.makeSlug(clientName) : 'no-client';
+        var id = 'timely-csv-task-' + clientSlug + '-' + this.makeSlug(projectName);
         var task = TimedTask.fromID(id);
         if (!task) {
             task = TimedTask.create(id);
-            task.name = 'Default Task';
-            task.project = Project.fromID('timely-csv-proj-' + this.makeSlug(projectName));
+            task.name = projectName;
+            task.project = this.getOrCreateProject(clientName);
         }
         return task;
     }
@@ -266,8 +262,7 @@ class TimelyCSVImporter {
 
             if (!projectName) { continue; }
 
-            this.getOrCreateProject(projectName, clientName);
-            var task = this.getOrCreateTask(projectName);
+            var task = this.getOrCreateTask(projectName, clientName);
 
             if (plannedHours) {
                 var plannedSecs = this.parseDecimalHours(plannedHours);
@@ -306,7 +301,7 @@ class TimelyCSVImporter {
                 dateStr + '|' + projectName + '|' + times.start + '|' + userName
             );
 
-            var task = this.getOrCreateTask(projectName);
+            var task = this.getOrCreateTask(projectName, clientName);
             task.billable = billable;
 
             var tymeEntry = TimeEntry.fromID(entryId) ?? TimeEntry.create(entryId);
