@@ -116,7 +116,7 @@ class EverhourImporter {
         var twoYearsAgo = new Date();
         twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
 
-        this.timeRecords = this.apiClient.getAllPages('/time', {
+        this.timeRecords = this.apiClient.getAllPages('/team/time', {
             'from': twoYearsAgo.toISOString().split('T')[0],
             'to':   now.toISOString().split('T')[0]
         });
@@ -143,12 +143,9 @@ class EverhourImporter {
             proj.name = project['name'];
 
             var billing = project['billing'];
-            if (billing && billing['type'] === 'hourly') {
-                var rate = project['rate'];
-                if (rate && rate['amount']) {
-                    // Everhour stores rates in cents
-                    proj.defaultHourlyRate = rate['amount'] / 100;
-                }
+            if (billing && billing['type'] === 'project-rate' && billing['rate']) {
+                // Everhour stores rates in cents
+                proj.defaultHourlyRate = billing['rate'] / 100;
             }
 
             if (project['client']) {
@@ -173,6 +170,14 @@ class EverhourImporter {
             tymeTask.isCompleted = task['status'] === 'closed' || !!task['completed'];
             tymeTask.billable = !task['unbillable'];
 
+            var tymeProj = Project.fromID(projTymeId);
+            if (tymeProj) {
+                tymeTask.project = tymeProj;
+                if (tymeProj.isCompleted) {
+                    tymeTask.isCompleted = true;
+                }
+            }
+            
             if (task['estimate'] && task['estimate']['total']) {
                 tymeTask.plannedDuration = task['estimate']['total'];
             }
@@ -180,14 +185,6 @@ class EverhourImporter {
             if (task['rate']) {
                 // Task-level rate overrides project rate; also in cents
                 tymeTask.hourlyRate = task['rate'] / 100;
-            }
-
-            var tymeProj = Project.fromID(projTymeId);
-            if (tymeProj) {
-                tymeTask.project = tymeProj;
-                if (tymeProj.isCompleted) {
-                    tymeTask.isCompleted = true;
-                }
             }
         }
 
