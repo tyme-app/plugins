@@ -1,0 +1,16 @@
+{
+  "en": {
+    "plugin.name": "Everhour",
+    "plugin.summary": "Import your data from Everhour right into Tyme.",
+    "input.key": "Everhour API Key",
+    "input.key.placeholder": "Please enter your API key",
+    "input.hint": "You can find your API key in [Account Settings under My Profile](https://app.everhour.com/#/account/profile) at the bottom of the page.\n\nAll clients, projects, tasks and time entries of the last two years will be imported.\n\nIf there are time entries from different users in your Everhour account, the importer will try to match them to your Tyme users based on the email address."
+  },
+  "de": {
+    "plugin.name": "Everhour",
+    "plugin.summary": "Importiere deine Daten aus Everhour direkt in Tyme.",
+    "input.key": "Everhour API-Schlüssel",
+    "input.key.placeholder": "Bitte gib deinen API-Schlüssel ein",
+    "input.hint": "Du findest deinen API-Schlüssel in den [Kontoeinstellungen unter Mein Profil](https://app.everhour.com/#/account/profile) am Ende der Seite.\n\nEs werden alle Kunden, Projekte, Aufgaben und Zeiteinträge der letzten zwei Jahre importiert.\n\nWenn in deinem Everhour-Konto Zeiteinträge von verschiedenen Benutzern vorhanden sind, versucht der Importer, diese anhand der E-Mail-Adresse deinen Tyme-Nutzern zuzuordnen."
+  }
+}
