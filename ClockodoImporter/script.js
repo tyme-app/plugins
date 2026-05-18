@@ -37,15 +37,21 @@ class ClockodoApiClient {
             requestParams['page'] = page;
 
             const data = this.request(path, requestParams);
-            if (!data) { break; }
+            if (!data) {
+                break;
+            }
 
             const items = data[dataKey];
-            if (!items || items.length === 0) { break; }
+            if (!items || items.length === 0) {
+                break;
+            }
 
             all = all.concat(items);
 
             const paging = data['paging'];
-            if (!paging || page >= paging['count_pages']) { break; }
+            if (!paging || page >= paging['count_pages']) {
+                break;
+            }
             page++;
         } while (true);
 
@@ -86,7 +92,7 @@ class ClockodoImporter {
         this.customers = {};
         const active = this.apiClient.getAllPages('/v2/customers', 'customers', {'filter[active]': 'true'});
         const inactive = this.apiClient.getAllPages('/v2/customers', 'customers', {'filter[active]': 'false'});
-        active.concat(inactive).forEach(function(c) {
+        active.concat(inactive).forEach(function (c) {
             this.customers[c['id']] = c;
         }.bind(this));
     }
@@ -95,7 +101,7 @@ class ClockodoImporter {
         this.projects = {};
         const active = this.apiClient.getAllPages('/v2/projects', 'projects', {'filter[active]': 'true'});
         const inactive = this.apiClient.getAllPages('/v2/projects', 'projects', {'filter[active]': 'false'});
-        active.concat(inactive).forEach(function(p) {
+        active.concat(inactive).forEach(function (p) {
             this.projects[p['id']] = p;
         }.bind(this));
     }
@@ -105,7 +111,7 @@ class ClockodoImporter {
         this.services = {};
         const data = this.apiClient.request('/v2/services', null);
         if (data && data['services']) {
-            data['services'].forEach(function(s) {
+            data['services'].forEach(function (s) {
                 this.services[s['id']] = s;
             }.bind(this));
         }
@@ -114,7 +120,7 @@ class ClockodoImporter {
     fetchUsers() {
         // Users are also a flat list; use getAllPages for safety in large accounts
         this.users = {};
-        this.apiClient.getAllPages('/v2/users', 'users').forEach(function(u) {
+        this.apiClient.getAllPages('/v2/users', 'users').forEach(function (u) {
             this.users[u['id']] = u;
         }.bind(this));
     }
@@ -146,7 +152,9 @@ class ClockodoImporter {
             proj.name = 'No Project';
             if (customersId) {
                 const cat = Category.fromID(prefix + customersId);
-                if (cat) { proj.category = cat; }
+                if (cat) {
+                    proj.category = cat;
+                }
             }
         }
         return proj;
