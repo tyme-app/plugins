@@ -1,0 +1,20 @@
+{
+  "en": {
+    "plugin.name": "Harvest",
+    "plugin.summary": "Import your data from Harvest right into Tyme.",
+    "input.token": "Harvest API Token",
+    "input.token.placeholder": "Please enter your API token",
+    "input.account_id": "Harvest Account ID",
+    "input.account_id.placeholder": "Please enter your Account ID",
+    "input.hint": "You can find your API token and Account ID at [Harvest Developers](https://id.getharvest.com/developers). If you don't already have one, you can create one by clicking **Create new personal access token**.\n\nAll clients, projects, tasks and time entries of the last two years will be imported.\n\nIf there are time entries from different users in your Harvest account, the importer will try to match them to your Tyme users based on the email address."
+  },
+  "de": {
+    "plugin.name": "Harvest",
+    "plugin.summary": "Importiere deine Daten aus Harvest direkt in Tyme.",
+    "input.token": "Harvest API Token",
+    "input.token.placeholder": "Bitte gib deinen API Token ein",
+    "input.account_id": "Harvest Konto-ID",
+    "input.account_id.placeholder": "Bitte gib deine Konto-ID ein",
+    "input.hint": "Du findest deinen API Token und deine Konto-ID bei [Harvest Entwickler](https://id.getharvest.com/developers). Falls du noch keinen hast, kannst du einen erstellen, indem du auf **Create new personal access token** klickst.\n\nEs werden alle Kunden, Projekte, Aufgaben und Zeiteinträge der letzten zwei Jahre importiert.\n\nWenn in deinem Harvest-Konto Zeiteinträge von verschiedenen Benutzern vorhanden sind, versucht der Importer, diese anhand der E-Mail-Adresse deinen Tyme-Nutzern zuzuordnen."
+  }
+}

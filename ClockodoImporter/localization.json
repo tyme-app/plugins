@@ -1,0 +1,20 @@
+{
+  "en": {
+    "plugin.name": "Clockodo",
+    "plugin.summary": "Import your data from Clockodo right into Tyme.",
+    "input.email": "Clockodo Email",
+    "input.email.placeholder": "Please enter your Clockodo email address",
+    "input.api_key": "Clockodo API Key",
+    "input.api_key.placeholder": "Please enter your API key",
+    "input.hint": "You can find your API key in your [Clockodo profile settings](https://my.clockodo.com/en/users/editself/) > API Key > Generate API Key.\n\nAll customers, projects, services and time entries of the last two years will be imported. Clockodo services are mapped to tasks in Tyme, grouped per project.\n\nIf there are time entries from different users in your Clockodo account, the importer will try to match them to your Tyme users based on the email address."
+  },
+  "de": {
+    "plugin.name": "Clockodo",
+    "plugin.summary": "Importiere deine Daten aus Clockodo direkt in Tyme.",
+    "input.email": "Clockodo E-Mail",
+    "input.email.placeholder": "Bitte gib deine Clockodo E-Mail-Adresse ein",
+    "input.api_key": "Clockodo API-Schlüssel",
+    "input.api_key.placeholder": "Bitte gib deinen API-Schlüssel ein",
+    "input.hint": "Du findest deinen API-Schlüssel in deinen [Clockodo Profileinstellungen](https://my.clockodo.com/de/users/editself/) > API Key > API Key generieren.\n\nEs werden alle Kunden, Projekte, Leistungen und Zeiteinträge der letzten zwei Jahre importiert. Clockodo-Leistungen werden als Aufgaben in Tyme abgebildet, gruppiert nach Projekt.\n\nWenn in deinem Clockodo-Konto Zeiteinträge von verschiedenen Benutzern vorhanden sind, versucht der Importer, diese anhand der E-Mail-Adresse deinen Tyme-Nutzern zuzuordnen."
+  }
+}
