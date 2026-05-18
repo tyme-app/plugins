@@ -25,26 +25,26 @@ class ClockodoApiClient {
     }
 
     getAllPages(path, dataKey, extraParams) {
-        var all = [];
-        var page = 1;
-        var params = extraParams || {};
+        let all = [];
+        let page = 1;
+        const params = extraParams || {};
 
         do {
-            var requestParams = {};
-            for (var k in params) {
+            const requestParams = {};
+            for (const k in params) {
                 requestParams[k] = params[k];
             }
             requestParams['page'] = page;
 
-            var data = this.request(path, requestParams);
+            const data = this.request(path, requestParams);
             if (!data) { break; }
 
-            var items = data[dataKey];
+            const items = data[dataKey];
             if (!items || items.length === 0) { break; }
 
             all = all.concat(items);
 
-            var paging = data['paging'];
+            const paging = data['paging'];
             if (!paging || page >= paging['count_pages']) { break; }
             page++;
         } while (true);
@@ -84,8 +84,8 @@ class ClockodoImporter {
 
     fetchCustomers() {
         this.customers = {};
-        var active = this.apiClient.getAllPages('/v2/customers', 'customers', { 'filter[active]': 'true' });
-        var inactive = this.apiClient.getAllPages('/v2/customers', 'customers', { 'filter[active]': 'false' });
+        const active = this.apiClient.getAllPages('/v2/customers', 'customers', {'filter[active]': 'true'});
+        const inactive = this.apiClient.getAllPages('/v2/customers', 'customers', {'filter[active]': 'false'});
         active.concat(inactive).forEach(function(c) {
             this.customers[c['id']] = c;
         }.bind(this));
@@ -93,8 +93,8 @@ class ClockodoImporter {
 
     fetchProjects() {
         this.projects = {};
-        var active = this.apiClient.getAllPages('/v2/projects', 'projects', { 'filter[active]': 'true' });
-        var inactive = this.apiClient.getAllPages('/v2/projects', 'projects', { 'filter[active]': 'false' });
+        const active = this.apiClient.getAllPages('/v2/projects', 'projects', {'filter[active]': 'true'});
+        const inactive = this.apiClient.getAllPages('/v2/projects', 'projects', {'filter[active]': 'false'});
         active.concat(inactive).forEach(function(p) {
             this.projects[p['id']] = p;
         }.bind(this));
@@ -103,7 +103,7 @@ class ClockodoImporter {
     fetchServices() {
         // Services are a flat global list with no pagination
         this.services = {};
-        var data = this.apiClient.request('/v2/services', null);
+        const data = this.apiClient.request('/v2/services', null);
         if (data && data['services']) {
             data['services'].forEach(function(s) {
                 this.services[s['id']] = s;
@@ -120,13 +120,13 @@ class ClockodoImporter {
     }
 
     fetchEntries() {
-        var now = new Date();
-        var twoYearsAgo = new Date();
+        const now = new Date();
+        const twoYearsAgo = new Date();
         twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
 
         // Clockodo requires ISO 8601 UTC without milliseconds
-        var timeSince = twoYearsAgo.toISOString().replace(/\.\d{3}Z$/, 'Z');
-        var timeUntil = now.toISOString().replace(/\.\d{3}Z$/, 'Z');
+        const timeSince = twoYearsAgo.toISOString().replace(/\.\d{3}Z$/, 'Z');
+        const timeUntil = now.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
         this.entries = this.apiClient.getAllPages('/v2/entries', 'entries', {
             'time_since': timeSince,
@@ -137,15 +137,15 @@ class ClockodoImporter {
     // Returns or creates the "No Project" Tyme project for a customer.
     // Used when a Clockodo entry has no project assigned.
     getNoProjectContainer(customersId) {
-        var prefix = 'clockodo-';
-        var noProjectId = prefix + 'c' + customersId + '-noproj';
+        const prefix = 'clockodo-';
+        const noProjectId = prefix + 'c' + customersId + '-noproj';
 
-        var proj = Project.fromID(noProjectId);
+        let proj = Project.fromID(noProjectId);
         if (!proj) {
             proj = Project.create(noProjectId);
             proj.name = 'No Project';
             if (customersId) {
-                var cat = Category.fromID(prefix + customersId);
+                const cat = Category.fromID(prefix + customersId);
                 if (cat) { proj.category = cat; }
             }
         }
@@ -153,14 +153,15 @@ class ClockodoImporter {
     }
 
     processData() {
-        var prefix = 'clockodo-';
+        let cat;
+        const prefix = 'clockodo-';
 
         // Customers → Tyme Categories
-        for (var customerId in this.customers) {
-            var customer = this.customers[customerId];
-            var catId = prefix + customerId;
+        for (const customerId in this.customers) {
+            const customer = this.customers[customerId];
+            const catId = prefix + customerId;
 
-            var cat = Category.fromID(catId) ?? Category.create(catId);
+            cat = Category.fromID(catId) ?? Category.create(catId);
             cat.name = customer['name'];
             cat.isCompleted = !customer['active'];
 
@@ -170,11 +171,11 @@ class ClockodoImporter {
         }
 
         // Projects → Tyme Projects
-        for (var projectId in this.projects) {
-            var project = this.projects[projectId];
-            var projTymeId = prefix + projectId;
+        for (const projectId in this.projects) {
+            const project = this.projects[projectId];
+            const projTymeId = prefix + projectId;
 
-            var proj = Project.fromID(projTymeId) ?? Project.create(projTymeId);
+            const proj = Project.fromID(projTymeId) ?? Project.create(projTymeId);
             proj.name = project['name'];
             proj.isCompleted = !project['active'] || !!project['completed'];
 
@@ -192,7 +193,7 @@ class ClockodoImporter {
             }
 
             if (project['customers_id']) {
-                var cat = Category.fromID(prefix + project['customers_id']);
+                cat = Category.fromID(prefix + project['customers_id']);
                 if (cat) {
                     proj.category = cat;
                     if (cat.isCompleted) {
@@ -207,8 +208,8 @@ class ClockodoImporter {
         // Clockodo services are global; the same service can appear in many projects.
         // We create one Tyme task per (project, service) combination so tasks stay
         // properly scoped inside their project — matching Tyme's data model.
-        for (var i = 0; i < this.entries.length; i++) {
-            var entry = this.entries[i];
+        for (let i = 0; i < this.entries.length; i++) {
+            const entry = this.entries[i];
 
             // Skip lumpsum entries (type 2 = LumpsumValue, type 3 = LumpsumService)
             if (entry['type'] !== 1) {
@@ -220,19 +221,19 @@ class ClockodoImporter {
                 continue;
             }
 
-            var entryProjectsId = entry['projects_id'];
-            var entryServicesId = entry['services_id'];
-            var entryCustomersId = entry['customers_id'];
+            const entryProjectsId = entry['projects_id'];
+            const entryServicesId = entry['services_id'];
+            const entryCustomersId = entry['customers_id'];
 
             // Build a stable task ID scoped to the project (or the customer when no project)
-            var taskTymeId;
+            let taskTymeId;
             if (entryProjectsId) {
                 taskTymeId = prefix + entryProjectsId + '-' + entryServicesId;
             } else {
                 taskTymeId = prefix + 'c' + entryCustomersId + '-' + entryServicesId;
             }
 
-            var parentTask = TimedTask.fromID(taskTymeId);
+            let parentTask = TimedTask.fromID(taskTymeId);
 
             if (!parentTask) {
                 parentTask = TimedTask.create(taskTymeId);
