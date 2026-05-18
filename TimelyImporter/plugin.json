@@ -5,7 +5,7 @@
   "type": "import",
   "author": "Unit Numberfive oHG",
   "authorUrl": "https://www.tyme-app.com",
-  "icon": "timely_icon.png",
+  "icon": "icon.png",
   "scriptName": "script.js",
   "scriptMain": "importer.start()",
   "scriptPreview": "",
