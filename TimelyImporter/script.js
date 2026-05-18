@@ -122,6 +122,7 @@ class TimelyCSVImporter {
         var id = 'timely-proj-' + (clientName ? this.makeSlug(clientName) : 'no-client');
         var proj = Project.fromID(id) ?? Project.create(id);
         proj.name = clientName || 'Timely Import';
+        proj.trackingMode = 1;
         proj.category = this.getOrCreateCategory();
         return proj;
     }
@@ -188,13 +189,13 @@ class TimelyCSVImporter {
                 }
             }
 
-            var dayStart = dateBase.getTime();
+            var noonStart = dateBase.getTime() + 12 * 3600 * 1000;
             var entryId = 'timely-entry-' + this.makeSlug(row[col.date] + '|' + projectName + '|' + durationSecs + '|' + userName);
 
             var tymeEntry = TimeEntry.fromID(entryId) ?? TimeEntry.create(entryId);
             tymeEntry.note = note;
-            tymeEntry.timeStart = dayStart;
-            tymeEntry.timeEnd = dayStart + durationSecs * 1000;
+            tymeEntry.timeStart = noonStart;
+            tymeEntry.timeEnd = noonStart + durationSecs * 1000;
             tymeEntry.parentTask = task;
         }
     }
