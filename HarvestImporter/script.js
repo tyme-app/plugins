@@ -38,15 +38,21 @@ class HarvestApiClient {
             requestParams['per_page'] = 100;
 
             var data = this.request(path, requestParams);
-            if (!data) { break; }
+            if (!data) {
+                break;
+            }
 
             var items = data[dataKey];
-            if (!items || items.length === 0) { break; }
+            if (!items || items.length === 0) {
+                break;
+            }
 
             all = all.concat(items);
 
             var totalPages = data['total_pages'] || 1;
-            if (page >= totalPages) { break; }
+            if (page >= totalPages) {
+                break;
+            }
             page++;
         } while (true);
 
@@ -86,31 +92,31 @@ class HarvestImporter {
 
     fetchClients() {
         this.clients = {};
-        this.apiClient.getAllPages('/clients', 'clients').forEach(function(client) {
+        this.apiClient.getAllPages('/clients', 'clients').forEach(function (client) {
             this.clients[client['id']] = client;
         }.bind(this));
     }
 
     fetchProjects() {
         this.projects = {};
-        let active = this.apiClient.getAllPages('/projects', 'projects', { 'is_active': 'true' });
-        let inactive = this.apiClient.getAllPages('/projects', 'projects', { 'is_active': 'false' });
+        let active = this.apiClient.getAllPages('/projects', 'projects', {'is_active': 'true'});
+        let inactive = this.apiClient.getAllPages('/projects', 'projects', {'is_active': 'false'});
 
-        active.concat(inactive).forEach(function(project) {
+        active.concat(inactive).forEach(function (project) {
             this.projects[project['id']] = project;
         }.bind(this));
     }
 
     fetchUsers() {
         this.users = {};
-        this.apiClient.getAllPages('/users', 'users').forEach(function(user) {
+        this.apiClient.getAllPages('/users', 'users').forEach(function (user) {
             this.users[user['id']] = user;
         }.bind(this));
     }
 
     fetchTasks() {
         this.tasks = {};
-        this.apiClient.getAllPages('/tasks', 'tasks').forEach(function(task) {
+        this.apiClient.getAllPages('/tasks', 'tasks').forEach(function (task) {
             this.tasks[task['id']] = task;
         }.bind(this));
     }
@@ -125,7 +131,7 @@ class HarvestImporter {
                 '/projects/' + projectId + '/task_assignments',
                 'task_assignments'
             );
-            assignments.forEach(function(ta) {
+            assignments.forEach(function (ta) {
                 var key = projectId + '-' + ta['task']['id'];
                 this.taskAssignments[key] = {
                     assignment: ta,
@@ -149,14 +155,20 @@ class HarvestImporter {
     // Harvest returns times as strings like "9:00am" or "1:30pm" paired with a "YYYY-MM-DD" date.
     parseHarvestTime(dateStr, timeStr) {
         const match = timeStr.match(/^(\d+):(\d+)(am|pm)$/i);
-        if (!match) { return null; }
+        if (!match) {
+            return null;
+        }
 
         let hours = parseInt(match[1]);
         let minutes = parseInt(match[2]);
         let meridiem = match[3].toLowerCase();
 
-        if (meridiem === 'pm' && hours !== 12) { hours += 12; }
-        if (meridiem === 'am' && hours === 12) { hours = 0; }
+        if (meridiem === 'pm' && hours !== 12) {
+            hours += 12;
+        }
+        if (meridiem === 'am' && hours === 12) {
+            hours = 0;
+        }
 
         let d = new Date(dateStr + 'T00:00:00');
         d.setHours(hours, minutes, 0, 0);
@@ -207,7 +219,7 @@ class HarvestImporter {
         }
 
         // Task assignments → Tyme Tasks (scoped per project)
-        for (var taKey in this.taskAssignments) {
+        for (const taKey in this.taskAssignments) {
             const taEntry = this.taskAssignments[taKey];
             const assignment = taEntry['assignment'];
             const taProjId = taEntry['projectId'];
@@ -232,8 +244,16 @@ class HarvestImporter {
             let hourlyRate = assignment['hourly_rate'];
             if (!hourlyRate) {
                 const globalTask = this.tasks[task['id']];
-                if (globalTask) { hourlyRate = globalTask['default_hourly_rate']; }
+                if (globalTask) {
+                    hourlyRate = globalTask['default_hourly_rate'];
+                }
             }
+
+            const project = this.projects[taProjId];
+            if (project['bill_by'] === "Project") {
+                hourlyRate = project['default_hourly_rate'];
+            }
+
             if (hourlyRate) {
                 tymeTask.hourlyRate = hourlyRate;
             }
