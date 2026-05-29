@@ -1,0 +1,17 @@
+{
+  "id": "n8n_plugin",
+  "tymeMinVersion": "2025.1",
+  "version": "1.0.4",
+  "type": "export",
+  "author": "Unit Numberfive oHG",
+  "authorUrl": "https://www.n8n.io",
+  "icon": "icon.png",
+  "scriptName": "",
+  "scriptMain": "",
+  "scriptPreview": "",
+  "formName": "",
+  "localizationName": "localization.json",
+  "isBuiltIn": true,
+  "internalType": "plugin_07",
+  "internalLink": "https://www.n8n.io"
+}
