@@ -1,10 +1,10 @@
 {
   "en": {
-    "plugin.name": "n8n nodes",
+    "plugin.name": "n8n",
     "plugin.summary": "Using the Tyme n8n nodes, you can automate nearly everything in Tyme. Get summaries of your tracked times, create or edit projects, tasks and times. There are also trigger nodes, that can notify you automatically when a new time entry (or project, or task, …) is created or a timer is stopped. Just search for Tyme in your n8n instance"
   },
   "de": {
-    "plugin.name": "n8n nodes",
+    "plugin.name": "n8n",
     "plugin.summary": "Mit den Tyme n8n nodes kannst du fast alles in Tyme automatisieren. Erhalte Zusammenfassungen deiner erfassten Zeiten, erstelle oder bearbeite Projekte, Aufgaben und Zeiten. Es gibt auch Trigger-Nodes, die dich automatisch benachrichtigen können, wenn ein neuer Zeiteintrag (oder ein Projekt, eine Aufgabe usw.) erstellt oder ein Timer gestoppt wird. Suche einfach in deiner n8n-Instanz nach Tyme"
   }
 }
