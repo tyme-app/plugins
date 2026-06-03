@@ -4,7 +4,7 @@
   "version": "1.0.4",
   "type": "export",
   "author": "Unit Numberfive oHG",
-  "authorUrl": "https://www.n8n.io",
+  "authorUrl": "https://n8n.io/integrations/tyme/",
   "icon": "icon.png",
   "scriptName": "",
   "scriptMain": "",
@@ -13,5 +13,5 @@
   "localizationName": "localization.json",
   "isBuiltIn": true,
   "internalType": "plugin_07",
-  "internalLink": "https://www.n8n.io"
+  "internalLink": "https://n8n.io/integrations/tyme/"
 }
