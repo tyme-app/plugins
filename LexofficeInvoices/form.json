@@ -6,6 +6,12 @@
     "actionFunction": "lexOfficeAPIClient.startAuthFlow()"
   },
   {
+    "id": "logoutButton",
+    "type": "button",
+    "name": "button.logout",
+    "actionFunction": "lexOfficeAPIClient.logout()"
+  },
+  {
     "id": "lexofficeKeyHint",
     "type": "hint",
     "name": "",
