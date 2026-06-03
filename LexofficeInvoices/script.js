@@ -4,6 +4,10 @@ class LexOfficeResolver {
         this.timeEntriesConverter = timeEntriesConverter;
         this.invoicePath = '/v1/invoices/';
         this.contactPath = '/v1/contacts/';
+        
+        formElement.lexofficeAuthButton.isHidden = this.lexOfficeAPIClient.isAuthenticated();
+        formElement.lexofficeKeyHint.isHidden = this.lexOfficeAPIClient.isAuthenticated();
+        formElement.logoutButton.isHidden = !this.lexOfficeAPIClient.isAuthenticated();
     }
 
     getContacts() {
@@ -195,7 +199,13 @@ class LexOfficeAPIClient {
         tyme.openURL(this.baseURL + 'invoice/edit/' + invoiceID);
     }
 
+    logout() {
+        tyme.setSecureValue(this.lexTokenKey, null);
+        tyme.setSecureValue(this.authCodeKey, null);
+    }
+
     startAuthFlow() {
+        this.logout();
         tyme.openURL(this.baseURL + 'auth/new');
     }
 
