@@ -1,0 +1,14 @@
+{
+  "id": "rukk_invoices",
+  "tymeMinVersion": "2024.11",
+  "version": "1.0",
+  "type": "export",
+  "author": "NNV ehf.",
+  "authorUrl": "https://apps.apple.com/app/id6777342177",
+  "icon": "icon.png",
+  "scriptName": "script.js",
+  "scriptMain": "rukk.createInvoice()",
+  "scriptPreview": "rukk.generatePreview()",
+  "formName": "form.json",
+  "localizationName": "localization.json"
+}
