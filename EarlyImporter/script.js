@@ -107,20 +107,23 @@ class EarlyImporter {
         for (let i = 1; i <= 2; i++) {
             let startDate = new Date();
             startDate.setFullYear(startDate.getFullYear() - i);
+
             let endDate = new Date();
             endDate.setFullYear(endDate.getFullYear() - (i - 1));
 
-            startDate = startDate > formValue.dateRange[0] ? startDate : formValue.dateRange[0];
-            startDate.setUTCHours(0,0,0,0);
-            endDate = endDate < formValue.dateRange[1] ? endDate : formValue.dateRange[1];
-            endDate.setUTCHours(23,59,59,999);
+            startDate = new Date(startDate > formValue.dateRange[0] ? startDate : formValue.dateRange[0]);
+            startDate.setHours(0, 0, 0, 0);
+
+            endDate = new Date(endDate < formValue.dateRange[1] ? endDate : formValue.dateRange[1]);
+            endDate.setHours(23, 59, 59, 999);
 
             if (endDate - startDate < 0) {
                 continue;
             }
 
-            const startString = startDate.toISOString().split('T')[0]
-            const endString = endDate.toISOString().split('T')[0]
+            const startString = this.formatLocalDate(startDate);
+            const endString = this.formatLocalDate(endDate);
+
             const response = this.apiClient.getJSON(
                 "POST",
                 "report",
@@ -137,6 +140,13 @@ class EarlyImporter {
                 this.timeEntries.push(...response["timeEntries"]);
             }
         }
+    }
+
+    formatLocalDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return year + "-" + month + "-" + day;
     }
 
     parseData() {
